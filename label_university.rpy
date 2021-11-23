@@ -1,10 +1,13 @@
 ﻿label university:
 scene bg university
 $ tutorial_place("university")
+$ not_delayed = True if (persistent.signedclass and persistent.signedclass not in persistent.delays) else False
 menu:
     "sign up for a class" if not persistent.signedclass:
         jump chooseclass
-    "participate in a [persistent.signedclass] class" if persistent.signedclass:
+    "participate in a [persistent.signedclass] class" if not_delayed:
+        #if persistent.signedclass in persistent.delays: 
+        #    jump university
         "you listen what prof wants to say"
         $ persistent.delays.append(persistent.signedclass)
         jump university

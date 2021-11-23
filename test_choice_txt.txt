@@ -1,0 +1,16 @@
+# The preprogrammed list of expressions grouped in 
+# here is the exaple how toimplement it:
+#init:
+#    $ questions = [("How are you?", "q1"),
+#                   ("What is the weather like?", "q2"),
+#                   ("Do you like toast?", "q3")]
+#    $ choice = renpy.display_menu(questions)
+#    "[choice]"
+
+
+init:
+    $ questions = [("You are so great", "q1"),
+                   ("What is the weather like?", "q2"),
+                   ("Do you like toast?", "q3")]
+
+

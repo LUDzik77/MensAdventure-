@@ -23,7 +23,7 @@ define gui.show_name = True
 
 ## The version of the game.
 
-define config.version = "PROTOTYPE 1.6"
+define config.version = "PROTOTYPE 1.13"
 
 
 ## Text that is placed on the game's about screen. Place the text between the
