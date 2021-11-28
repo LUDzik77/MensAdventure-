@@ -18,6 +18,11 @@ image Kamilion = im.Scale("images/characters/Kamilion1.jpg", 600, 800)
 label start:
     call variables_start
     show Kamilion
+    python:
+        import fightgame
+        renpy.say("", fightgame.result_)
+
+
     K "current version: [config.version]"
     jump city
      
