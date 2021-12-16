@@ -1,5 +1,5 @@
 #Skillcards
-from random import choice
+from random import choice, randint
 
 class Skillcards:
     def get_description(self, key):
@@ -173,7 +173,7 @@ class Pullguard(Standupcards):
             attacker.points -= 1
 
 
-class Bearhug_takedown(Standupcards):
+class Bearhug_Takedown(Standupcards):
     def __init__(self):
         self.name = "Bearhug takedown"
         self.rarity = "common"
@@ -483,7 +483,7 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
             pass
             
             
-class Roar_Naked_Choke(Groundcards):
+class Roar_Naked_Choke(Groundcards):  #############################################
     def __init__(self):
         self.name = "Roar naked choke"
         self.rarity = "common"
@@ -498,7 +498,7 @@ class Roar_Naked_Choke(Groundcards):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
         \ntests: your bjj, opponent bjj\neffects(1roll):\
         \n1 success: WIN if you have GROUNDCONTROL, otherwise points\
-        \n0 success: 50% LOSE if opponent  have GROUNDCONTROL\
+        \n0 success: lose GROUNDCONTROL(25%), TIME LAPSE(25%)\
         \nCAN'T BE PLAYED IF OPPONENT HAVE GROUNDCONTROL"
         return(result)
     
@@ -532,8 +532,11 @@ class Roar_Naked_Choke(Groundcards):
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            if defender.groundcontrol and choice("lost", "no") == "lost":             
-                attacker.lost = True
+            if randint(4) == 1:             
+                attacker.groundcontrol = False
+            if randint(4) == 1:
+                global STANDUP
+                STANDUP = True           
 
 
 class Lucky_Punch(Standupcards):
@@ -565,7 +568,9 @@ class Lucky_Punch(Standupcards):
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
-            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
+            attacker_stat = defender.boxing//3 +defender.muay_thai//3 + 4
+            defender_stat = choice([defender.boxing, defender.muay_thai]) + 1
+            result.append(attacker.roll_1_stat(attacker_stat, defender_stat))
         return(str(sum(result )))
     
     def get_attack_result(self, score):
@@ -594,6 +599,110 @@ class Lucky_Punch(Standupcards):
         elif maped_score == "lose":
             pass        
 
+
+class Granite_Chin(Standupcards):
+    def __init__(self):
+        self.name = "Granite chin"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.grapplingskill = False
+        self.cost = 0
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: none \neffects:\
+        \nRemoves ROCKED effect\
+        \nadds 1 energy (50% chance)\
+        \nWORKS ONLY IF YOU ARE ROCKED"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "His chin is unbreakable!",
+            "success": "The blows do not impress him at all",
+            "defeat" : "",
+            "lose"   : ""}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(10, 10))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0": "success"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        self.result_description = self.results[maped_score]
+        global STANDUP
+        if maped_score == "win":
+            attacker.rocked = False
+            attacker.energy += 1
+        elif maped_score == "success":
+            attacker.rocked = False
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+
+
+
+class Cardio_King(Standupcards):
+    def __init__(self):
+        self.name = "Cardio king"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill = False
+        self.cost = 0
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: none \neffects:\
+        \nRemoves TIRED effect\
+        \nadds 1 energy (50% chance)\
+        \nWORKS ONLY IF YOU ARE TIRED"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He is gassing out? Not at all!",
+            "success": "Some avoidance tactics, and he's looking refreshed now.",
+            "defeat" : "",
+            "lose"   : ""}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(10, 10))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0": "success"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        self.result_description = self.results[maped_score]
+        global STANDUP
+        if maped_score == "win":
+            attacker.energy += 1
+            attacker.tired = False
+        elif maped_score == "success":
+            attacker.tired = False
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+        
+        
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -604,9 +713,7 @@ class Lucky_Punch(Standupcards):
     #print(item.name)
     
 
-
-#some regeneration card
-#some untired card
+#some untired card /  universal TIRED
 #sth that lowers boxing and mt
 #sth that lowers bjj, wrestlin
 

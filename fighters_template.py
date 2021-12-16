@@ -1,8 +1,11 @@
 from random import choices
+import Skillcards_map_and_create as map_
 
 #we need a mechanism to generate Skillcards and set quantity FROM the  list below 
-#this list should have the same format as player skilllist in the main game
-Saladin_Tuahihi_skills = ["X", "Y", "Z"] 
+#this list should have the same format as player skilllist in the main game.... but we need to apply weights   # NEED MORE WORK
+#Saladin_Tuahihi_skills = # with weights
+Saladin_Tuahihi_skills_temp = map_.map_to_objects([("Jab",1), ("Illegal move trap",1)], ("Jab",1))
+
 Saladin_Tuahihi_s_weights = [10,10,10]
 Saladin_Tuahihi =[
 "Saladin", #firstname

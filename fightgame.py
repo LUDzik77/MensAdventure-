@@ -7,6 +7,7 @@ import fighters_template
 STANDUP=True
 #when it reaches a number 12(?) fight goes for decision
 TIMER = 0
+#  BOTH have to be add with setters and getters to MATCH
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
