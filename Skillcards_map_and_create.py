@@ -5,11 +5,11 @@ import Skillcards as Sk
 def map_to_objects(list_of_objects_to_map):
     fighter_skillcards = []
     for to_map in list_of_objects_to_map:
-        fighter_skillcard.append(get_Skillcard_object(to_map))
+        fighter_skillcards.append(get_1_Skillcard_object(to_map))
     return(fighter_skillcards)
 
 
-def get_Skillcard_object(to_map):
+def get_1_Skillcard_object(to_map):
     if to_map[0] == "Jab":
         new_object = Sk.Jab()
     elif to_map[0] == "Lowkick":
@@ -36,9 +36,9 @@ def get_Skillcard_object(to_map):
         new_object = Sk.Granite_Chin()
     elif to_map[0] == "Cardio king":
         new_object = Sk.Cardio_King()
+    else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
-    return(new_object)
-        
+    return(new_object)   
 
 
     

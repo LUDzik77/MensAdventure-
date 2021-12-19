@@ -8,7 +8,7 @@ class Skillcards:
         score = self.roll_attack(attacker, defender)
         maped_score = self.get_attack_result(score)
         self.attack_effect(maped_score, attacker, defender)
-        print(self.get_result_description())  #checking effects <--- for test purposes/ not  4 production
+        #print(self.get_result_description())  #checking effects <--- for test purposes/ not  4 production
         
     def get_result_description(self):
         return(self.result_description)
@@ -220,7 +220,7 @@ class Bearhug_Takedown(Standupcards):
             pass
         elif maped_score == "lose":
             attacker.points -= 1
-            if choice("boom", "ground") == "ground":
+            if choice(["boom", "ground"]) == "ground":
                 STANDUP=False
                 defender.groundcontrol = True         
             else: attacker.got_hurt()
@@ -321,12 +321,12 @@ class Powerjab(Jab):
             attacker.points += 1
             defender.got_hurt()
         elif maped_score == "success":
-            if choice("points", "no") == "points":
+            if choice(["points", "no"]) == "points":
                 attacker.points += 1
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            if choice("lostpoints", "no") == "lostpoints":
+            if choice(["lostpoints", "no"]) == "lostpoints":
                 attacker.points -= 1
 
 ############################################################  to be implemented ---> check GROUNDCONTROL before USE
@@ -404,7 +404,7 @@ class Brute_Force_Sweep(Groundcards):
             "win"    : "He sweeps opponent. No technique here, but it works!",
             "success": "",
             "defeat" : "",
-            "lose"   : "why to bother with any technique if you have muscles? Dude, opponent is not a bag of potatoes"}
+            "lose"   : "why bother with any technique if you have muscles? Dude, opponent is not a bag of potatoes"}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -421,9 +421,9 @@ class Brute_Force_Sweep(Groundcards):
         self.result_description = self.results[maped_score]
         if maped_score == "win":
             if defender.groundcontrol:
-                groundcontrol = False
+                defender.groundcontrol = False
             elif attacker.groundcontrol:
-                points += 1
+                attacker.points += 1
             else:
                 attacker.groundcontrol = True      
         elif maped_score == "success":
@@ -463,9 +463,9 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
     def roll_attack(self, attacker, defender):
         result = False
         for _ in range(1):
-            if choice("illegal", "no") == "illegal":
-                result = True           
-        return(str(sum(result )))
+            if choice(["illegal", "no"]) == "illegal":
+                return("1")          
+        return("0")
     
     def get_attack_result(self, score):
         mapping = {"1":"win",  "0":"lose"}
@@ -532,9 +532,9 @@ class Roar_Naked_Choke(Groundcards):  ##########################################
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            if randint(4) == 1:             
+            if randint(1, 4) == 1:             
                 attacker.groundcontrol = False
-            if randint(4) == 1:
+            if randint(1, 4) == 1:
                 global STANDUP
                 STANDUP = True           
 
@@ -580,7 +580,7 @@ class Lucky_Punch(Standupcards):
     def attack_effect(self, maped_score, attacker, defender):  
         self.result_description = self.results[maped_score]
         if maped_score == "win":
-            result = choice("rocked", "no effect", "tired", "damage","points")
+            result = choice(["rocked", "no effect", "tired", "damage","points"])
             if result == "rocked":
                 defender.got_rocked()
             elif result == "tired":
@@ -590,7 +590,7 @@ class Lucky_Punch(Standupcards):
             elif result == "points": 
                 attacker.points += 1
             global STANDUP
-            if randint(7) == 7:
+            if randint(1, 7) == 7:
                 STANDUP = False
         elif maped_score == "success":
             pass
