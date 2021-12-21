@@ -36,6 +36,9 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Granite_Chin()
     elif to_map[0] == "Cardio king":
         new_object = Sk.Cardio_King()
+    elif to_map[0] == "Swing for the fences" :
+        new_object = Sk.Swing_For_The_Fences()
+      
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
     return(new_object)   

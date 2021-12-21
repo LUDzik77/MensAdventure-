@@ -1,6 +1,8 @@
 #Skillcards
 from random import choice, randint
 
+
+
 class Skillcards:
     def get_description(self, key):
         return(self.results[key])
@@ -18,9 +20,9 @@ class Skillcards:
 class Standupcards(Skillcards):
     standup = True
 
-
 class Groundcards(Skillcards):
     standup = False
+    
     
 class Jab(Standupcards):
     def __init__(self):
@@ -160,13 +162,12 @@ class Pullguard(Standupcards):
         
     def attack_effect(self, maped_score, attacker, defender):
         self.result_description = self.results[maped_score]
-        global STANDUP
         if maped_score == "win":
             attacker.points -= 1
-            STANDUP=False
+            attacker.currentfight.setStandup(False)
         elif maped_score == "success":
             attacker.points -= 1
-            STANDUP=False
+            attacker.currentfight.setStandup(False)
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
@@ -210,10 +211,9 @@ class Bearhug_Takedown(Standupcards):
         
     def attack_effect(self, maped_score, attacker, defender):
         self.result_description = self.results[maped_score]
-        global STANDUP
         if maped_score == "win":
             attacker.points += 2
-            STANDUP=False
+            attacker.currentfight.setStandup(False)
         elif maped_score == "success":
             pass
         elif maped_score == "defeat":
@@ -221,7 +221,7 @@ class Bearhug_Takedown(Standupcards):
         elif maped_score == "lose":
             attacker.points -= 1
             if choice(["boom", "ground"]) == "ground":
-                STANDUP=False
+                attacker.currentfight.setStandup(False)
                 defender.groundcontrol = True         
             else: attacker.got_hurt()
         
@@ -370,7 +370,6 @@ class Lay_And_Pray(Groundcards):
     def attack_effect(self, maped_score, attacker, defender):  
         self.result_description = self.results[maped_score]
         global TIMER
-        global STANDUP
         if maped_score == "win":
             TIMER += 1
         elif maped_score == "success":
@@ -378,7 +377,7 @@ class Lay_And_Pray(Groundcards):
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            STANDUP = True
+            attacker.currentfight.setStandup(True)
             
 
 class Brute_Force_Sweep(Groundcards):
@@ -535,8 +534,7 @@ class Roar_Naked_Choke(Groundcards):  ##########################################
             if randint(1, 4) == 1:             
                 attacker.groundcontrol = False
             if randint(1, 4) == 1:
-                global STANDUP
-                STANDUP = True           
+                attacker.currentfight.setStandup(True)
 
 
 class Lucky_Punch(Standupcards):
@@ -589,9 +587,8 @@ class Lucky_Punch(Standupcards):
                 defender.got_hurt()
             elif result == "points": 
                 attacker.points += 1
-            global STANDUP
             if randint(1, 7) == 7:
-                STANDUP = False
+                attacker.currentfight.setStandup(False)
         elif maped_score == "success":
             pass
         elif maped_score == "defeat":
@@ -701,8 +698,62 @@ class Cardio_King(Standupcards):
             pass
         elif maped_score == "lose":
             pass
+
+class Swing_For_The_Fences(Standupcards):
+    def __init__(self):
+        self.name = "Swing for the fences"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill = False
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
         
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your & op box, muaythai, wrestling \neffects:\
+        \n3 success: opponent ROCKED\
+        \n2 success: opponent DAMAGED\
+        \n1 success: you DAMAGED\
+        \n0 success: you ROCKED\
+        \nchance for TAKEDOWN (15%)"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "What a decision! He started a brawl and wow, he can finish it now!",
+            "success": "What an exchange, he is winning it!",
+            "defeat" : "I would not recommend going for this exchange...",
+            "lose"   : "He just've got rooocked! What a beating!"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            at = [attacker.boxing, attacker.muay_thai, attacker.wrestling]
+            df = [defender.boxing, defender.muay_thai, defender.wrestling]
+            result.append(attacker.roll_1_stat(choice(at), choice(df)))
+            result.append(attacker.roll_1_stat(choice(at), choice(df)))
+            result.append(attacker.roll_1_stat(choice(at), choice(df)))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win","2":"success", "1":"defeat", "0":"lose"}
+        return(mapping[score])
         
+    def attack_effect(self, maped_score, attacker, defender):
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            defender.got_rocked()
+        elif maped_score == "success":
+            defender.got_hurt()
+        elif maped_score == "defeat":
+            attacker.got_hurt() 
+        elif maped_score == "lose":
+            attacker.got_rocked()    
+        if randint(1, 7) == 7:
+            attacker.currentfight.setStandup(False)        
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -736,6 +787,7 @@ class Cardio_King(Standupcards):
 #suplex
 #Kata-guruma
 #Sweep_trip_throw
+#throw directly to the groundcontrol
 
 #universal punch --> both standup and ground
 
@@ -750,3 +802,4 @@ class Cardio_King(Standupcards):
 #cheap shots --> points on the ground
 #hammer fist
 #drunkenjitsu --> ground action better when tired
+#escape to standup

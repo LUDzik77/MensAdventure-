@@ -11,6 +11,9 @@ TIMER = 0
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
+        # self.currentfight changed on runtime; 
+        # serves to communicate between SkillCards and The_Fight and to avoid circular importing error
+        self.currentfight  = False 
         self.firstname = firstname
         self.lastname = lastname
         self.nickname = nickname
@@ -73,7 +76,6 @@ class Fighter:
         return(result)
 
 
-
 class Match:
     def __init__(self, fighter1, fighter2, fight_time):
         self.fighter1 = fighter1
@@ -82,6 +84,9 @@ class Match:
         self.inactiveplayer = self.fighter1 if self.activeplayer == self.fighter2 else self.fighter2
         self.fight_time = fight_time
         self.fight_is_not_over = True
+        # these attributes will replace global STANDUP & TIMER   ########################################to be implemented soon ####################################
+        self.standup = True
+        self.timer = 0         
         
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
@@ -138,15 +143,9 @@ class Match:
         else: print(f"{p1} <{kwargs['action']}>:\n{info}\n")
     
     def check_if_standup_or_ground_changed(self):
-        global STANDUP
         randomnr = randint(1, 9)
         if randomnr == 9:
-            if STANDUP==True: STANDUP=False
-            else: STANDUP=True
-            position_ = "stand-up" if STANDUP==True else "ground"
-            self.activeplayer.groundcontrol = False 
-            self.inactiveplayer.groundcontrol = False 
-            self.prompt_fight_info(f"Suddenly fight moves to the {position_}!")
+            self.changeStandup()
             
     def get_skill_to_use_in_attack(self):
         actions = self.get_pool_of_possible_attacks()
@@ -155,17 +154,37 @@ class Match:
     def get_pool_of_possible_attacks(self):
         #TO BE IMPLEMENTED
         return(self.activeplayer.skilllist)   
-    
-    
+      
     def use_skill(self, action, *args, **kwargs):
         action.use(attacker=self.activeplayer, defender=self.inactiveplayer)
-
         
+    def changeStandup(self):
+        if self.standup == True:
+            self.setStandup(False)
+        else: self.setStandup(True)
+    
+    def setStandup(self, value):
+        if self.standup==value:
+            pass
+        else:
+            self.activeplayer.groundcontrol = False 
+            self.inactiveplayer.groundcontrol = False 
+            self.standup = value 
+            position_ = "stand-up" if self.standup==True else "ground"
+            self.prompt_fight_info(f"Fight moves to the {position_}!")
+            
+
+    def setTimer(self, value):
+        self.timer = value
+    
 
 fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)
 fighter2 = Fighter(*fighters_template.Mr_test)
 The_Fight = Match(fighter1, fighter2, 12)
+fighter1.currentfight = The_Fight 
+fighter2.currentfight = The_Fight
 The_Fight.start_fight()
+print(The_Fight.standup)
 
 
 
