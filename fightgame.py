@@ -173,9 +173,8 @@ class Match:
             position_ = "stand-up" if self.standup==True else "ground"
             self.prompt_fight_info(f"Fight moves to the {position_}!")
             
-
-    def setTimer(self, value):
-        self.timer = value
+    def moveTimer(self):
+        self.timer += 1
     
 
 fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)

@@ -38,6 +38,13 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Cardio_King()
     elif to_map[0] == "Swing for the fences" :
         new_object = Sk.Swing_For_The_Fences()
+    elif to_map[0] == "Slap":
+        new_object = Sk.Slap()
+    elif to_map[0] == "Highkick":
+        new_object = Sk.Highkick()
+    elif to_map[0] == "Flying knee":
+        new_object = Sk.Flying_Knee()       
+        
       
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
