@@ -481,59 +481,6 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
             pass
             
             
-class Roar_Naked_Choke(Groundcards):  #############################################
-    def __init__(self):
-        self.name = "Roar naked choke"
-        self.rarity = "common"
-        self.quantity = 1
-        self.grapplingskill =  True
-        self.cost = 1
-        self.description = self.description()
-        self.results = self.all_results()
-        self.result_description = ""
-        
-    def description(self):
-        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
-        \ntests: your bjj, opponent bjj\neffects(1roll):\
-        \n1 success: WIN if you have GROUNDCONTROL, otherwise points\
-        \n0 success: lose GROUNDCONTROL(25%), TIME LAPSE(25%)\
-        \nCAN'T BE PLAYED IF OPPONENT HAVE GROUNDCONTROL"
-        return(result)
-    
-    def all_results(self):
-        results ={
-            "win"    : "He's applying RNC... will it be over?",
-            "success": "",
-            "defeat" : "",
-            "lose"   : "failed to control opponent, does he go for a leg?"}
-        return(results)
-    
-    def roll_attack(self, attacker, defender):
-        result = []
-        for _ in range(1):
-            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
-    
-    def get_attack_result(self, score):
-        mapping = {"1":"win",  "0":"lose"}
-        return(mapping[score])
-        
-    def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
-        if maped_score == "win":
-            if attacker.groundcontrol:
-                defender.lost = True
-            else:
-                attacker.points += 1     
-        elif maped_score == "success":
-            pass
-        elif maped_score == "defeat":
-            pass
-        elif maped_score == "lose":
-            if randint(1, 4) == 1:             
-                attacker.groundcontrol = False
-            if randint(1, 4) == 1:
-                attacker.currentfight.moveTimer()
 
 
 class Lucky_Punch(Standupcards):
@@ -938,8 +885,190 @@ class Flying_Knee(Standupcards):
             attacker.currentfight.setStandup(False)
             defender.groundcontrol = True
             attacker.points -= 1
+            
+################GROUND CARDS:
+            
+class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restriction###########################
+    def __init__(self):
+        self.name = "Roar naked choke"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill =  True
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, opponent bjj\neffects(1roll):\
+        \n1 success: WIN if you have GROUNDCONTROL, otherwise points\
+        \n0 success: lose GROUNDCONTROL(25%), TIME LAPSE(25%)\
+        \nCAN'T BE PLAYED IF OPPONENT HAVE GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He's applying RNC... will it be over?",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "failed to control opponent, does he go for a leg?"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            if attacker.groundcontrol:
+                defender.lost = True
+            else:
+                attacker.points += 1     
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            if randint(1, 4) == 1:             
+                attacker.groundcontrol = False
+            if randint(1, 4) == 1:
+                attacker.currentfight.moveTimer()
 
- 
+
+
+class Armbar(Groundcards): 
+    def __init__(self):
+        self.name = "Armbar"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill =  True
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, opponent bjj\neffects(3roll):\
+        \n3 success: WIN if GROUNDCONTROL, otherwise apply GROUNDCONTROL, points\
+        \n2 success: if GROUNDCONTROL:apply DAMAGE(50%),points else: apply GROUNDCONTROL\
+        \n1 success: random: suffer DAMAGE, lose GROUNDCONTROL, op GROUNDCONTROL, reduce points or STANDUP\
+        \n0 success: lose GROUNDCONTROL, opponent GROUNDCONTROL or STANDUP, reduce points"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He is going for straight armbar and it can work!",
+            "success": "He tries armbar and sweep his opponent instead!",
+            "defeat" : "He attacked arm and failed.",
+            "lose"   : "What a poor technique..."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(3):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win",  "2": "success", "1":"defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            if attacker.groundcontrol:
+                defender.lost = True
+            else:
+                attacker.points += 1     
+        elif maped_score == "success":
+            if attacker.groundcontrol:
+                effect = choice("no", "dmg")
+                if effect == "dmg": 
+                    defender.got_hurt()
+                    attacker.points += 1
+            else: 
+                attacker.groundcontrol = True
+        elif maped_score == "defeat":
+            effect = choice(["dmg", "loseground", "oground", "rpoints", "standup"])
+            if effect == "dmg": attacker.got_hurt()
+            elif effect == "loseground": attacker.groundcontrol = False
+            elif effect == "oground": defender.groundcontrol = True
+            elif effect == "rpoints": attacker.points -= 1
+            elif effect == "standup": attacker.currentfight.setStandup(True)
+        elif maped_score == "lose":
+            attacker.groundcontrol = False
+            effect = choice(["standup", "ground"])
+            if effect == "standup": attacker.currentfight.setStandup(True)
+            elif effect == "ground": defender.groundcontrol = True
+            attacker.points -= 1
+
+class Ground_and_Pound(Groundcards): 
+    def __init__(self):
+        self.name = "Ground and pound"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill =  True
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj,wrestling,boxing  opponent bjj\neffects(3roll):\
+        \n3 success: apply ROCKED if GROUNDCONTROL, otherwise DAMAGE, points*2\
+        \n2 success: apply DAMAGE if GROUNDCONTROL, points\
+        \n2 success: TIMELAPSE\
+        \n0 success: lose GROUNDCONTROL, opponent GROUNDCONTROL, reduce points"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He's raining punches from the top and looking for a finish!",
+            "success": "ribs, ribs and chin, he is pushing his adventage.",
+            "defeat" : "few insignificant punches, most of them blocked",
+            "lose"   : "It is why you do not play on the ground with bjj shark..."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win",  "2": "success", "1":"defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            if attacker.groundcontrol:
+                defender.got_rocked()  
+            else: defender.got_hurt()
+            attacker.points += 2     
+        elif maped_score == "success":
+            if attacker.groundcontrol:
+                defender.got_hurt()
+            attacker.points += 1 
+        elif maped_score == "defeat":
+            attacker.currentfight.moveTimer()  
+        elif maped_score == "lose":
+            attacker.groundcontrol = False
+            defender.groundcontrol = True
+            attacker.points -= 1
+
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -957,13 +1086,11 @@ class Flying_Knee(Standupcards):
 #slap --> worse  jab :P
 #killer kick
 #wild exchange --> both got damaged
-#lucky punch
 #devastating_overhand
 #windmill_style
 #butthead
 #knee_from_clinch
 #elbow
-#flying knee
 #superman punch
 #Dirty_boxing
 
@@ -979,12 +1106,12 @@ class Flying_Knee(Standupcards):
 #mount position --> groundcontrol/punch
 #slam
 #guilotine --> tired you/him/ submission
-#armbar
 #heel hook
 #triangle
 #Escape!
 #GnP
 #cheap shots --> points on the ground
-#hammer fist
+#vicous hammerfist
 #drunkenjitsu --> ground action better when tired
 #escape to standup
+#reverse?

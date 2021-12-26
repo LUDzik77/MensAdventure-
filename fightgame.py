@@ -50,7 +50,7 @@ class Fighter:
     def got_hurt(self):
         roll_a_die = randint(1, 4)
         if roll_a_die == 2:
-            self.energy-= 2
+            self.energy -= 2
         elif roll_a_die == 3:
             self.got_tired()
         elif roll_a_die == 4:
