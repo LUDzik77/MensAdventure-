@@ -47,7 +47,16 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "Armbar":
         new_object = Sk.Armbar()    
     elif to_map[0] == "Ground and pound":
-        new_object = Sk.Ground_and_Pound()    
+        new_object = Sk.Ground_and_Pound()
+    elif to_map[0] == "Dirty boxing":
+        new_object = Sk.Dirty_Boxing()  
+    elif to_map[0] == "Devastating overhand":
+        new_object = Sk.Devastating_Overhand()
+    elif to_map[0] == "Elbows":
+        new_object = Sk.Elbows() 
+    elif to_map[0] == "Windmill style":
+        new_object = Sk.Windmill_Style()  
+        
         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
