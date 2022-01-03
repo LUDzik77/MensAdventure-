@@ -126,11 +126,11 @@ class Lowkick(Standupcards):
 
 class Pullguard(Standupcards):
     def __init__(self):
-        self.name = "Pull Guard"
+        self.name = "Pull guard"
         self.rarity = "uncommon"
         self.quantity = 1
         self.grapplingskill = True
-        self.cost = 1
+        self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
         self.result_description = ""
@@ -138,14 +138,15 @@ class Pullguard(Standupcards):
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
         \ntests: your bjj, opponent wrestling, 2 rolls\neffects:\
-        \n2,1 success: TAKEDOWN, reduce points\
+        \n2 success: TAKEDOWN, reduce points\
+        \n1 success: TAKEDOWN, op GROUNDCONTROL, reduce points\
         \n0 successes: reduce points"
         return(result)
     
     def all_results(self):
         results ={
             "win"    : "he's pullin the guard. What a move!",
-            "success": "he is pulling a guard.",
+            "success": "he is pulling a guard... risky move!",
             "defeat" : "",
             "lose"   : "he's trying to pull the guard... but opponent refuses to get involved!"}
         return(results)
@@ -168,6 +169,7 @@ class Pullguard(Standupcards):
         elif maped_score == "success":
             attacker.points -= 1
             attacker.currentfight.setStandup(False)
+            defender.groundcontrol = True
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
@@ -482,7 +484,6 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
             
             
 
-
 class Lucky_Punch(Standupcards):
     def __init__(self):
         self.name = "Lucky Punch"
@@ -758,8 +759,6 @@ class Windmill_Style(Standupcards):
             attacker.got_hurt()
             attacker.got_tired()
             
-
-
 
 
 class Slap(Standupcards):
@@ -1083,7 +1082,7 @@ class Ground_and_Pound(Groundcards):
         \ntests: your bjj,wrestling,boxing  opponent bjj\neffects(3roll):\
         \n3 success: apply ROCKED if GROUNDCONTROL, otherwise DAMAGE, points*2\
         \n2 success: apply DAMAGE if GROUNDCONTROL, points\
-        \n2 success: TIMELAPSE\
+        \n1 success: TIMELAPSE\
         \n0 success: lose GROUNDCONTROL, opponent GROUNDCONTROL, reduce points"
         return(result)
     
@@ -1126,7 +1125,7 @@ class Ground_and_Pound(Groundcards):
             attacker.points -= 1
 
 
-#######################################################################
+
 class Dirty_Boxing(Standupcards):
     def __init__(self):
         self.name = "Dirty boxing"
@@ -1179,7 +1178,6 @@ class Dirty_Boxing(Standupcards):
                 attacker.got_hurt()       
 
 
-#devastating_overhand
 class Devastating_Overhand(Standupcards):
     def __init__(self):
         self.name = "Devastating overhand"
@@ -1232,7 +1230,6 @@ class Devastating_Overhand(Standupcards):
             attacker.got_hurt()   
 
 
-#devastating_overhand
 class Elbows(Standupcards):
     def __init__(self):
         self.name = "Elbows"
@@ -1281,6 +1278,123 @@ class Elbows(Standupcards):
         elif maped_score == "lose":
             pass  
         
+class Flying_Armbar(Standupcards):
+    def __init__(self):
+        self.name = "Flying armbar"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.grapplingskill =  True
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your/op's bjj \neffects(3 roll):\
+        \n3 success: WIN the fight\
+        \n2 success: TAKEDOWN, op GROUNDCONTROL(50%), points\
+        \n1 success: TAKEDOWN, op GROUNDCONTROL, reduce points\
+        \n0 success: reduce points*2"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Flying armbar? Are you kidding me? What a finish!",
+            "success": "Flying armbar attempt? Crowd is loooving it!",
+            "defeat" : "Kangaroo tried some fancy technique and finished pinned to the ground.",
+            "lose"   : "I don't know what he was trying to achieve, but I cannot stop laughing"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(3):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            defender.lost = True  
+        elif maped_score == "success":
+            attacker.points += 1
+            attacker.currentfight.setStandup(False)
+            if choice(["lostposition", "no"]) == "lostposition":
+                defender.groundcontrol = True           
+        elif maped_score == "defeat":
+            attacker.points -= 1
+            attacker.currentfight.setStandup(False)
+            defender.groundcontrol = True 
+        elif maped_score == "lose":
+            attacker.points -= 2
+
+#Double_Leg   --> get punched if op. muaythai
+
+class Double_Leg(Standupcards):
+    def __init__(self):
+        self.name = "Double leg"
+        self.rarity = "common"
+        self.quantity = 1
+        self.grapplingskill =  True
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling(2),bjj(1), op wrestling(2),muaythai(1)\neffects(3 roll):\
+        \n3 success: TAKEDOWN, GROUNDCONTROL, points*2\
+        \n2 success: TAKEDOWN, points\
+        \n0 success: suffer DAMAGE, reduce points"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He charged like a roller! What a beautiful takedown. Please give him round of applause.",
+            "success": "He ducks under opponent... and he gets it!",
+            "defeat" : "He ducks under opponent... timed sprawl and he's pushed back",
+            "lose"   : "He tried double leg and was countered!"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        self.result_description = self.results[maped_score]
+        if maped_score == "win":
+            attacker.points += 2
+            attacker.currentfight.setStandup(False)
+            attacker.groundcontrol = True 
+        elif maped_score == "success":
+            attacker.points += 1
+            attacker.currentfight.setStandup(False)         
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.got_hurt()
+            attacker.points -= 1
+
+
+
+
+
+
+
+ 
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -1295,17 +1409,12 @@ class Elbows(Standupcards):
 #sth that lowers boxing and mt
 #sth that lowers bjj, wrestlin
 
-#slap --> worse  jab :P
 #killer kick
-#wild exchange --> both got damaged
-#windmill_style
 #butthead
 #knee_from_clinch
-#elbow
 #superman punch
 
 #One_leg_takedown
-#Double_Leg   --> get punched if op. muaythai
 #suplex
 #Kata-guruma
 #Sweep_trip_throw

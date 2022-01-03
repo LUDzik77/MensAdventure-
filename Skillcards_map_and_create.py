@@ -14,7 +14,7 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Jab()
     elif to_map[0] == "Lowkick":
         new_object = Sk.Lowkick()
-    elif to_map[0] == "Pullguard":
+    elif to_map[0] == "Pull guard":
         new_object = Sk.Pullguard()    
     elif to_map[0] == "Bearhug takedown":
         new_object = Sk.Bearhug_Takedown()        
@@ -56,8 +56,12 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Elbows() 
     elif to_map[0] == "Windmill style":
         new_object = Sk.Windmill_Style()  
+    elif to_map[0] == "Flying armbar":
+        new_object = Sk.Flying_Armbar()
+    elif to_map[0] == "Double leg":
+        new_object = Sk.Double_Leg()
         
-        
+    
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
     return(new_object)   
