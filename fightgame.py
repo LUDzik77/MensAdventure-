@@ -3,10 +3,9 @@ from random import randint, choice
 import Skillcards as Sk
 import fighters_template
 
-#fight start in standup
-STANDUP=True
+
 #when it reaches a number 12(?) fight goes for decision
-TIMER = 0
+
 #  BOTH have to be add with setters and getters to MATCH
 
 class Fighter: 
@@ -17,6 +16,7 @@ class Fighter:
         self.firstname = firstname
         self.lastname = lastname
         self.nickname = nickname
+        self.fullname = firstname + " " + lastname
         self.boxing = boxing
         self.muay_thai = muay_thai
         self.wrestling = wrestling
@@ -33,12 +33,14 @@ class Fighter:
     def got_rocked(self):
         if self.rocked == False:
             self.rocked = True
+            self.currentfight.prompt_fight_info(" is rocked!", player=self.fullname)
         else:
             self.lost = True   
                 
     def got_tired(self):
         if self.weak == False:
             self.weak = True
+            self.currentfight.prompt_fight_info(" is exhausted!", player=self.fullname)
         elif self.energy > 2:
             self.energy = 0
         elif self.rocked == False:
@@ -55,6 +57,12 @@ class Fighter:
             self.got_tired()
         elif roll_a_die == 4:
             self.got_rocked()
+            
+    def gets_groundcontrol(self):
+        if self.groundcontrol == True: pass
+        else: 
+            self.groundcontrol = True
+            self.currentfight.prompt_fight_info(" has a groundcontrol now!", player=self.fullname)
         
     def roll_1_stat(self, own_stat, op_stat):
         roll_your = randint(0, own_stat)
@@ -74,6 +82,10 @@ class Fighter:
         else:
             result = True if randint(0, 9)>4 else False
         return(result)
+    
+    def describe_action(self):
+        pass
+
 
 
 class Match:
@@ -84,7 +96,6 @@ class Match:
         self.inactiveplayer = self.fighter1 if self.activeplayer == self.fighter2 else self.fighter2
         self.fight_time = fight_time
         self.fight_is_not_over = True
-        # these attributes will replace global STANDUP & TIMER   ########################################to be implemented soon ####################################
         self.standup = True
         self.timer = 0         
         
@@ -102,10 +113,9 @@ class Match:
  
     def start_fight(self):
         self.about_a_fight()
-        global TIMER
         while self.fight_is_not_over:
             self.start_round()
-            if self.fight_time < TIMER: 
+            if self.fight_time < self.timer: 
                 self.fight_is_not_over=False
             self.end_round()
         self.end_match()
@@ -122,26 +132,31 @@ class Match:
         self.prompt_fight_info("END OF THE FIGHT")
     
     def start_round(self):
-        global TIMER
-        TIMER += 1
+        self.moveTimer()
         self.check_if_standup_or_ground_changed()
+        # we need to implement ENERGY COST of attacs, fatique, add more RESTRICTIONS, hidden skill ; 
         action = self.get_skill_to_use_in_attack()
-        # we need to implement --> FATIGUE; energy cost of attacs,
-        # and borderline cases: empty action, 
-        #no energy for cards (this one can go in <get_skill_to_use_in_attack>) etc
-        self.use_skill(action)
-        self.prompt_fight_info(action.get_result_description(), action=action.name)
-        if action.quantity <2:
-            del action
-        else: action.quantity -= 1
+        if action == None:
+            self.prompt_fight_info(" is doing totally nothing", player=self.active_fullname())
+        elif self.activeplayer.weak and randint(1,3)==3:
+            self.prompt_fight_info(" is taking a big breath", player=self.active_fullname())
+            self.activeplayer.energy += 2
+        else:
+            self.use_skill(action)                                                                  
+            if action.quantity <2:
+                del action
+            else: action.quantity -= 1
     
     #prompt will be passed to RenPy for render
     def prompt_fight_info(self, info, *args, **kwargs):
         p1 = self.active_fullname()
-        if not "action" in kwargs:
-            print(f"{p1}: {info}\n")
-        else: print(f"{p1} <{kwargs['action']}>:\n{info}\n")
-    
+        if "action" in kwargs:
+            print(f"{p1} <{kwargs['action']}>:\n{info}\n")
+        elif "player" in kwargs:
+            print(f"{kwargs['player']} {info}\n") 
+        else:
+            print(f"{info}\n")
+
     def check_if_standup_or_ground_changed(self):
         randomnr = randint(1, 9)
         if randomnr == 9:
@@ -149,11 +164,16 @@ class Match:
             
     def get_skill_to_use_in_attack(self):
         actions = self.get_pool_of_possible_attacks()
-        return(choice(actions))
+        return(None if len(actions)== 0 else choice(actions))
     
     def get_pool_of_possible_attacks(self):
-        #TO BE IMPLEMENTED
-        return(self.activeplayer.skilllist)   
+        not_restricted = []
+        for skill in self.activeplayer.skilllist:
+            if self.standup and "standup" in skill.restriction:
+                not_restricted.append(skill)
+            elif not self.standup and "ground" in skill.restriction:
+                not_restricted.append(skill)
+        return(not_restricted)   
       
     def use_skill(self, action, *args, **kwargs):
         action.use(attacker=self.activeplayer, defender=self.inactiveplayer)
@@ -165,7 +185,7 @@ class Match:
     
     def setStandup(self, value):
         if self.standup==value:
-            pass
+            print(f"error: Standup cannot change from {self.standup} to {value}")
         else:
             self.activeplayer.groundcontrol = False 
             self.inactiveplayer.groundcontrol = False 
@@ -183,9 +203,9 @@ The_Fight = Match(fighter1, fighter2, 12)
 fighter1.currentfight = The_Fight 
 fighter2.currentfight = The_Fight
 The_Fight.start_fight()
-print(The_Fight.standup)
-
-
+print("standup = ", The_Fight.standup)
+print("T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost)
+print("T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost)
 
 ## TEST PURPOSES ONLY  (obsolete):   ##################################################################
 #AA = Fighter(*fighters_template.Saladin_Tuahihi)

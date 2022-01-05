@@ -60,6 +60,11 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Flying_Armbar()
     elif to_map[0] == "Double leg":
         new_object = Sk.Double_Leg()
+    elif to_map[0] == "Universal punch":
+        new_object = Sk.Universal_Punch()
+    elif to_map[0] == "Slam":
+        new_object = Sk.Slam()   
+        
         
     
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")

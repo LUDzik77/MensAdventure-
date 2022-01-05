@@ -2,13 +2,14 @@
 from random import choice, randint
 
 
-
 class Skillcards:
     def get_description(self, key):
         return(self.results[key])
     def use(self, attacker, defender):  
         score = self.roll_attack(attacker, defender)
         maped_score = self.get_attack_result(score)
+        self.result_description = self.results[maped_score]
+        attacker.currentfight.prompt_fight_info(self.get_result_description(), action=self.name)
         self.attack_effect(maped_score, attacker, defender)
         #print(self.get_result_description())  #checking effects <--- for test purposes/ not  4 production
         
@@ -18,10 +19,10 @@ class Skillcards:
         return(str(f"{name.upper()}\nx{quantity} collected ({rarity})\nenergy cost: {cost}"))
       
 class Standupcards(Skillcards):
-    standup = True
+    restriction = ["standup"]
 
 class Groundcards(Skillcards):
-    standup = False
+    restriction = ["ground"]
     
     
 class Jab(Standupcards):
@@ -29,7 +30,6 @@ class Jab(Standupcards):
         self.name = "Jab"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -62,7 +62,6 @@ class Jab(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 1
             defender.got_hurt()
@@ -79,7 +78,6 @@ class Lowkick(Standupcards):
         self.name = "Lowkick"
         self.rarity = "common"
         self.quantity = 1 
-        self.grapplingskill =  False
         self.cost = 1
         self.description = self.description()
         self.results = self.all_results()
@@ -112,7 +110,6 @@ class Lowkick(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 1
             defender.got_tired()
@@ -129,7 +126,6 @@ class Pullguard(Standupcards):
         self.name = "Pull guard"
         self.rarity = "uncommon"
         self.quantity = 1
-        self.grapplingskill = True
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -162,7 +158,6 @@ class Pullguard(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points -= 1
             attacker.currentfight.setStandup(False)
@@ -181,7 +176,6 @@ class Bearhug_Takedown(Standupcards):
         self.name = "Bearhug takedown"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill = True
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -212,7 +206,6 @@ class Bearhug_Takedown(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 2
             attacker.currentfight.setStandup(False)
@@ -234,7 +227,6 @@ class One_Two_Kick_Combo(Standupcards):
         self.name = "1-2-kick combo"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill = False
         self.cost = 3
         self.description = self.description()
         self.results = self.all_results()
@@ -267,8 +259,6 @@ class One_Two_Kick_Combo(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
-        global STANDUP
         if maped_score == "win":
             attacker.points += 2
             defender.got_rocked()
@@ -285,7 +275,6 @@ class Powerjab(Jab):
         self.name = "Power jab"
         self.rarity = "uncommon"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -318,7 +307,6 @@ class Powerjab(Jab):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 1
             defender.got_hurt()
@@ -337,7 +325,6 @@ class Lay_And_Pray(Groundcards):
         self.name = "Lay and pray"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -370,7 +357,6 @@ class Lay_And_Pray(Groundcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.currentfight.moveTimer()
         elif maped_score == "success":
@@ -386,7 +372,6 @@ class Brute_Force_Sweep(Groundcards):
         self.name = "Brute force sweep"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -418,7 +403,6 @@ class Brute_Force_Sweep(Groundcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             if defender.groundcontrol:
                 defender.groundcontrol = False
@@ -439,7 +423,6 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
         self.name = "Illegal move trap"
         self.rarity = "rare"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 1
         self.description = self.description()
         self.results = self.all_results()
@@ -472,7 +455,6 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):   #### test it; 
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.lost = False
         elif maped_score == "success":
@@ -489,7 +471,6 @@ class Lucky_Punch(Standupcards):
         self.name = "Lucky Punch"
         self.rarity = "rare"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 1
         self.description = self.description()
         self.results = self.all_results()
@@ -523,7 +504,6 @@ class Lucky_Punch(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             result = choice(["rocked", "no effect", "tired", "damage","points"])
             if result == "rocked":
@@ -549,7 +529,6 @@ class Granite_Chin(Standupcards):
         self.name = "Granite chin"
         self.rarity = "uncommon"
         self.quantity = 1
-        self.grapplingskill = False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -582,8 +561,6 @@ class Granite_Chin(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
-        global STANDUP
         if maped_score == "win":
             attacker.rocked = False
             attacker.energy += 1
@@ -601,7 +578,6 @@ class Cardio_King(Standupcards):
         self.name = "Cardio king"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill = False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -634,7 +610,6 @@ class Cardio_King(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.energy += 1
             attacker.tired = False
@@ -646,12 +621,12 @@ class Cardio_King(Standupcards):
             pass
 
 
+
 class Swing_For_The_Fences(Standupcards):
     def __init__(self):
         self.name = "Swing for the fences"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill = False
         self.cost = 3
         self.description = self.description()
         self.results = self.all_results()
@@ -690,7 +665,6 @@ class Swing_For_The_Fences(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.got_rocked()
         elif maped_score == "success":
@@ -713,7 +687,6 @@ class Windmill_Style(Standupcards):
         self.name = "Windmill Style"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill = False
         self.cost = 4
         self.description = self.description()
         self.results = self.all_results()
@@ -746,7 +719,6 @@ class Windmill_Style(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.got_hurt()
             attacker.points += 1
@@ -766,7 +738,6 @@ class Slap(Standupcards):
         self.name = "Slap"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -835,7 +806,6 @@ class Highkick(Standupcards):
         self.name = "Highkick"
         self.rarity = "uncommon"
         self.quantity = 1 
-        self.grapplingskill =  False
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -870,7 +840,6 @@ class Highkick(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 2
             defender.got_rocked()
@@ -893,7 +862,6 @@ class Flying_Knee(Standupcards):
         self.name = "Flying knee"
         self.rarity = "rare"
         self.quantity = 1 
-        self.grapplingskill =  False
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -927,7 +895,6 @@ class Flying_Knee(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 1
             defender.got_hurt()
@@ -949,7 +916,6 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
         self.name = "Roar naked choke"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 1
         self.description = self.description()
         self.results = self.all_results()
@@ -982,7 +948,6 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             if attacker.groundcontrol:
                 defender.lost = True
@@ -1004,7 +969,6 @@ class Armbar(Groundcards):
         self.name = "Armbar"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -1038,7 +1002,6 @@ class Armbar(Groundcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             if attacker.groundcontrol:
                 defender.lost = True
@@ -1071,7 +1034,6 @@ class Ground_and_Pound(Groundcards):
         self.name = "Ground and pound"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 3
         self.description = self.description()
         self.results = self.all_results()
@@ -1107,7 +1069,6 @@ class Ground_and_Pound(Groundcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             if attacker.groundcontrol:
                 defender.got_rocked()  
@@ -1131,7 +1092,6 @@ class Dirty_Boxing(Standupcards):
         self.name = "Dirty boxing"
         self.rarity = "uncommon"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -1164,7 +1124,6 @@ class Dirty_Boxing(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.got_hurt()
             attacker.points += 1
@@ -1183,7 +1142,6 @@ class Devastating_Overhand(Standupcards):
         self.name = "Devastating overhand"
         self.rarity = "uncommon"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 1
         self.description = self.description()
         self.results = self.all_results()
@@ -1216,7 +1174,6 @@ class Devastating_Overhand(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.got_rocked()
             attacker.points += 2
@@ -1235,7 +1192,6 @@ class Elbows(Standupcards):
         self.name = "Elbows"
         self.rarity = "rare"
         self.quantity = 1
-        self.grapplingskill =  False
         self.cost = 0
         self.description = self.description()
         self.results = self.all_results()
@@ -1266,7 +1222,6 @@ class Elbows(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.got_hurt()
             defender.got_hurt()
@@ -1283,7 +1238,6 @@ class Flying_Armbar(Standupcards):
         self.name = "Flying armbar"
         self.rarity = "rare"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 2
         self.description = self.description()
         self.results = self.all_results()
@@ -1317,7 +1271,6 @@ class Flying_Armbar(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             defender.lost = True  
         elif maped_score == "success":
@@ -1332,14 +1285,12 @@ class Flying_Armbar(Standupcards):
         elif maped_score == "lose":
             attacker.points -= 2
 
-#Double_Leg   --> get punched if op. muaythai
 
 class Double_Leg(Standupcards):
     def __init__(self):
         self.name = "Double leg"
         self.rarity = "common"
         self.quantity = 1
-        self.grapplingskill =  True
         self.cost = 3
         self.description = self.description()
         self.results = self.all_results()
@@ -1374,7 +1325,6 @@ class Double_Leg(Standupcards):
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
-        self.result_description = self.results[maped_score]
         if maped_score == "win":
             attacker.points += 2
             attacker.currentfight.setStandup(False)
@@ -1390,7 +1340,107 @@ class Double_Leg(Standupcards):
 
 
 
+class Universal_Punch(Standupcards):               # we have to test restrictions 
+    def __init__(self):
+        self.name = "Universal punch"
+        self.restriction = ["standup", "ground"] # only for unusual cards
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: boxing,muay thai\neffects(4 roll):\
+        \n4,3 success: apply DAMAGE, points\
+        \n2 success: points if GROUNDCONTROL\
+        \n0 success: reduce points, lose GROUNDCONTROL, TAKEDOWN\
+        CAN BE USED BOTH IN STANDUP AND ON THE GROUND"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "It connected! Opponent is in real trouble!",
+            "success": "This man can strike from every angle and position... great... but does it really matter? These punches can't hurt a fly.",
+            "defeat" : "Miss and... miss one more time. Next time he should try some standard stuff",
+            "lose"   : "No, no and one more time no. Missed punched, missed opportunity, and now he is trouble."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(4):
+            result.append(attacker.roll_2_stat(attacker.boxing, attacker.muay_thai, defender.boxing, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"4":"win",  "3":"win", "2":"success", "1": "defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.points += 1
+            defender.got_hurt()
+        elif maped_score == "success":
+            if attacker.groundcontrol:
+                attacker.points += 1        
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.currentfight.setStandup(False)
+            attacker.groundcontrol = False
+            attacker.points -= 1
 
+
+class Slam(Groundcards): 
+    def __init__(self):
+        self.name = "Slam"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling, opponent bjj,wrestling\neffects(2rolls):\
+        \n2 success: apply ROCKED,GROUNDCONTROL, op lose GROUNDCONTROL, points*2\
+        \n1 success: opponent lose GROUNDCONTROL\
+        \n0 success: STANDUP"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Whaaaaaaaaaaaaaaaaat a slam!",
+            "success": "He lifts opponent and drops him down.",
+            "defeat" : "",
+            "lose"   : "He lifts opponent who jumps down and fight move to the standup."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_2_stat(attacker.wrestling, attacker.wrestling, defender.wrestling, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.got_rocked()
+            defender.groundcontrol = False
+            attacker.groundcontrol = True
+            attacker.points += 2     
+        elif maped_score == "success":
+            defender.groundcontrol = False
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.currentfight.setStandup(True)
 
 
 

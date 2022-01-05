@@ -9,7 +9,7 @@ def get_fightSkills(skillset_to_pick_from):
 
 # list of skill with weights from which we random pick skillset (6) to fight
 # do we randomize boxing, bjj skills as well?
-Saladin_Tuahihi_skills = [("Jab", 10), ("Illegal move trap", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
+Saladin_Tuahihi_skills = [("Lowkick", 1), ("Devastating overhand", 10), ("Powerjab", 5), ("Bearhug takedown", 10000),\
                                 ("Brute force sweep", 15), ("Roar naked choke",10), ("1-2-kick combo",10)]
 Saladin_Tuahihi =[
 "Saladin", #firstname
