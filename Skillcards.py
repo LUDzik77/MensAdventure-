@@ -8,6 +8,7 @@ class Skillcards:
     def use(self, attacker, defender):  
         score = self.roll_attack(attacker, defender)
         maped_score = self.get_attack_result(score)
+        attacker.update_possible_victory_details(self.win_descriptions(maped_score)) #####################################################WTF  hmmmm ###############
         self.result_description = self.results[maped_score]
         attacker.currentfight.prompt_fight_info(self.get_result_description(), action=self.name)
         self.attack_effect(maped_score, attacker, defender)
@@ -17,12 +18,16 @@ class Skillcards:
         return(self.result_description)
     def get_basedescription(name, rarity, quantity, cost):
         return(str(f"{name.upper()}\nx{quantity} collected ({rarity})\nenergy cost: {cost}"))
-      
+    def win_descriptions(self, maped_score):
+        result = {}
+        return(result.get(maped_score,["N/A", "N/A"]))    
+    
 class Standupcards(Skillcards):
     restriction = ["standup"]
 
 class Groundcards(Skillcards):
     restriction = ["ground"]
+   
     
     
 class Jab(Standupcards):
@@ -51,6 +56,10 @@ class Jab(Standupcards):
             "lose"   : "can't even punch correctly..."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punch"]}
+        return(result.get(maped_score,["N/A", "N/A"]))
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(4):
@@ -71,6 +80,7 @@ class Jab(Standupcards):
             pass
         elif maped_score == "lose":
             attacker.points -= 1
+    
     
 
 class Lowkick(Standupcards):
@@ -98,6 +108,10 @@ class Lowkick(Standupcards):
             "defeat" : "nothing there",
             "lose"   : "pathetic kick..."}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "leg injury"]}
+        return(result.get(maped_score,["N/A", "N/A"]))
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -147,6 +161,10 @@ class Pullguard(Standupcards):
             "lose"   : "he's trying to pull the guard... but opponent refuses to get involved!"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {}
+        return(result.get(maped_score,["N/A", "N/A"]))    
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -171,6 +189,7 @@ class Pullguard(Standupcards):
             attacker.points -= 1
 
 
+
 class Bearhug_Takedown(Standupcards):
     def __init__(self):
         self.name = "Bearhug takedown"
@@ -187,6 +206,7 @@ class Bearhug_Takedown(Standupcards):
         \n2 success: TAKEDOWN, points*2\
         \n0 successes: get DAMAGE or TAKEDOWN with GROUNDCONTROL for opponent, reduce points"
         return(result)
+    
     def all_results(self):
         results ={
             "win"    : "What a beautiful oldschool takedown!",
@@ -194,6 +214,10 @@ class Bearhug_Takedown(Standupcards):
             "defeat" : "No luck with that risky move",
             "lose"   : "He's turning back from the oponent! He got countered!"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"lose":["TKO", "punches"]}
+        return(result.get(maped_score,["N/A", "N/A"]))        
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -248,6 +272,10 @@ class One_Two_Kick_Combo(Standupcards):
             "lose"   : "Nothing landed"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "kicks and punches"]}
+        return(result.get(maped_score,["N/A", "N/A"]))        
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -268,6 +296,7 @@ class One_Two_Kick_Combo(Standupcards):
             pass
         elif maped_score == "lose":
             pass
+
 
 
 class Powerjab(Jab):
@@ -296,6 +325,10 @@ class Powerjab(Jab):
             "lose"   : "This lefthand was visible from a kilometer..."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punch"]}
+        return(result.get(maped_score,["N/A", "N/A"]))        
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -318,6 +351,7 @@ class Powerjab(Jab):
         elif maped_score == "lose":
             if choice(["lostpoints", "no"]) == "lostpoints":
                 attacker.points -= 1
+
 
 ############################################################  to be implemented ---> check GROUNDCONTROL before USE
 class Lay_And_Pray(Groundcards):
@@ -418,7 +452,9 @@ class Brute_Force_Sweep(Groundcards):
             attacker.energy -= 1
 
 
-class Illegal_Move_Trap(Groundcards):           #####  add another check to use this skill after eot "lost" evaluation; test effect
+
+class Illegal_Move_Trap(Groundcards):           #####  add another check to use this skill after eot "lost" evaluation; test effect   
+    # we have to overcome DESCRIBTION ERROR(it overrides the fight result attribute - we need to activate it differently )
     def __init__(self):
         self.name = "Illegal move trap"
         self.rarity = "rare"
@@ -441,7 +477,7 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
             "success": "",
             "defeat" : "",
             "lose"   : "the fight is over and he is still arguing with the refree!"}
-        return(results)
+        return(results)    
     
     def roll_attack(self, attacker, defender):
         result = False
@@ -457,6 +493,7 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
     def attack_effect(self, maped_score, attacker, defender):   #### test it; 
         if maped_score == "win":
             attacker.lost = False
+            attacker.currentfight.matchresult = ["victorytype", "victorymethod"]
         elif maped_score == "success":
             pass
         elif maped_score == "defeat":
@@ -490,6 +527,10 @@ class Lucky_Punch(Standupcards):
             "defeat" : "",
             "lose"   : "No luck you gambler"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "(lucky)punch"]}
+        return(result.get(maped_score,["N/A", "N/A"]))  
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -544,7 +585,7 @@ class Granite_Chin(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "His chin is unbreakable!",
+            "win"    : "His chin is unbreakable! He recovered!",
             "success": "The blows do not impress him at all",
             "defeat" : "",
             "lose"   : ""}
@@ -650,6 +691,14 @@ class Swing_For_The_Fences(Standupcards):
             "lose"   : "He just've got rooocked! What a beating!"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "kicks and punches"],
+                  "success":["TKO", "punches"],
+                  "defeat":["TKO", "punches"],
+                  "lose":["KO", "kicks and punches"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))    
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
@@ -707,6 +756,13 @@ class Windmill_Style(Standupcards):
             "defeat" : "",
             "lose"   : "Oh boy! Few swings and he totally gassed out"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "punches"],
+                  "success":["TKO", "punches"],
+                  "lose":["TKO", "retirement"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))    
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -801,6 +857,7 @@ class Slap(Standupcards):
             attacker.points -= 1
 
 
+
 class Highkick(Standupcards):
     def __init__(self):
         self.name = "Highkick"
@@ -826,6 +883,12 @@ class Highkick(Standupcards):
             "defeat" : "opponent stepped back and dodged the leg.",
             "lose"   : "Oponent laughs, refree as well"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "highkick"],
+                  "success":["TKO", "highkick"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))        
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -883,6 +946,12 @@ class Flying_Knee(Standupcards):
             "lose"   : "Going for a kneee... but opponent is moving out of the way... He's going for a counter and he pins kangaroo down to the mat. "}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "flying knee"],
+                  "success":["Submission", "knee"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"])) 
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
@@ -909,8 +978,9 @@ class Flying_Knee(Standupcards):
             defender.groundcontrol = True
             attacker.points -= 1
             
-################GROUND CARDS:
-            
+
+
+        
 class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restriction###########################
     def __init__(self):
         self.name = "Roar naked choke"
@@ -937,6 +1007,10 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
             "lose"   : "failed to control opponent, does he go for a leg?"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "roar naked choke"]}
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
@@ -950,7 +1024,7 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
             if attacker.groundcontrol:
-                defender.lost = True
+                defender.fightlost()
             else:
                 attacker.points += 1     
         elif maped_score == "success":
@@ -991,6 +1065,13 @@ class Armbar(Groundcards):
             "lose"   : "What a poor technique..."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "armbar"],
+                  "success":["TKO", "punches(GnP)"],
+                  "defeat":["TKO", "punches(GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(3):
@@ -1004,7 +1085,7 @@ class Armbar(Groundcards):
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
             if attacker.groundcontrol:
-                defender.lost = True
+                defender.fightlost()
             else:
                 attacker.points += 1     
         elif maped_score == "success":
@@ -1028,6 +1109,8 @@ class Armbar(Groundcards):
             if effect == "standup": attacker.currentfight.setStandup(True)
             elif effect == "ground": defender.groundcontrol = True
             attacker.points -= 1
+
+
 
 class Ground_and_Pound(Groundcards): 
     def __init__(self):
@@ -1055,6 +1138,12 @@ class Ground_and_Pound(Groundcards):
             "defeat" : "few insignificant punches, most of them blocked",
             "lose"   : "It is why you do not play on the ground with bjj shark..."}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punches(GnP)"],
+                  "success":["TKO", "punches(GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))  
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -1113,6 +1202,13 @@ class Dirty_Boxing(Standupcards):
             "lose"   : "he eats punches more then he throws"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punches(clinch)"],
+                  "success":["TKO", "punches(clinch)"],
+                  "lose": ["TKO", "punches(clinch)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))      
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -1161,6 +1257,13 @@ class Devastating_Overhand(Standupcards):
             "defeat" : "",
             "lose"   : "Haymaker got countered by opponent"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "punch(overhand right)"],
+                  "success":["TKO", "punch(overhand right)"],
+                  "lose": ["TKO", "punch"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))      
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -1211,6 +1314,10 @@ class Elbows(Standupcards):
             "lose"   : "He won't achieve much with that questionable elbows"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "elbows"]}
+        return(result.get(maped_score,["N/A", "N/A"]))   
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -1232,6 +1339,8 @@ class Elbows(Standupcards):
             pass
         elif maped_score == "lose":
             pass  
+        
+        
         
 class Flying_Armbar(Standupcards):
     def __init__(self):
@@ -1260,6 +1369,10 @@ class Flying_Armbar(Standupcards):
             "lose"   : "I don't know what he was trying to achieve, but I cannot stop laughing"}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "flying armbar"]}
+        return(result.get(maped_score,["N/A", "N/A"]))       
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(3):
@@ -1272,7 +1385,7 @@ class Flying_Armbar(Standupcards):
         
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
-            defender.lost = True  
+            defender.fightlost()  
         elif maped_score == "success":
             attacker.points += 1
             attacker.currentfight.setStandup(False)
@@ -1311,6 +1424,10 @@ class Double_Leg(Standupcards):
             "defeat" : "He ducks under opponent... timed sprawl and he's pushed back",
             "lose"   : "He tried double leg and was countered!"}
         return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"lose": ["TKO", "knee"]}
+        return(result.get(maped_score,["N/A", "N/A"]))       
     
     def roll_attack(self, attacker, defender):
         result = []
@@ -1368,6 +1485,10 @@ class Universal_Punch(Standupcards):               # we have to test restriction
             "lose"   : "No, no and one more time no. Missed punched, missed opportunity, and now he is trouble."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punch"]}
+        return(result.get(maped_score,["N/A", "N/A"]))       
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(4):
@@ -1419,6 +1540,10 @@ class Slam(Groundcards):
             "lose"   : "He lifts opponent who jumps down and fight move to the standup."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "slam"]}
+        return(result.get(maped_score,["N/A", "N/A"]))   
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -1443,6 +1568,55 @@ class Slam(Groundcards):
             attacker.currentfight.setStandup(True)
 
 
+
+class Single_Leg(Standupcards):
+    def __init__(self):
+        self.name = "Double leg"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: wrestling\neffects(3 roll):\
+        \n3 or 2 success: TAKEDOWN, points\
+        \n0 success: reduce points"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Perfectly executed single leg takedown lands into the halfguard. Please give him round of applause.",
+            "success": "He catches the leg... and takes the fight to the mat.",
+            "defeat" : "He catches the leg... but the opponent breaks the grip.",
+            "lose"   : "He dives for the leg and he fails misarably."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.points += 1
+            attacker.currentfight.setStandup(False)
+        elif maped_score == "success":
+            attacker.points += 1
+            attacker.currentfight.setStandup(False)        
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.points -= 1
 
  
 ############################################################### here I can get all the Skillcards name :)

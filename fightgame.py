@@ -29,6 +29,7 @@ class Fighter:
         self.groundcontrol = False  
         self.skilllist = skilllist # quantity for a skills is generated as an attribute "quantity"
         self.points = 0 #  to get the result at the end of the fight
+        self.victoryinfo_if_win = ["victorytype", "victorymethod"] 
         
     def got_rocked(self):
         if self.rocked == False:
@@ -83,9 +84,11 @@ class Fighter:
             result = True if randint(0, 9)>4 else False
         return(result)
     
-    def describe_action(self):
-        pass
-
+    def fightlost(self):  #used mostly with submissions
+        self.lost = True
+        
+    def update_possible_victory_details(self, fighterfullname, victorytype, victorymethod):
+        self.victoryinfo_if_win = [fighterfullname, victorytype, victorymethod]
 
 
 class Match:
@@ -97,7 +100,11 @@ class Match:
         self.fight_time = fight_time
         self.fight_is_not_over = True
         self.standup = True
-        self.timer = 0         
+        self.timer = 0
+        self.matchresult= ["victorytype", "victorymethod"] 
+        # IDEA 1.we fill it when one fighter get  flag "lost" 
+        # then checks for DQ card etc
+        # then final result (or reset of selt.matchresult) 
         
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
