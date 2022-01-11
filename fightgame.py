@@ -87,8 +87,8 @@ class Fighter:
     def fightlost(self):  #used mostly with submissions
         self.lost = True
         
-    def update_possible_victory_details(self, fighterfullname, victorytype, victorymethod):
-        self.victoryinfo_if_win = [fighterfullname, victorytype, victorymethod]
+    def update_possible_victory_details(self, victorytype, victorymethod):
+        self.victoryinfo_if_win = [victorytype, victorymethod]
 
 
 class Match:
@@ -101,7 +101,8 @@ class Match:
         self.fight_is_not_over = True
         self.standup = True
         self.timer = 0
-        self.matchresult= ["victorytype", "victorymethod"] 
+        self.matchresult= ["victorytype", "victorymethod"]
+        self.winner = ""
         # IDEA 1.we fill it when one fighter get  flag "lost" 
         # then checks for DQ card etc
         # then final result (or reset of selt.matchresult) 
@@ -124,6 +125,7 @@ class Match:
             self.start_round()
             if self.fight_time < self.timer: 
                 self.fight_is_not_over=False
+            self.check_if_match_ended()
             self.end_round()
         self.end_match()
     
@@ -134,9 +136,36 @@ class Match:
         else: 
             self.activeplayer = self.fighter1
             self.inactiveplayer = self.fighter2
-        
+            
+    def check_if_match_ended(self):
+        #here additional check for that DQ card  nooo :/
+        if sum([fighter1.lost,fighter2.lost]) == 1: 
+            self.nondecision_victory()
+    
     def end_match(self):
+        self.decision_victory()                                                ############################## temporary solution
         self.prompt_fight_info("END OF THE FIGHT")
+        self.prompt_fight_info(f"{self.winner.fullname if self.winner is not None else 'No victor'}{self.matchresult}")
+        
+    def decision_victory(self):                                                #################################### test it please
+        if self.fighter1.points > self.fighter2.points: self.winner = self.fighter1
+        elif self.fighter2.points > self.fighter1.points: self.winner = self.fighter2
+        else: self.winner = None         
+        
+        if abs(sum([self.fighter1.points, self.fighter2.points])) == 0:
+            victorymethod = choice(["Unanimous", "Split", "Majority"])
+            self.matchresult =  ["Draw", victorymethod]
+        elif abs(sum([self.fighter1.points, self.fighter2.points])) == 1:
+            victorymethod = choice(["Split", "Split", "Majority"])
+            self.matchresult =  ["Decision", victorymethod]
+        else:
+            self.matchresult =  ["Decision", "Unanimous"]
+
+    
+    def nondecision_victory(self):
+        # .victoryinfo_if_win
+        #["victorytype", "victorymethod"]        
+        pass
     
     def start_round(self):
         self.moveTimer()
@@ -245,5 +274,3 @@ print("T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost)
 
 
 #hidden skill --> to be implemented
-
-#time to be implemented

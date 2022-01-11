@@ -8,7 +8,7 @@ class Skillcards:
     def use(self, attacker, defender):  
         score = self.roll_attack(attacker, defender)
         maped_score = self.get_attack_result(score)
-        attacker.update_possible_victory_details(self.win_descriptions(maped_score)) #####################################################WTF  hmmmm ###############
+        attacker.update_possible_victory_details(*self.win_descriptions(maped_score)) 
         self.result_description = self.results[maped_score]
         attacker.currentfight.prompt_fight_info(self.get_result_description(), action=self.name)
         self.attack_effect(maped_score, attacker, defender)
@@ -1263,6 +1263,7 @@ class Devastating_Overhand(Standupcards):
                   "success":["TKO", "punch(overhand right)"],
                   "lose": ["TKO", "punch"]
                   }
+        print(result.get(maped_score,["N/A", "N/A"]))
         return(result.get(maped_score,["N/A", "N/A"]))      
     
     def roll_attack(self, attacker, defender):
