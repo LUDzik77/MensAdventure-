@@ -1263,7 +1263,6 @@ class Devastating_Overhand(Standupcards):
                   "success":["TKO", "punch(overhand right)"],
                   "lose": ["TKO", "punch"]
                   }
-        print(result.get(maped_score,["N/A", "N/A"]))
         return(result.get(maped_score,["N/A", "N/A"]))      
     
     def roll_attack(self, attacker, defender):
@@ -1572,7 +1571,7 @@ class Slam(Groundcards):
 
 class Single_Leg(Standupcards):
     def __init__(self):
-        self.name = "Double leg"
+        self.name = "Single leg"
         self.rarity = "uncommon"
         self.quantity = 1
         self.cost = 2
@@ -1597,10 +1596,8 @@ class Single_Leg(Standupcards):
     
     def roll_attack(self, attacker, defender):
         result = []
-        for _ in range(1):
-            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+        for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
-            result.append(attacker.roll_1_stat(attacker.wrestling, defender.muay_thai))
         return(str(sum(result )))
     
     def get_attack_result(self, score):
@@ -1619,7 +1616,53 @@ class Single_Leg(Standupcards):
         elif maped_score == "lose":
             attacker.points -= 1
 
- 
+
+
+class Trip_Kick(Standupcards):
+    def __init__(self):
+        self.name = "Trip kick"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: muay thai\neffects(1 roll):\
+        \n1 success: TAKEDOWN"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Kick to the leg, opponents trips and fights goes to the ground",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "Kick and miss"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.currentfight.setStandup(False)
+        elif maped_score == "success":
+            pass 
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+            
+            
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -1639,7 +1682,7 @@ class Single_Leg(Standupcards):
 #knee_from_clinch
 #superman punch
 
-#One_leg_takedown
+
 #suplex
 #Kata-guruma
 #Sweep_trip_throw

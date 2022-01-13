@@ -123,36 +123,38 @@ class Match:
         self.about_a_fight()
         while self.fight_is_not_over:
             self.start_round()
-            if self.fight_time < self.timer: 
-                self.fight_is_not_over=False
-            self.check_if_match_ended()
+            self.check_if_match_ended_early()
+            if self.fight_time < self.timer:
+                self.decision_victory()
+                self.fight_is_not_over=False     
             self.end_round()
-        self.end_match()
     
     def end_round(self):
         if self.activeplayer == self.fighter1: 
             self.activeplayer = self.fighter2
-            self.inactiveplayer =self.fighter1
+            self.inactiveplayer = self.fighter1
         else: 
             self.activeplayer = self.fighter1
             self.inactiveplayer = self.fighter2
-            
-    def check_if_match_ended(self):
+
+    def check_if_match_ended_early(self):
         #here additional check for that DQ card  nooo :/
         if sum([fighter1.lost,fighter2.lost]) == 1: 
             self.nondecision_victory()
     
-    def end_match(self):
-        self.decision_victory()                                                ############################## temporary solution
+    def end_match(self):                                            
         self.prompt_fight_info("END OF THE FIGHT")
         self.prompt_fight_info(f"{self.winner.fullname if self.winner is not None else 'No victor'}{self.matchresult}")
+        self.fight_is_not_over = False
         
-    def decision_victory(self):                                                #################################### test it please
+    def get_victor(self):
         if self.fighter1.points > self.fighter2.points: self.winner = self.fighter1
         elif self.fighter2.points > self.fighter1.points: self.winner = self.fighter2
         else: self.winner = None         
         
-        if abs(sum([self.fighter1.points, self.fighter2.points])) == 0:
+    def decision_victory(self):                                                #################################### test it please
+        self.get_victor()
+        if abs(sum([self.fighter1.points, self.fighter2.points])) == 0:       ############################ it does not count correctly!!!!!
             victorymethod = choice(["Unanimous", "Split", "Majority"])
             self.matchresult =  ["Draw", victorymethod]
         elif abs(sum([self.fighter1.points, self.fighter2.points])) == 1:
@@ -160,12 +162,12 @@ class Match:
             self.matchresult =  ["Decision", victorymethod]
         else:
             self.matchresult =  ["Decision", "Unanimous"]
+        self.end_match()
 
-    
     def nondecision_victory(self):
-        # .victoryinfo_if_win
-        #["victorytype", "victorymethod"]        
-        pass
+        self.get_victor()
+        self.matchresult = self.activeplayer.victoryinfo_if_win
+        self.end_match()
     
     def start_round(self):
         self.moveTimer()
