@@ -152,12 +152,13 @@ class Match:
         elif self.fighter2.points > self.fighter1.points: self.winner = self.fighter2
         else: self.winner = None         
         
-    def decision_victory(self):                                                #################################### test it please
+    def decision_victory(self):
         self.get_victor()
-        if abs(sum([self.fighter1.points, self.fighter2.points])) == 0:       ############################ it does not count correctly!!!!!
+        if self.fighter1.points-self.fighter2.points==0:
             victorymethod = choice(["Unanimous", "Split", "Majority"])
-            self.matchresult =  ["Draw", victorymethod]
-        elif abs(sum([self.fighter1.points, self.fighter2.points])) == 1:
+            self.matchresult =  ["Draw", victorymethod]       
+        elif self.fighter1.points+1 == self.fighter2.points or \
+             self.fighter2.points+1 == self.fighter1.points:
             victorymethod = choice(["Split", "Split", "Majority"])
             self.matchresult =  ["Decision", victorymethod]
         else:
@@ -204,13 +205,28 @@ class Match:
         actions = self.get_pool_of_possible_attacks()
         return(None if len(actions)== 0 else choice(actions))
     
-    def get_pool_of_possible_attacks(self):
+    def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CONDE WITH DOMINIK<?>
         not_restricted = []
         for skill in self.activeplayer.skilllist:
             if self.standup and "standup" in skill.restriction:
                 not_restricted.append(skill)
             elif not self.standup and "ground" in skill.restriction:
                 not_restricted.append(skill)
+        #for skill in not_restricted:
+            #if self.activeplayer.groundcontrol and "ONLYgroundcontrol" in skill.restriction:
+        not_restricted = [skill for skill in not_restricted 
+                          if self.activeplayer.groundcontrol and "groundcontrol" in skill.restriction]            ################# test it !
+        not_restricted = [skill for skill in not_restricted 
+                          if self.inactiveplayer.groundcontrol and "OP_groundcontrol" in skill.restriction]
+        not_restricted = [skill for skill in not_restricted 
+                          if self.inactiveplayer.groundcontrol==False and "OP_NO_groundcontrol" in skill.restriction]
+        not_restricted = [skill for skill in not_restricted 
+                          if self.activeplayer.groundcontrol==False and "NO_groundcontrol" in skill.restriction]
+        not_restricted = [skill for skill in not_restricted 
+                          if self.activeplayer.weak and "tired" in skill.restriction]
+        not_restricted = [skill for skill in not_restricted 
+                          if self.activeplayer.rocked and "rocked" in skill.restriction]          
+                
         return(not_restricted)   
       
     def use_skill(self, action, *args, **kwargs):
@@ -242,8 +258,8 @@ fighter1.currentfight = The_Fight
 fighter2.currentfight = The_Fight
 The_Fight.start_fight()
 print("standup = ", The_Fight.standup)
-print("T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost)
-print("T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost)
+print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
+print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
 
 ## TEST PURPOSES ONLY  (obsolete):   ##################################################################
 #AA = Fighter(*fighters_template.Saladin_Tuahihi)

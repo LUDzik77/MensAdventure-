@@ -517,7 +517,7 @@ class Lucky_Punch(Standupcards):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
         \ntests: RANDOM roll vs opponent box or mt\neffects(1 roll):\
         \n1 success: apply at random: (no effect, points, TIRED, DAMAGE, ROCKED)\
-        \nchance for TAKEDOWN (15%)"
+        \nchance for TAKEDOWN (~15%)"
         return(result)
     
     def all_results(self):
