@@ -68,8 +68,16 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Single_Leg()
     elif to_map[0] == "Trip kick":
         new_object = Sk.Trip_Kick()
+    elif to_map[0] == "Technical stand up":
+        new_object = Sk.Technical_Stand_Up()
+    elif to_map[0] == "Front kick":
+        new_object = Sk.Front_Kick()    
+    elif to_map[0] == "Triangle choke":
+        new_object = Sk.Triangle_Choke()         
         
     
+        
+         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
     return(new_object)   

@@ -9,8 +9,8 @@ def get_fightSkills(skillset_to_pick_from):
 
 # list of skill with weights from which we random pick skillset (6) to fight
 # do we randomize boxing, bjj skills as well?
-Saladin_Tuahihi_skills = [("Lowkick", 1), ("Devastating overhand", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
-                                ("Brute force sweep", 1), ("Roar naked choke",10), ("1-2-kick combo",10), ("Jab",1), ("Devastating overhand",100000)]
+Saladin_Tuahihi_skills = [("Lowkick", 1), ("Devastating overhand", 1), ("Powerjab", 5), ("Bearhug takedown", 30), ("Lay and pray", 100),\
+                                ("Brute force sweep", 1), ("Roar naked choke",10), ("1-2-kick combo",1), ("Jab",1), ("Devastating overhand",1)]
 Saladin_Tuahihi =[
 "Saladin", #firstname
 "Tuahihi", #lastname
@@ -28,7 +28,7 @@ Sk_create.map_to_objects(get_fightSkills(Saladin_Tuahihi_skills))
     #print(skill.name, skill.quantity)
 
 
-test_skills = [("Jab", 10), ("Illegal move trap", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
+test_skills = [("Highkick", 1000), ("Jab", 10), ("Illegal move trap", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
                             ("Brute force sweep", 15), ("Roar naked choke",10), ("1-2-kick combo",10)]
 Mr_test =[
 "Mr Test", #firstname
@@ -42,6 +42,7 @@ Mr_test =[
 Sk_create.map_to_objects(get_fightSkills(test_skills))
 ]
 
+#[print(x.name) for x in Mr_test[8]]
 
 
 

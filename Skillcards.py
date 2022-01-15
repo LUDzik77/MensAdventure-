@@ -363,6 +363,7 @@ class Lay_And_Pray(Groundcards):
         self.description = self.description()
         self.results = self.all_results()
         self.result_description = ""
+        restriction = ["ground", "OP_NO_groundcontrol"]
         
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
@@ -1460,7 +1461,7 @@ class Double_Leg(Standupcards):
 class Universal_Punch(Standupcards):               # we have to test restrictions 
     def __init__(self):
         self.name = "Universal punch"
-        self.restriction = ["standup", "ground"] # only for unusual cards
+        self.restriction = []  # only for unusual cards
         self.rarity = "rare"
         self.quantity = 1
         self.cost = 1
@@ -1662,6 +1663,192 @@ class Trip_Kick(Standupcards):
         elif maped_score == "lose":
             pass
             
+
+
+class Technical_Stand_Up(Groundcards): 
+    def __init__(self):
+        self.name = "Technical stand up"
+        self.rarity = "common"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "OP_NO_groundcontrol"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, opponent wrestling, boxing\neffects(2roll):\
+        \n2 success: STANDUP\
+        \n1 success: STANDUP if GROUNDCONTROL otherwise STANDUP(25% chance)\
+        \n0 success: suffer DAMAGE, reduce points\
+        CANNOT WORK IF OPPONENT HAS GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Technical stand up like one from the bjj manual",
+            "success": "He is lifting his hips, he'll get back on feet, won't he?",
+            "defeat" : "",
+            "lose"   : "He tried to stand up but was countered"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"lose":["TKO", "punches(GnP)"]}
+        return(result.get(maped_score,["N/A", "N/A"]))  
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.boxing))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.currentfight.setStandup(True)    
+        elif maped_score == "success":
+            if attacker.groundcontrol:
+                attacker.currentfight.setStandup(True)
+            else: 
+                if choice(["standup", "no", "no", "no"]) == "standup":
+                    attacker.currentfight.setStandup(True)
+        elif maped_score == "defeat":
+            pass 
+        elif maped_score == "lose":
+            attacker.got_hurt()
+            attacker.points -= 1
+  
+  
+
+class Front_Kick(Standupcards):
+    def __init__(self):
+        self.name = "Front kick"
+        self.rarity = "uncommon"
+        self.quantity = 2
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: muay thai\neffects(2 roll):\
+        \n2 success: apply DAMAGE, points\
+        \n1 success: TIMELAPSE\
+        \n<skillcard designed by Kamil J>"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "The suprise kick causes some damage!",
+            "success": "The opponent is pushed back",
+            "defeat" : "",
+            "lose"   : "The foot swings in the air..."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win", "1":"success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.points += 1
+            defender.got_hurt()
+        elif maped_score == "success":
+            attacker.currentfight.moveTimer()  
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+
+
+
+class Triangle_Choke(Groundcards):  
+    def __init__(self):
+        self.name = "Triangle choke"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "groundcontrol"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, opponent bjj\neffects(2roll):\
+        \n2 success: WIN the fight\
+        \n1 success: apply DAMAGE, points\
+        \n0 success: lose GROUNDCONTROL, reduce points, 50% for TIMELAPSE\
+        \nCAN BE PLAYED ONLY IF YOU HAVE GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He catches the opponent in the perfect triangle. It's all over!",
+            "success": "He has opponent in a triangle. Can he finish it?",
+            "defeat" : "",
+            "lose"   : "He tried something but the Opponent easily passed the legs."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        desc_success  = choice([["Submission", "Triangle"], \
+                                ["Submission", "armlock from triangle"], ["TKO", "punches from triangle"]])
+        result = {"win":["Submission", "Triangle"],
+                  "success": desc_success
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win", "1": "success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.fightlost()
+            attacker.points += 1
+        elif maped_score == "success":
+            defender.got_hurt()
+            attacker.points += 1
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.lose_groundcontrol()
+            defender.points += 1
+            if randint("timelapse", "no") == "timelapse":             
+                attacker.currentfight.moveTimer() 
+
+ 
+"""
+            Mr Test Tester <Roar naked choke>:
+            He's applying RNC... will it be over?
+            
+            END OF THE FIGHT
+            
+            No victor['Submission', 'roar naked choke']
+            
+            standup =  False
+            Saladin T: False R: False L: True points: 1
+            Mr Test T: False R: False L: False points: 1  
+"""
+  
             
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
@@ -1682,23 +1869,18 @@ class Trip_Kick(Standupcards):
 #knee_from_clinch
 #superman punch
 
-
 #suplex
 #Kata-guruma
 #Sweep_trip_throw
 #throw directly to the groundcontrol
 
-#universal punch --> both standup and ground
-
 #mount position --> groundcontrol/punch
-#slam
 #guilotine --> tired you/him/ submission
 #heel hook
 #triangle
 #Escape!
-#GnP
 #cheap shots --> points on the ground
 #vicous hammerfist
 #drunkenjitsu --> ground action better when tired
-#escape to standup
+#escape to standup --> one more --> nurek
 #reverse?

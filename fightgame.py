@@ -64,6 +64,12 @@ class Fighter:
         else: 
             self.groundcontrol = True
             self.currentfight.prompt_fight_info(" has a groundcontrol now!", player=self.fullname)
+            
+    def lose_groundcontrol(self):
+        if self.groundcontrol == False: pass
+        else: 
+            self.groundcontrol = False
+            self.currentfight.prompt_fight_info(" lose groundcontrol", player=self.fullname)    
         
     def roll_1_stat(self, own_stat, op_stat):
         roll_your = randint(0, own_stat)
@@ -206,27 +212,40 @@ class Match:
         return(None if len(actions)== 0 else choice(actions))
     
     def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CONDE WITH DOMINIK<?>
+        #not_restricted = []
+        #for skill in self.activeplayer.skilllist:
+            #if self.standup and "standup" in skill.restriction:
+                #not_restricted.append(skill)
+            #elif not self.standup and "ground" in skill.restriction:
+                #not_restricted.append(skill)
+        ##for skill in not_restricted:
+            ##if self.activeplayer.groundcontrol and "ONLYgroundcontrol" in skill.restriction:
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.activeplayer.groundcontrol and "groundcontrol" in skill.restriction]            ################# test it !
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.inactiveplayer.groundcontrol and "OP_groundcontrol" in skill.restriction]
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.inactiveplayer.groundcontrol==False and "OP_NO_groundcontrol" in skill.restriction]
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.activeplayer.groundcontrol==False and "NO_groundcontrol" in skill.restriction]
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.activeplayer.weak and "tired" in skill.restriction]
+        #not_restricted = [skill for skill in not_restricted 
+                          #if self.activeplayer.rocked and "rocked" in skill.restriction]
         not_restricted = []
         for skill in self.activeplayer.skilllist:
-            if self.standup and "standup" in skill.restriction:
+            skill_allowed = True
+            for restriction in skill.restriction:
+                if restriction == "standup" and self.standup==False: skill_allowed=False
+                elif restriction == "ground" and self.standup: skill_allowed=False
+                elif restriction == "groundcontrol" and self.activeplayer.groundcontrol==False: skill_allowed=False
+                elif restriction == "OP_groundcontrol" and self.inactiveplayer.groundcontrol==False: skill_allowed=False
+                elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
+                elif restriction == "OP_NO_groundcontrol" and self.inactiveplayer.groundcontrol: skill_allowed=False
+                if restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
+                #else: print(f"Unknown skillcard  restriction {restriction} for {skill}")
+            if skill_allowed:
                 not_restricted.append(skill)
-            elif not self.standup and "ground" in skill.restriction:
-                not_restricted.append(skill)
-        #for skill in not_restricted:
-            #if self.activeplayer.groundcontrol and "ONLYgroundcontrol" in skill.restriction:
-        not_restricted = [skill for skill in not_restricted 
-                          if self.activeplayer.groundcontrol and "groundcontrol" in skill.restriction]            ################# test it !
-        not_restricted = [skill for skill in not_restricted 
-                          if self.inactiveplayer.groundcontrol and "OP_groundcontrol" in skill.restriction]
-        not_restricted = [skill for skill in not_restricted 
-                          if self.inactiveplayer.groundcontrol==False and "OP_NO_groundcontrol" in skill.restriction]
-        not_restricted = [skill for skill in not_restricted 
-                          if self.activeplayer.groundcontrol==False and "NO_groundcontrol" in skill.restriction]
-        not_restricted = [skill for skill in not_restricted 
-                          if self.activeplayer.weak and "tired" in skill.restriction]
-        not_restricted = [skill for skill in not_restricted 
-                          if self.activeplayer.rocked and "rocked" in skill.restriction]          
-                
         return(not_restricted)   
       
     def use_skill(self, action, *args, **kwargs):
