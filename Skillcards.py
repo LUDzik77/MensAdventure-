@@ -1751,6 +1751,10 @@ class Front_Kick(Standupcards):
             "lose"   : "The foot swings in the air..."}
         return(results)
     
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "Kick"]}
+        return(result.get(maped_score,["N/A", "N/A"])) 
+    
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
@@ -1835,6 +1839,71 @@ class Triangle_Choke(Groundcards):
             if randint("timelapse", "no") == "timelapse":             
                 attacker.currentfight.moveTimer() 
 
+ 
+class Leglock_Scramble(Groundcards):  
+    def __init__(self):
+        self.name = "Leglock scramble"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: bjj(3),wrestling(1)\neffects(4roll):\
+        \n4,3 success: points, WIN if GROUNDCONTROl else GROUNDCONTROL\
+        \n2 success: apply GROUNDCONTROL\
+        \n1 success: reduce points\
+        \n0 success: reduce points LOSE if op GROUNDCONTROL else op GROUNDCONTROL\
+        \nCAN BE PLAYED ONLY IF YOU HAVE GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "The opponents leg is trapped!",
+            "success": "He fakes a submission attempt and takes the dominant position.",
+            "defeat" : "It looks like he is outgrappled by the opponent.",
+            "lose"   : "The opponent wins the scramble on the ground and even threatens with a submission!"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        desc_win = choice([["Submission", "Leglock"], \
+                                ["Submission", "Kneebar"], ["Submission", "Heel hook"]])
+        result = {"win":desc_win,
+                  "lose": desc_win
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"4":"win", "3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            if attacker.groundcontrol: defender.fightlost()
+            else: attacker.get_groundcontrol()
+            attacker.points += 1
+        elif maped_score == "success":
+            attacker.get_groundcontrol()
+        elif maped_score == "defeat":
+            attacker.points -= 1
+        elif maped_score == "lose":
+            attacker.points -= 1
+            if defender.groundcontrol: attacker.fightlost()
+            else: defender.get_groundcontrol()            
+ 
+ 
  
 """
             Mr Test Tester <Roar naked choke>:

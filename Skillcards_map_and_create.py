@@ -73,11 +73,11 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "Front kick":
         new_object = Sk.Front_Kick()    
     elif to_map[0] == "Triangle choke":
-        new_object = Sk.Triangle_Choke()         
+        new_object = Sk.Triangle_Choke() 
+    elif to_map[0] == "Leglock scramble":
+        new_object = Sk.Leglock_Scramble()      
         
-    
         
-         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]
     return(new_object)   

@@ -59,7 +59,7 @@ class Fighter:
         elif roll_a_die == 4:
             self.got_rocked()
             
-    def gets_groundcontrol(self):
+    def get_groundcontrol(self):
         if self.groundcontrol == True: pass
         else: 
             self.groundcontrol = True
