@@ -182,7 +182,7 @@ class Pullguard(Standupcards):
         elif maped_score == "success":
             attacker.points -= 1
             attacker.currentfight.setStandup(False)
-            defender.groundcontrol = True
+            defender.get_groundcontrol() 
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
@@ -241,7 +241,7 @@ class Bearhug_Takedown(Standupcards):
             attacker.points -= 1
             if choice(["boom", "ground"]) == "ground":
                 attacker.currentfight.setStandup(False)
-                defender.groundcontrol = True         
+                defender.get_groundcontrol()        
             else: attacker.got_hurt()
         
         
@@ -353,7 +353,6 @@ class Powerjab(Jab):
                 attacker.points -= 1
 
 
-############################################################  to be implemented ---> check GROUNDCONTROL before USE
 class Lay_And_Pray(Groundcards):
     def __init__(self):
         self.name = "Lay and pray"
@@ -415,7 +414,7 @@ class Brute_Force_Sweep(Groundcards):
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
         \ntests: your bjj, opponent bjj\neffects(1roll):\
-        \n1 success: release opponent GROUNDCONTROL or get GROUNDCONTROL\
+        \n1 success: release opponent GROUNDCONTROL or get GROUNDCONTROL or points\
         \n0 success: additional energy cost(1)"
         return(result)
     
@@ -440,11 +439,11 @@ class Brute_Force_Sweep(Groundcards):
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
             if defender.groundcontrol:
-                defender.groundcontrol = False
+                defender.lose_groundcontrol() 
             elif attacker.groundcontrol:
                 attacker.points += 1
             else:
-                attacker.groundcontrol = True      
+                attacker.get_groundcontrol()       
         elif maped_score == "success":
             pass
         elif maped_score == "defeat":
@@ -926,7 +925,7 @@ class Flying_Knee(Standupcards):
         self.name = "Flying knee"
         self.rarity = "rare"
         self.quantity = 1 
-        self.cost = 2
+        self.cost = 3
         self.description = self.description()
         self.results = self.all_results()
         self.result_description = ""
@@ -976,7 +975,7 @@ class Flying_Knee(Standupcards):
             pass
         elif maped_score == "lose":
             attacker.currentfight.setStandup(False)
-            defender.groundcontrol = True
+            defender.get_groundcontrol() 
             attacker.points -= 1
             
 
@@ -1034,7 +1033,7 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
             pass
         elif maped_score == "lose":
             if randint(1, 4) == 1:             
-                attacker.groundcontrol = False
+                attacker.lose_groundcontrol() 
             if randint(1, 4) == 1:
                 attacker.currentfight.moveTimer()
 
@@ -1100,15 +1099,15 @@ class Armbar(Groundcards):
         elif maped_score == "defeat":
             effect = choice(["dmg", "loseground", "oground", "rpoints", "standup"])
             if effect == "dmg": attacker.got_hurt()
-            elif effect == "loseground": attacker.groundcontrol = False
-            elif effect == "oground": defender.groundcontrol = True
+            elif effect == "loseground": attacker.lose_groundcontrol() 
+            elif effect == "oground": defender.get_groundcontrol() 
             elif effect == "rpoints": attacker.points -= 1
             elif effect == "standup": attacker.currentfight.setStandup(True)
         elif maped_score == "lose":
             attacker.groundcontrol = False
             effect = choice(["standup", "ground"])
             if effect == "standup": attacker.currentfight.setStandup(True)
-            elif effect == "ground": defender.groundcontrol = True
+            elif effect == "ground": defender.get_groundcontrol() 
             attacker.points -= 1
 
 
@@ -1171,8 +1170,8 @@ class Ground_and_Pound(Groundcards):
         elif maped_score == "defeat":
             attacker.currentfight.moveTimer()  
         elif maped_score == "lose":
-            attacker.groundcontrol = False
-            defender.groundcontrol = True
+            attacker.lose_groundcontrol() 
+            defender.get_groundcontrol() 
             attacker.points -= 1
 
 
@@ -1391,11 +1390,11 @@ class Flying_Armbar(Standupcards):
             attacker.points += 1
             attacker.currentfight.setStandup(False)
             if choice(["lostposition", "no"]) == "lostposition":
-                defender.groundcontrol = True           
+                defender.get_groundcontrol()           
         elif maped_score == "defeat":
             attacker.points -= 1
             attacker.currentfight.setStandup(False)
-            defender.groundcontrol = True 
+            defender.get_groundcontrol() 
         elif maped_score == "lose":
             attacker.points -= 2
 
@@ -1446,7 +1445,7 @@ class Double_Leg(Standupcards):
         if maped_score == "win":
             attacker.points += 2
             attacker.currentfight.setStandup(False)
-            attacker.groundcontrol = True 
+            attacker.get_groundcontrol() 
         elif maped_score == "success":
             attacker.points += 1
             attacker.currentfight.setStandup(False)         
@@ -1511,7 +1510,7 @@ class Universal_Punch(Standupcards):               # we have to test restriction
             pass
         elif maped_score == "lose":
             attacker.currentfight.setStandup(False)
-            attacker.groundcontrol = False
+            attacker.lose_groundcontrol() 
             attacker.points -= 1
 
 
@@ -1558,8 +1557,8 @@ class Slam(Groundcards):
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
             defender.got_rocked()
-            defender.groundcontrol = False
-            attacker.groundcontrol = True
+            defender.lose_groundcontrol() 
+            attacker.get_groundcontrol()
             attacker.points += 2     
         elif maped_score == "success":
             defender.groundcontrol = False
@@ -1856,8 +1855,7 @@ class Leglock_Scramble(Groundcards):
         \n4,3 success: points, WIN if GROUNDCONTROl else GROUNDCONTROL\
         \n2 success: apply GROUNDCONTROL\
         \n1 success: reduce points\
-        \n0 success: reduce points LOSE if op GROUNDCONTROL else op GROUNDCONTROL\
-        \nCAN BE PLAYED ONLY IF YOU HAVE GROUNDCONTROL"
+        \n0 success: reduce points LOSE if op GROUNDCONTROL else op GROUNDCONTROL"
         return(result)
     
     def all_results(self):
@@ -1904,7 +1902,182 @@ class Leglock_Scramble(Groundcards):
             else: defender.get_groundcontrol()            
  
  
- 
+class Heel_Hook(Groundcards):  
+    def __init__(self):
+        self.name = "Heel hook"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: bjj\neffects(3roll):\
+        \n3 success: you WIN\
+        \n2 success: points\
+        \n1,0 success: reduce points, lose GROUNDCONTROL, op GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "And here is the tapout! He takes opponent leg home with him tonight! What a nasty heel hook",
+            "success": "He controls the opponent's knee, it looks like it's all over... No, the opponent has released his leg somehow.",
+            "defeat" : "You can call that one a hell hook as after the attempt he's in real trouble now.",
+            "lose"   : "The bravado didn't pay off. After a reverse the opponent is on the dominant position now"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "Heel hook"]}
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(3):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.fightlost()
+        elif maped_score == "success":
+            attacker.points += 1
+        elif maped_score == "defeat":
+            attacker.points -= 1
+            defender.get_groundcontrol()
+            attacker.lose_groundcontrol()
+        elif maped_score == "lose":
+            attacker.points -= 1
+            defender.get_groundcontrol()
+            attacker.lose_groundcontrol()
+            
+            
+
+
+class Suplex(Standupcards):
+    def __init__(self):
+        self.name = "Suplex"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 4
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling, opponent wrestling, 4 rolls\neffects:\
+        \n4 success: TAKEDOWN, apply ROCKED, GROUNDCONTROL, points*2\
+        \n3 success: TAKEDOWN, apply DAMAGE, points\
+        \n0 successes: TAKEDOWN, reduce points, op GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He lifts the opponent slams madly him  into the mat. His head connected first... Hopefully no injury here!",
+            "success": "He tries a suplex and he gets it! What a throw. Unbeliviable!",
+            "defeat" : "The opponent is resisting the throws attempts",
+            "lose"   : "He tried a high throw but he was countered"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "Slam (from suplex)"],
+                 "success" :["TKO", "Slam and punches"],
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))        
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"3":"win", "2":"success", "1":"defeat",  "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        if maped_score == "win":
+            defender.got_rocked()
+            attacker.points += 2
+            attacker.currentfight.setStandup(False)
+            attacker.get_groundcontrol()
+        elif maped_score == "success":
+            defender.got_hurt()
+            attacker.points += 1
+            attacker.currentfight.setStandup(False)            
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.points -= 1
+            attacker.currentfight.setStandup(False)
+            defender.get_groundcontrol()   
+            
+
+
+
+class Knees_In_Clinch(Standupcards):
+    def __init__(self):
+        self.name = "Knees in clinch"
+        self.rarity = "common"
+        self.quantity = 1 
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: muaythai and wrestling, 4 rolls\neffects:\
+        \n4 success: apply ROCKED, points\
+        \n3 success: apply DAMAGE, points\
+        \n0 successes: reduce points, TAKEDOWN"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Opponent's head is too low. He eats a knee... and another one!",
+            "success": "Good knees here.",
+            "defeat" : "Just clinchwork.",
+            "lose"   : "The opponent takes the fight from the clinch into the ground."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "knee"],
+                  "success":["TKO", "knee"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"])) 
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(4):
+            result.append(attacker.roll_2_stat(attacker.muay_thai, attacker.wretling, defender.muay_thai, defender.wrestling))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"4":"win", "3": "success", "2":"defeat", "1":"defeat", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        if maped_score == "win":
+            attacker.points += 1
+            defender.got_rocked()
+        elif maped_score == "success":
+            attacker.points += 1
+            defender.got_hurt() 
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.currentfight.setStandup(False)
+            attacker.points -= 1
+
+           
+            
 """
             Mr Test Tester <Roar naked choke>:
             He's applying RNC... will it be over?
@@ -1938,7 +2111,6 @@ class Leglock_Scramble(Groundcards):
 #knee_from_clinch
 #superman punch
 
-#suplex
 #Kata-guruma
 #Sweep_trip_throw
 #throw directly to the groundcontrol
