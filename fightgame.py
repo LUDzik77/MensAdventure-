@@ -243,7 +243,6 @@ class Match:
                 elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
                 elif restriction == "OP_NO_groundcontrol" and self.inactiveplayer.groundcontrol: skill_allowed=False
                 if restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
-                #else: print(f"Unknown skillcard  restriction {restriction} for {skill}")
             if skill_allowed:
                 not_restricted.append(skill)
         return(not_restricted)   

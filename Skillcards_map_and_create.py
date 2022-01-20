@@ -81,7 +81,13 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "Suplex":
         new_object = Sk.Suplex()      
     elif to_map[0] == "Knees in clinch":
-        new_object = Sk.Knees_In_Clinch()          
+        new_object = Sk.Knees_In_Clinch()
+    elif to_map[0] == "Sit out spin":
+        new_object = Sk.Sit_Out_Spin()        
+    elif to_map[0] == "Guillotine":
+        new_object = Sk.Guillotine()         
+        
+        Guillotine
 
         
         

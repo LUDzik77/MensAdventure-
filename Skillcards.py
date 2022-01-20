@@ -2076,8 +2076,141 @@ class Knees_In_Clinch(Standupcards):
             attacker.currentfight.setStandup(False)
             attacker.points -= 1
 
-           
-            
+
+
+class Sit_Out_Spin(Groundcards):
+    def __init__(self):
+        self.name = "Sit out spin"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "NO_groundcontrol"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling, opponent wrestling,bjj \neffects(2roll):\
+        \n2 success: apply GROUNDCONTROL, opponent lose GROUNDCONTROL, points\
+        \n1 success: STANDUP\
+        \n0 success: op gets GROUNDCONTROL, reduce points\
+        CAN BE TRIGGER ONLY IF YOU DON'T HAVE GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "It comes out from under the opponent. He can take the back mount now.",
+            "success": "He controls the opponents arm, spins out from under him, but he is pushed back.",
+            "defeat" : "",
+            "lose"   : "He tries the escape but is pinned down to the mat."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.get_groundcontrol()
+            defender.lose_groundcontrol()
+            attacker.points += 1
+        elif maped_score == "success":
+            attacker.currentfight.setStandup(True)
+        elif maped_score == "defeat":
+            pass 
+        elif maped_score == "lose":
+            defender.get_groundcontrol()
+            attacker.points -= 1
+    
+
+
+class Guillotine(Groundcards):
+    def __init__(self):
+        self.name = "Guillotine"
+        self.rarity = "common"
+        self.quantity = 1
+        self.cost = 4
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = []
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling, opponent wrestling,bjj \neffects(2roll):\
+        \non the ground:\
+        \n2 success: apply TIRED, points\
+        \n1 success: 10% WIN the fight, if GROUNDCONTROL points\
+        \n0 success: suffer TIRED, reduce points\
+        \nin the standup:\
+        \n2 success: (TAKEDOWN with GROUNDCONTROL) or DAMAGE, points\
+        \n1 success: 50% for (TAKEDOWN with op GROUNDCONTROL and reduce points), 5% WIN the fight\
+        \n0 success: reduce points\
+        SKILL CAN BE USED ON THE GROUND AND IN THE STANDUP"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He applies tight front lock! The opponent is in serious troubles!",
+            "success": "Will he submit the opponent with a guillotine? I don't think so, but who knows...",
+            "defeat" : "",
+            "lose"   : "He failed to control the opponents head. It took a lot of gas from him."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "guillotine"],
+                  "success":["Submission", "guillotine"],
+                  "lose" : ["TKO", "punches (GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))     
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.points += 1
+            if self.standup:
+                if choice("ground", "no") == "ground":
+                    attacker.currentfight.setStandup(False)
+                    attacker.get_groundcontrol()
+                else:defender.got_hurt()
+            else: defender.got_tired()
+        elif maped_score == "success":
+            if self.standup:
+                if randint(1, 20) == 20: defender.lost = True
+                if choice("ground", "no") == "ground":
+                    attacker.currentfight.setStandup(False)
+                    defender.get_groundcontrol()
+                    attacker.points -= 1
+            else:
+                if randint(1, 10) == 10: defender.lost = True
+                if attacker.groundcontrol: attacker.points += 1
+        elif maped_score == "defeat":
+            pass 
+        elif maped_score == "lose":
+            attacker.points -= 1
+            if self.standup:pass
+            else: attacker.got_tired()            
+
+     
+         
 """
             Mr Test Tester <Roar naked choke>:
             He's applying RNC... will it be over?
@@ -2108,7 +2241,6 @@ class Knees_In_Clinch(Standupcards):
 
 #killer kick
 #butthead
-#knee_from_clinch
 #superman punch
 
 #Kata-guruma
@@ -2117,11 +2249,9 @@ class Knees_In_Clinch(Standupcards):
 
 #mount position --> groundcontrol/punch
 #guilotine --> tired you/him/ submission
-#heel hook
-#triangle
+
 #Escape!
 #cheap shots --> points on the ground
 #vicous hammerfist
 #drunkenjitsu --> ground action better when tired
-#escape to standup --> one more --> nurek
 #reverse?
