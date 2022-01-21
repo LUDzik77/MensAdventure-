@@ -2210,20 +2210,54 @@ class Guillotine(Groundcards):
             else: attacker.got_tired()            
 
      
-         
-"""
-            Mr Test Tester <Roar naked choke>:
-            He's applying RNC... will it be over?
-            
-            END OF THE FIGHT
-            
-            No victor['Submission', 'roar naked choke']
-            
-            standup =  False
-            Saladin T: False R: False L: True points: 1
-            Mr Test T: False R: False L: False points: 1  
-"""
-  
+
+class Bjj_shrimp(Groundcards):
+    def __init__(self):
+        self.name = "Bjj_shrimp"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 1
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "OP_groundcontrol"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, opponent bjj\neffects(1roll):\
+        \n1 success: opponent lose GROUNDCONTROL\
+        ONLY IF THE OPPONENT HAS GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "What a great escape!",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "He is shrimping but with no success"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win",  "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.lose_groundcontrol() 
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+
+
             
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
@@ -2248,7 +2282,6 @@ class Guillotine(Groundcards):
 #throw directly to the groundcontrol
 
 #mount position --> groundcontrol/punch
-#guilotine --> tired you/him/ submission
 
 #Escape!
 #cheap shots --> points on the ground

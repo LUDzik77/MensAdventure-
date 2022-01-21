@@ -85,11 +85,11 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "Sit out spin":
         new_object = Sk.Sit_Out_Spin()        
     elif to_map[0] == "Guillotine":
-        new_object = Sk.Guillotine()         
+        new_object = Sk.Guillotine()
+    elif to_map[0] == "Bjj shrimp":
+        new_object = Sk.Bjj_Shrimp()        
         
-        Guillotine
 
-        
         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
     new_object.quantity = to_map[1]

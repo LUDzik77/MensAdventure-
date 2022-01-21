@@ -1,12 +1,8 @@
-# Here will be main engine of fighting
+#main fighting engine
 from random import randint, choice
 import Skillcards as Sk
 import fighters_template
 
-
-#when it reaches a number 12(?) fight goes for decision
-
-#  BOTH have to be add with setters and getters to MATCH
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
@@ -25,7 +21,7 @@ class Fighter:
         self.weak = False
         self.rocked = False
         self.lost = False
-        # fighter with groundcontrol can KO/submit easier, we have to understad that this attribute have to be set to False after every standup
+        # fighter with groundcontrol can KO/submit easier, this attribute have to be set >False after every standup
         self.groundcontrol = False  
         self.skilllist = skilllist # quantity for a skills is generated as an attribute "quantity"
         self.points = 0 #  to get the result at the end of the fight
@@ -153,13 +149,18 @@ class Match:
         self.prompt_fight_info(f"{self.winner.fullname if self.winner is not None else 'No victor'}{self.matchresult}")
         self.fight_is_not_over = False
         
-    def get_victor(self):
+    def get_victor_decision(self):
         if self.fighter1.points > self.fighter2.points: self.winner = self.fighter1
         elif self.fighter2.points > self.fighter1.points: self.winner = self.fighter2
         else: self.winner = None         
         
+    def get_victor_nondecision(self):
+        if self.fighter1.lost: self.winner = self.fighter2
+        elif self.fighter2.lost: self.winner = self.fighter1
+        else: print("error in getting victor object <get_victor_nondecision>")
+            
     def decision_victory(self):
-        self.get_victor()
+        self.get_victor_decision()
         if self.fighter1.points-self.fighter2.points==0:
             victorymethod = choice(["Unanimous", "Split", "Majority"])
             self.matchresult =  ["Draw", victorymethod]       
@@ -172,7 +173,7 @@ class Match:
         self.end_match()
 
     def nondecision_victory(self):
-        self.get_victor()
+        self.get_victor_nondecision()
         self.matchresult = self.activeplayer.victoryinfo_if_win
         self.end_match()
     
@@ -211,7 +212,7 @@ class Match:
         actions = self.get_pool_of_possible_attacks()
         return(None if len(actions)== 0 else choice(actions))
     
-    def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CONDE WITH DOMINIK<?>
+    def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CODE
         #not_restricted = []
         #for skill in self.activeplayer.skilllist:
             #if self.standup and "standup" in skill.restriction:
