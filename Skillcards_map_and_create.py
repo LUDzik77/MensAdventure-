@@ -78,7 +78,7 @@ def get_1_Skillcard_object(to_map):
         new_object = Sk.Leglock_Scramble()  
     elif to_map[0] == "Heel hook":
         new_object = Sk.Heel_Hook()
-    elif to_map[0] == "Suplex":
+    elif to_map[0] == "Suplex": 
         new_object = Sk.Suplex()      
     elif to_map[0] == "Knees in clinch":
         new_object = Sk.Knees_In_Clinch()
@@ -87,8 +87,15 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "Guillotine":
         new_object = Sk.Guillotine()
     elif to_map[0] == "Bjj shrimp":
-        new_object = Sk.Bjj_Shrimp()        
-        
+        new_object = Sk.Bjj_Shrimp()
+    elif to_map[0] == "Crucifix":
+        new_object = Sk.Crucifix()  
+    elif to_map[0] == "Hammerfists":
+        new_object = Sk.Hammerfists()
+    elif to_map[0] == "GnP elbows":
+        new_object = Sk.GnP_Elbows()    
+    elif to_map[0] == "Uppercut":
+        new_object = Sk.Uppercut()          
 
         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
