@@ -95,7 +95,18 @@ def get_1_Skillcard_object(to_map):
     elif to_map[0] == "GnP elbows":
         new_object = Sk.GnP_Elbows()    
     elif to_map[0] == "Uppercut":
-        new_object = Sk.Uppercut()          
+        new_object = Sk.Uppercut()    
+    elif to_map[0] == "Drunkenjitsu":
+        new_object = Sk.Drunkenjitsu()
+    elif to_map[0] == "Superman punch":
+        new_object = Sk.Superman_Punch()   
+    elif to_map[0] == "Footwork":
+        new_object = Sk.Footwork()    
+    elif to_map[0] == "Grappling tricks":
+        new_object = Sk.Grappling_Tricks()         
+        
+        
+    
 
         
     else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")

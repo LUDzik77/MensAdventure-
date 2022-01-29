@@ -2492,7 +2492,238 @@ class Uppercut(Standupcards):
             pass
         elif maped_score == "lose":
             pass  
-          
+
+
+
+class Drunkenjitsu(Groundcards):
+    def __init__(self):
+        self.name = "Drunkenjitsu"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "tired"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: bjj,wrestling \neffects(2roll):\
+        \n2 success: WIN if op TIRED else apply GROUNDCONTROL and DAMAGE\
+        \n1 success: WIN if op TIRED else apply GROUNDCONTROL\
+        \n0 success: apply DAMAGE, suffer DAMAGE\
+        SKILL TRIGGERS ONLY IF YOU ARE TIRED"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "That moves are out of the box, but... Bite him!",
+            "success": "He is appling some kind of odd hold. Or maybe he wants to kiss the opponent...",
+            "defeat" : "",
+            "lose"   : "It does look to me like these fighters aren't exactly 100% sober. Or maybe I have to drink"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "punches (GnP)"],
+                  "win":["Submission", "choke"],
+                  "lose":["TKO", "punches (GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"])) 
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_2_stat(attacker.bjj, attacker.wrestling, defender.bjj, defender.wrestling))
+        return(str(sum(result)))
+    
+    def get_attack_result(self, score):
+        mapping = {"2":"win", "1":"success", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            if defender.weak: defender.lost == True
+            else: 
+                attacker.get_groundcontrol()
+                defender.got_hurt()
+        elif maped_score == "success":        
+            if defender.weak: defender.lost == True
+            else: 
+                attacker.get_groundcontrol()
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.got_hurt()
+            defender.got_hurt()
+
+ 
+ 
+class Superman_Punch(Standupcards):
+    def __init__(self):
+        self.name = "Superman punch"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your boxing(3),muaythai(2), op boxing\neffects(5 roll):\
+        \n5 success: apply ROCKED,DAMAGE, points*3\
+        \n4 success: apply DAMAGE points*2\
+        \n3 success: lowers op box,mt by 2, points\
+        \n2-0 success: random: TAKEDOWN, red.points, DAMAGE, no effect\
+        "
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Holy Molly.This Superman punch was legendary!",
+            "success": "Flying cross right on the chin!",
+            "defeat" : "He feigns a kick and punch! The opponent is totally confused!",
+            "lose"   : "He tried Superman punch, but it was not even a Batman slap. And he eats one."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "superman punch"],
+                  "win":["TKO", "superman punch"],
+                  "lose":["TKO", "punch"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))   
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
+            result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
+            result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"5":"win", "4":"success", "3": "defeat", "2":"lose", "1":"lose", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.points += 3
+            defender.got_rocked()
+            defender.got_hurt()
+        elif maped_score == "success":
+            attacker.points += 2
+            defender.got_hurt()
+        elif maped_score == "defeat":
+            attacker.points += 1
+            defender.boxing -= 2
+            defender.muay_thai -= 2
+        elif maped_score == "lose":
+            roll = choice("no", "ground", "damage", "points") 
+            if roll == "ground":
+                attacker.currentfight.setStandup(False)
+            elif roll == "damage":
+                attacker.got_hurt()
+            elif roll == "points":
+                attacker.points -= 1
+  
+ 
+ 
+class Footwork(Standupcards):
+    def __init__(self):
+        self.name = "Footwork"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your boxing, op muaythai   \neffects(1 roll):\
+        \n1 success: opponenent boxing and muaythai reduced by 2"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He totally control the pace of the fight! Give him 5 minutes and we will see a knockout",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "He is trying to control the distance but the opponent is contantly breaking the habit"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.muay_thai))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.boxing -= 2
+            defender.muay_thai -= 2            
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+  
+
+ 
+class Grappling_Tricks(Groundcards):
+    def __init__(self):
+        self.name = "Grappling tricks"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj, op wrestling  \neffects(1 roll):\
+        \n1 success: opponenent bjj and wrestling reduced by 2"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He totally outgrappled his opponent! He can trick the opponent and go for a submission in any moment!",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "The opponent shows decent defence on the ground. He refuses to get caught in that technical game"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+        return(str(sum(result )))
+    
+    def get_attack_result(self, score):
+        mapping = {"1":"win", "0":"lose"}
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.bjj -= 2
+            defender.wrestling-= 2            
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+        
+
+     
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'

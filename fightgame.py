@@ -68,12 +68,18 @@ class Fighter:
             self.currentfight.prompt_fight_info(" lose groundcontrol", player=self.fullname)    
         
     def roll_1_stat(self, own_stat, op_stat):
+        own_stat = own_stat if own_stat>0 else 1
+        op_stat = op_stat if op_stat>0 else 1
         roll_your = randint(0, own_stat)
         roll_op = randint(0, op_stat)
         result = True if roll_your>roll_op else False
         return(result)
         
     def roll_2_stat(self, own_stat1, own_stat2, op_stat1, op_stat2):
+        own_stat1 = own_stat1 if own_stat1>0 else 1
+        op_stat1 = op_stat1 if op_stat1>0 else 1
+        own_stat2 = own_stat2 if own_stat2>0 else 1
+        op_stat2 = op_stat2 if op_stat2>0 else 1
         a=self.roll_1_stat(own_stat1, op_stat1)
         b=self.roll_1_stat(own_stat1, op_stat2)
         c=self.roll_1_stat(own_stat2, op_stat1)
@@ -243,7 +249,8 @@ class Match:
                 elif restriction == "OP_groundcontrol" and self.inactiveplayer.groundcontrol==False: skill_allowed=False
                 elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
                 elif restriction == "OP_NO_groundcontrol" and self.inactiveplayer.groundcontrol: skill_allowed=False
-                if restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
+                elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
+                elif restriction == "tired" and self.activeplayer.weak==False: skill_allowed=False
             if skill_allowed:
                 not_restricted.append(skill)
         return(not_restricted)   
