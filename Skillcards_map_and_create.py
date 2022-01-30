@@ -8,110 +8,58 @@ def map_to_objects(list_of_objects_to_map):
         fighter_skillcards.append(get_1_Skillcard_object(to_map))
     return(fighter_skillcards)
 
+all_skills ={
+    "Jab":Sk.Jab,
+    "Lowkick":Sk.Lowkick,
+    "Pull guard":Sk.Pullguard,
+    "Bearhug takedown":Sk.Bearhug_Takedown,
+    "1-2-kick combo":Sk.One_Two_Kick_Combo,
+    "Powerjab":Sk.Powerjab,
+    "Lay and pray":Sk.Lay_And_Pray,
+    "Brute force sweep":Sk.Brute_Force_Sweep,
+    "Illegal move trap":Sk.Illegal_Move_Trap,
+    "Roar naked choke":Sk.Roar_Naked_Choke,
+    "Lucky punch":Sk.Lucky_Punch,
+    "Granite chin":Sk.Granite_Chin,
+    "Cardio king":Sk.Cardio_King,
+    "Swing for the fences" :Sk.Swing_For_The_Fences,
+    "Slap":Sk.Slap,
+    "Highkick":Sk.Highkick,
+    "Flying knee":Sk.Flying_Knee,
+    "Armbar":Sk.Armbar,
+    "Ground and pound":Sk.Ground_and_Pound,
+    "Dirty boxing":Sk.Dirty_Boxing,
+    "Devastating overhand":Sk.Devastating_Overhand,
+    "Elbows":Sk.Elbows,
+    "Windmill style":Sk.Windmill_Style,
+    "Flying armbar":Sk.Flying_Armbar,
+    "Double leg":Sk.Double_Leg,
+    "Universal punch":Sk.Universal_Punch,
+    "Slam":Sk.Slam,
+    "Single leg":Sk.Single_Leg,
+    "Trip kick":Sk.Trip_Kick,
+    "Technical stand up":Sk.Technical_Stand_Up,
+    "Front kick":Sk.Front_Kick, 
+    "Triangle choke":Sk.Triangle_Choke,
+    "Leglock scramble":Sk.Leglock_Scramble,
+    "Heel hook":Sk.Heel_Hook,
+    "Suplex": Sk.Suplex,     
+    "Knees in clinch":Sk.Knees_In_Clinch,
+    "Sit out spin":Sk.Sit_Out_Spin,       
+    "Guillotine":Sk.Guillotine,
+    "Bjj shrimp":Sk.Bjj_Shrimp,
+    "Crucifix":Sk.Crucifix,
+    "Hammerfists":Sk.Hammerfists,
+    "GnP elbows":Sk.GnP_Elbows,   
+    "Uppercut":Sk.Uppercut,  
+    "Drunkenjitsu":Sk.Drunkenjitsu,
+    "Superman punch":Sk.Superman_Punch,
+    "Footwork":Sk.Footwork,  
+    "Grappling tricks":Sk.Grappling_Tricks        
+}
+
 
 def get_1_Skillcard_object(to_map):
-    if to_map[0] == "Jab":
-        new_object = Sk.Jab()
-    elif to_map[0] == "Lowkick":
-        new_object = Sk.Lowkick()
-    elif to_map[0] == "Pull guard":
-        new_object = Sk.Pullguard()    
-    elif to_map[0] == "Bearhug takedown":
-        new_object = Sk.Bearhug_Takedown()        
-    elif to_map[0] == "1-2-kick combo":
-        new_object = Sk.One_Two_Kick_Combo()       
-    elif to_map[0] == "Powerjab":
-        new_object = Sk.Powerjab()      
-    elif to_map[0] == "Lay and pray":
-        new_object = Sk.Lay_And_Pray()  
-    elif to_map[0] == "Brute force sweep":
-        new_object = Sk.Brute_Force_Sweep()  
-    elif to_map[0] == "Illegal move trap":
-        new_object = Sk.Illegal_Move_Trap()
-    elif to_map[0] == "Roar naked choke":
-        new_object = Sk.Roar_Naked_Choke()
-    elif to_map[0] == "Lucky punch":
-        new_object = Sk.Lucky_Punch()
-    elif to_map[0] == "Granite chin":
-        new_object = Sk.Granite_Chin()
-    elif to_map[0] == "Cardio king":
-        new_object = Sk.Cardio_King()
-    elif to_map[0] == "Swing for the fences" :
-        new_object = Sk.Swing_For_The_Fences()
-    elif to_map[0] == "Slap":
-        new_object = Sk.Slap()
-    elif to_map[0] == "Highkick":
-        new_object = Sk.Highkick()
-    elif to_map[0] == "Flying knee":
-        new_object = Sk.Flying_Knee()
-    elif to_map[0] == "Armbar":
-        new_object = Sk.Armbar()    
-    elif to_map[0] == "Ground and pound":
-        new_object = Sk.Ground_and_Pound()
-    elif to_map[0] == "Dirty boxing":
-        new_object = Sk.Dirty_Boxing()  
-    elif to_map[0] == "Devastating overhand":
-        new_object = Sk.Devastating_Overhand()
-    elif to_map[0] == "Elbows":
-        new_object = Sk.Elbows() 
-    elif to_map[0] == "Windmill style":
-        new_object = Sk.Windmill_Style()  
-    elif to_map[0] == "Flying armbar":
-        new_object = Sk.Flying_Armbar()
-    elif to_map[0] == "Double leg":
-        new_object = Sk.Double_Leg()
-    elif to_map[0] == "Universal punch":
-        new_object = Sk.Universal_Punch()
-    elif to_map[0] == "Slam":
-        new_object = Sk.Slam()   
-    elif to_map[0] == "Single leg":
-        new_object = Sk.Single_Leg()
-    elif to_map[0] == "Trip kick":
-        new_object = Sk.Trip_Kick()
-    elif to_map[0] == "Technical stand up":
-        new_object = Sk.Technical_Stand_Up()
-    elif to_map[0] == "Front kick":
-        new_object = Sk.Front_Kick()    
-    elif to_map[0] == "Triangle choke":
-        new_object = Sk.Triangle_Choke() 
-    elif to_map[0] == "Leglock scramble":
-        new_object = Sk.Leglock_Scramble()  
-    elif to_map[0] == "Heel hook":
-        new_object = Sk.Heel_Hook()
-    elif to_map[0] == "Suplex": 
-        new_object = Sk.Suplex()      
-    elif to_map[0] == "Knees in clinch":
-        new_object = Sk.Knees_In_Clinch()
-    elif to_map[0] == "Sit out spin":
-        new_object = Sk.Sit_Out_Spin()        
-    elif to_map[0] == "Guillotine":
-        new_object = Sk.Guillotine()
-    elif to_map[0] == "Bjj shrimp":
-        new_object = Sk.Bjj_Shrimp()
-    elif to_map[0] == "Crucifix":
-        new_object = Sk.Crucifix()  
-    elif to_map[0] == "Hammerfists":
-        new_object = Sk.Hammerfists()
-    elif to_map[0] == "GnP elbows":
-        new_object = Sk.GnP_Elbows()    
-    elif to_map[0] == "Uppercut":
-        new_object = Sk.Uppercut()    
-    elif to_map[0] == "Drunkenjitsu":
-        new_object = Sk.Drunkenjitsu()
-    elif to_map[0] == "Superman punch":
-        new_object = Sk.Superman_Punch()   
-    elif to_map[0] == "Footwork":
-        new_object = Sk.Footwork()    
-    elif to_map[0] == "Grappling tricks":
-        new_object = Sk.Grappling_Tricks()         
-        
-        
-    
-
-        
-    else: print(f"No skill <{to_map[0]}> to mappped by <get_Skillcard_object>")
+    new_object = all_skills[to_map[0]]()
     new_object.quantity = to_map[1]
     return(new_object)   
-
-
-    

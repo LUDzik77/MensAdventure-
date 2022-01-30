@@ -18,9 +18,9 @@ image Kamilion = im.Scale("images/characters/Kamilion1.jpg", 600, 800)
 label start:
     call variables_start
     show Kamilion
-    python:
-        import fightgame
-        renpy.say("", fightgame.result_)
+    #### python:
+        #### import fightgame
+        ###renpy.say("", fightgame.result_)
 
 
     K "current version: [config.version]"
@@ -34,3 +34,11 @@ label city:
     jump city
 
 
+
+
+### get_attack results/  SKillcards   na tuple i int
+
+
+### poprawic tam w roll1  roll2
+
+### elisif w mapowaniu poprawic na dictionary 

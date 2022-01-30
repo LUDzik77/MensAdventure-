@@ -64,10 +64,10 @@ class Jab(Standupcards):
         result = []
         for _ in range(4):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"4":"win", "3": "success","2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose","defeat","success","success","win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -103,10 +103,10 @@ class Lowkick(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "that lowkick could have broken a bone!",
-            "success": "on target",
-            "defeat" : "nothing there",
-            "lose"   : "pathetic kick..."}
+            "win"    : "That lowkick could have broken a bone!",
+            "success": "On target",
+            "defeat" : "Nothing there",
+            "lose"   : "Pathetic kick..."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -117,10 +117,10 @@ class Lowkick(Standupcards):
         result = []
         for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat","success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -169,10 +169,10 @@ class Pullguard(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success",  "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -223,10 +223,10 @@ class Bearhug_Takedown(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "defeat",  "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -280,10 +280,10 @@ class One_Two_Kick_Combo(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_2_stat(attacker.boxing, attacker.muay_thai, defender.boxing, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success",  "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -333,10 +333,10 @@ class Powerjab(Jab):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -384,10 +384,10 @@ class Lay_And_Pray(Groundcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_2_stat(attacker.bjj, attacker.wrestling, defender.bjj, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -430,10 +430,10 @@ class Brute_Force_Sweep(Groundcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win",  "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -483,11 +483,11 @@ class Illegal_Move_Trap(Groundcards):           #####  add another check to use 
         result = False
         for _ in range(1):
             if choice(["illegal", "no"]) == "illegal":
-                return("1")          
-        return("0")
+                return(1)          
+        return(0)
     
     def get_attack_result(self, score):
-        mapping = {"1":"win",  "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):   #### test it; 
@@ -538,10 +538,10 @@ class Lucky_Punch(Standupcards):
             attacker_stat = defender.boxing//3 +defender.muay_thai//3 + 4
             defender_stat = choice([defender.boxing, defender.muay_thai]) + 1
             result.append(attacker.roll_1_stat(attacker_stat, defender_stat))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "0":"lose"}
+        mapping = ("lose",  "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -595,10 +595,10 @@ class Granite_Chin(Standupcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(10, 10))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0": "success"}
+        mapping = ("success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -644,10 +644,10 @@ class Cardio_King(Standupcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(10, 10))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0": "success"}
+        mapping = ("success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -707,10 +707,10 @@ class Swing_For_The_Fences(Standupcards):
             result.append(attacker.roll_1_stat(choice(at), choice(df)))
             result.append(attacker.roll_1_stat(choice(at), choice(df)))
             result.append(attacker.roll_1_stat(choice(at), choice(df)))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win","2":"success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -768,10 +768,10 @@ class Windmill_Style(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
-        return(str(sum(result )))
-    
+        return(sum(result))
+
     def get_attack_result(self, score):
-        mapping = {"2":"win","1":"success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -805,8 +805,7 @@ class Slap(Standupcards):
         \n3 success: points, funny description\
         \n2 success: points(50% chance), funny description\
         \n1 successes: funny description\
-        \n0 successes: reduce points, funny description\
-        "
+        \n0 successes: reduce points, funny description"
         return(result)
     
     def all_results(self):
@@ -838,10 +837,10 @@ class Slap(Standupcards):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
             result.append(attacker.roll_1_stat(attacker.boxing, defender.muay_thai))
             result.append(attacker.roll_1_stat(10, 10))
-        return(str(sum(result )))
+        return(sum(result ))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -896,10 +895,10 @@ class Highkick(Standupcards):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result ))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -957,10 +956,10 @@ class Flying_Knee(Standupcards):
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result ))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -979,9 +978,8 @@ class Flying_Knee(Standupcards):
             attacker.points -= 1
             
 
-
         
-class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restriction###########################
+class Roar_Naked_Choke(Groundcards): 
     def __init__(self):
         self.name = "Roar naked choke"
         self.rarity = "common"
@@ -990,6 +988,7 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
         self.description = self.description()
         self.results = self.all_results()
         self.result_description = ""
+        self.restriction =["ground", "OP_NO_groundcontrol"]
         
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
@@ -1004,7 +1003,7 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
             "win"    : "He's applying RNC... will it be over?",
             "success": "",
             "defeat" : "",
-            "lose"   : "failed to control opponent, does he go for a leg?"}
+            "lose"   : "Failed to control opponent, does he go for a leg?"}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1015,10 +1014,10 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1036,6 +1035,7 @@ class Roar_Naked_Choke(Groundcards):  ##################GROUNDCONTROL restrictio
                 attacker.lose_groundcontrol() 
             if randint(1, 4) == 1:
                 attacker.currentfight.moveTimer()
+
 
 
 class Armbar(Groundcards): 
@@ -1076,10 +1076,10 @@ class Armbar(Groundcards):
         result = []
         for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win",  "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1151,10 +1151,10 @@ class Ground_and_Pound(Groundcards):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win",  "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1213,10 +1213,10 @@ class Dirty_Boxing(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_2_stat(attacker.boxing, attacker.wrestling, defender.boxing, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1233,7 +1233,7 @@ class Dirty_Boxing(Standupcards):
                 attacker.got_hurt()       
 
 
-class Devastating_Overhand(Standupcards):
+class Devastating_Overhand(Standupcards):                                                                              ################################ HERE CONTINUE
     def __init__(self):
         self.name = "Devastating overhand"
         self.rarity = "uncommon"

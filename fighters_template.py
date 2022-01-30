@@ -28,7 +28,7 @@ Sk_create.map_to_objects(get_fightSkills(Saladin_Tuahihi_skills))
     #print(skill.name, skill.quantity)
 
 
-test_skills = [("Highkick", 1000), ("Jab", 10), ("Illegal move trap", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
+test_skills = [("Highkick", 10), ("Jab", 1000), ("Illegal move trap", 10), ("Powerjab", 5), ("Bearhug takedown", 10),\
                             ("Brute force sweep", 15), ("Roar naked choke",10), ("1-2-kick combo",10)]
 Mr_test =[
 "Mr Test", #firstname

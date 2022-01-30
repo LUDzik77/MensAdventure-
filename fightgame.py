@@ -72,7 +72,7 @@ class Fighter:
         op_stat = op_stat if op_stat>0 else 1
         roll_your = randint(0, own_stat)
         roll_op = randint(0, op_stat)
-        result = True if roll_your>roll_op else False
+        result = roll_your>roll_op
         return(result)
         
     def roll_2_stat(self, own_stat1, own_stat2, op_stat1, op_stat2):
@@ -89,7 +89,7 @@ class Fighter:
         elif sum([a,b,c,d])<2:
             result=False
         else:
-            result = True if randint(0, 9)>4 else False
+            result = randint(0,9)>4
         return(result)
     
     def fightlost(self):  #used mostly with submissions
