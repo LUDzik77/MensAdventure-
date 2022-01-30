@@ -41,4 +41,3 @@ label city:
 
 ### poprawic tam w roll1  roll2
 
-### elisif w mapowaniu poprawic na dictionary 
