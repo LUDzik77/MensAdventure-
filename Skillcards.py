@@ -226,7 +226,7 @@ class Bearhug_Takedown(Standupcards):
         return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = ("lose", "success", "win")
+        mapping = ("lose", "defeat", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -1270,11 +1270,11 @@ class Devastating_Overhand(Standupcards):                                       
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
             result.append(attacker.roll_1_stat(attacker.boxing, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result ))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success", "0":"lose"}
-        return(mapping[score])
+        mapping = ("lose", "success", "win")
+        return(mapping[score])        
         
     def attack_effect(self, maped_score, attacker, defender):  
         if maped_score == "win":
@@ -1322,10 +1322,10 @@ class Elbows(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1377,10 +1377,10 @@ class Flying_Armbar(Standupcards):
         result = []
         for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1435,10 +1435,10 @@ class Double_Leg(Standupcards):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1493,10 +1493,10 @@ class Universal_Punch(Standupcards):               # we have to test restriction
         result = []
         for _ in range(4):
             result.append(attacker.roll_2_stat(attacker.boxing, attacker.muay_thai, defender.boxing, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"4":"win",  "3":"win", "2":"success", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1548,10 +1548,10 @@ class Slam(Groundcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_2_stat(attacker.wrestling, attacker.wrestling, defender.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1598,10 +1598,10 @@ class Single_Leg(Standupcards):
         result = []
         for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1646,10 +1646,10 @@ class Trip_Kick(Standupcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1701,10 +1701,10 @@ class Technical_Stand_Up(Groundcards):
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.bjj, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        mapping = ("lose",  "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1758,10 +1758,10 @@ class Front_Kick(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1":"success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1817,10 +1817,11 @@ class Triangle_Choke(Groundcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "success", "0":"lose"}
+
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1867,8 +1868,7 @@ class Leglock_Scramble(Groundcards):
         return(results)
     
     def win_descriptions(self, maped_score):
-        desc_win = choice([["Submission", "Leglock"], \
-                                ["Submission", "Kneebar"], ["Submission", "Heel hook"]])
+        desc_win = choice([["Submission", "Leglock"], ["Submission", "Kneebar"], ["Submission", "Heel hook"]])
         result = {"win":desc_win,
                   "lose": desc_win
                   }
@@ -1881,10 +1881,10 @@ class Leglock_Scramble(Groundcards):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"4":"win", "3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1924,8 +1924,8 @@ class Heel_Hook(Groundcards):
         results ={
             "win"    : "And here is the tapout! He takes opponent leg home with him tonight! What a nasty heel hook",
             "success": "He controls the opponent's knee, it looks like it's all over... No, the opponent has released his leg somehow.",
-            "defeat" : "You can call that one a hell hook as after the attempt he's in real trouble now.",
-            "lose"   : "The bravado didn't pay off. After a reverse the opponent is on the dominant position now"}
+            "defeat" : "You can call that one a HELL hook as after the attempt he's in real trouble.",
+            "lose"   : "The bravado didn't pay off. After a reverse the opponent is in the dominant position."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1936,10 +1936,10 @@ class Heel_Hook(Groundcards):
         result = []
         for _ in range(3):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2": "success", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -1957,7 +1957,6 @@ class Heel_Hook(Groundcards):
             attacker.lose_groundcontrol()
             
             
-
 
 class Suplex(Standupcards):
     def __init__(self):
@@ -1979,7 +1978,7 @@ class Suplex(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "He lifts the opponent slams madly him  into the mat. His head connected first... Hopefully no injury here!",
+            "win"    : "He lifts the opponent and slams him madly into the mat. His head connected first... Hopefully no injury here!",
             "success": "He tries a suplex and he gets it! What a throw. Unbeliviable!",
             "defeat" : "The opponent is resisting the throws attempts",
             "lose"   : "He tried a high throw but he was countered"}
@@ -1995,10 +1994,10 @@ class Suplex(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"3":"win", "2":"success", "1":"defeat",  "0":"lose"}
+        mapping = ("lose", "defeat", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -2018,7 +2017,6 @@ class Suplex(Standupcards):
             attacker.currentfight.setStandup(False)
             defender.get_groundcontrol()   
             
-
 
 
 class Knees_In_Clinch(Standupcards):
@@ -2057,10 +2055,10 @@ class Knees_In_Clinch(Standupcards):
         result = []
         for _ in range(4):
             result.append(attacker.roll_2_stat(attacker.muay_thai, attacker.wretling, defender.muay_thai, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"4":"win", "3": "success", "2":"defeat", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):
@@ -2111,10 +2109,10 @@ class Sit_Out_Spin(Groundcards):
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2177,10 +2175,10 @@ class Guillotine(Groundcards):
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win",  "1": "success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2241,10 +2239,10 @@ class Bjj_Shrimp(Groundcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win",  "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2294,10 +2292,10 @@ class Crucifix(Groundcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1":"success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2350,12 +2348,14 @@ class Hammerfists(Groundcards):
     
     def roll_attack(self, attacker, defender):
         result = []
-        for _ in range(2):
-            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
-        return(str(sum(result )))
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1":"success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2415,10 +2415,10 @@ class GnP_Elbows(Groundcards):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"4":"win",  "3": "success", "2":"defeat", "1":"defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2476,10 +2476,10 @@ class Uppercut(Standupcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1": "defeat", "0":"lose"}
+        mapping = ("lose", "defeat", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2534,10 +2534,10 @@ class Drunkenjitsu(Groundcards):
         result = []
         for _ in range(2):
             result.append(attacker.roll_2_stat(attacker.bjj, attacker.wrestling, defender.bjj, defender.wrestling))
-        return(str(sum(result)))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"2":"win", "1":"success", "0":"lose"}
+        mapping = ("lose", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2601,10 +2601,10 @@ class Superman_Punch(Standupcards):
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.boxing))
             result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"5":"win", "4":"success", "3": "defeat", "2":"lose", "1":"lose", "0":"lose"}
+        mapping = ("lose", "lose", "lose", "defeat", "success", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2648,7 +2648,7 @@ class Footwork(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "He totally control the pace of the fight! Give him 5 minutes and we will see a knockout",
+            "win"    : "He totally controls the pace of the fight! Give him 5 minutes and we will see a knockout",
             "success": "",
             "defeat" : "",
             "lose"   : "He is trying to control the distance but the opponent is contantly breaking the habit"}
@@ -2658,10 +2658,10 @@ class Footwork(Standupcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.boxing, defender.muay_thai))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  
@@ -2705,10 +2705,10 @@ class Grappling_Tricks(Groundcards):
         result = []
         for _ in range(1):
             result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
-        return(str(sum(result )))
+        return(sum(result))
     
     def get_attack_result(self, score):
-        mapping = {"1":"win", "0":"lose"}
+        mapping = ("lose", "win")
         return(mapping[score])
         
     def attack_effect(self, maped_score, attacker, defender):  

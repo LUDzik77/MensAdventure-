@@ -138,12 +138,7 @@ class Match:
             self.end_round()
     
     def end_round(self):
-        if self.activeplayer == self.fighter1: 
-            self.activeplayer = self.fighter2
-            self.inactiveplayer = self.fighter1
-        else: 
-            self.activeplayer = self.fighter1
-            self.inactiveplayer = self.fighter2
+        self.activeplayer,self.inactiveplayer = self.inactiveplayer,self.activeplayer
 
     def check_if_match_ended_early(self):
         #here additional check for that DQ card  nooo :/

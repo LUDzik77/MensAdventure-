@@ -33,11 +33,3 @@ label city:
     pause
     jump city
 
-
-
-
-### get_attack results/  SKillcards   na tuple i int
-
-
-### poprawic tam w roll1  roll2
-
