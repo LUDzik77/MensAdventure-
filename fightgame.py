@@ -138,6 +138,7 @@ class Match:
             self.end_round()
     
     def end_round(self):
+        self.inactiveplayer.energy += 1
         self.activeplayer,self.inactiveplayer = self.inactiveplayer,self.activeplayer
 
     def check_if_match_ended_early(self):
@@ -210,8 +211,9 @@ class Match:
             self.changeStandup()
             
     def get_skill_to_use_in_attack(self):
-        actions = self.get_pool_of_possible_attacks()
-        return(None if len(actions)== 0 else choice(actions))
+        legal_actions = self.get_pool_of_possible_attacks()
+        #energy_legal_actions = self.get_pool_of_energy_legal_attacks(legal_actions, energy_cap)
+        return(None if len(legal_actions)== 0 else choice(legal_actions))
     
     def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CODE
         #not_restricted = []
@@ -249,6 +251,11 @@ class Match:
             if skill_allowed:
                 not_restricted.append(skill)
         return(not_restricted)   
+    
+    #def get_pool_of_energy_legal_attacks(self, legal_actions, energy_cap):                             ############################continue here
+        #[action in legal_actions if action.energy < energy_cap]
+        #result = filter(lambda x: x % 2 != 0, legal_actions)
+        #preturn(None)
       
     def use_skill(self, action, *args, **kwargs):
         action.use(attacker=self.activeplayer, defender=self.inactiveplayer)

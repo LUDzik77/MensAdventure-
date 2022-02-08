@@ -22,7 +22,7 @@ all_skills ={
     "Lucky punch":Sk.Lucky_Punch,
     "Granite chin":Sk.Granite_Chin,
     "Cardio king":Sk.Cardio_King,
-    "Swing for the fences" :Sk.Swing_For_The_Fences,
+    "Swing for the fences":Sk.Swing_For_The_Fences,
     "Slap":Sk.Slap,
     "Highkick":Sk.Highkick,
     "Flying knee":Sk.Flying_Knee,
@@ -55,7 +55,9 @@ all_skills ={
     "Drunkenjitsu":Sk.Drunkenjitsu,
     "Superman punch":Sk.Superman_Punch,
     "Footwork":Sk.Footwork,  
-    "Grappling tricks":Sk.Grappling_Tricks        
+    "Grappling tricks":Sk.Grappling_Tricks,
+    "Kata guruma": Sk.Kata_Guruma,
+    "Lure_Brawler": Sk.Lure_Brawler
 }
 
 

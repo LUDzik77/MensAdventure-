@@ -1820,7 +1820,6 @@ class Triangle_Choke(Groundcards):
         return(sum(result))
     
     def get_attack_result(self, score):
-
         mapping = ("lose", "success", "win")
         return(mapping[score])
         
@@ -2722,8 +2721,122 @@ class Grappling_Tricks(Groundcards):
         elif maped_score == "lose":
             pass
         
+        
+        
+class Kata_Guruma(Standupcards):
+    def __init__(self):
+        self.name = "Kata guruma"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling,bjj opponent wrestling, 2 rolls\neffects:\
+        \n2 success: TAKEDOWN, points*2\
+        \n1 success: TAKEDOWN\
+        \n0 success: get TIRED"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "What a beautiful judo throw! He is leading on the scorecard in my opinion",
+            "success": "He lower his hips and tries to lift the opponent...",
+            "defeat" : "",
+            "lose"   : "He's turning back from the oponent! He got countered!"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"lose":["TKO", "retirement"]}
+        return(result.get(maped_score,["N/A", "N/A"]))        
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.wrestling))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "success", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        if maped_score == "win":
+            attacker.points += 2
+            attacker.currentfight.setStandup(False)
+        elif maped_score == "success":
+            attacker.currentfight.setStandup(False)
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.got_tired()
 
-     
+
+
+class Lure_Brawler(Groundcards): 
+    def __init__(self):
+        self.name = "Lure brawler"
+        self.rarity = "rare"
+        self.quantity = 1
+        self.cost = 0
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj(1),OP BOXING(2) vS opponent bjj(3)\neffects(3roll):\
+        \n3 success: WIN the fight\
+        \n2 success: apply GROUNDCONTROL, op lose GROUNDCONTROL, points\
+        \n0 success: suffer DAMAGE, op get GROUNDCONTROL, reduce points\
+        VERY EFFECTIVE vs OPPONENTS WITH HIGH BOXING"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He waited for a strikes and caught the opponent in tight choke. It's all over!",
+            "success": "Beautiful sweep.",
+            "defeat" : "He dodges few punches.",
+            "lose"   : "Boom! He paid a pain for his sneaky game."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        submission = choice(["Triangle", "Arm triangle"])
+        result = {"win":["Submission", submission],
+                  "lose":["TKO", "punches(GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))  
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(defender.boxing, defender.bjj))
+            result.append(attacker.roll_1_stat(defender.boxing, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "defeat", "success", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.fightlost() 
+        elif maped_score == "success":
+            attacker.get_groundcontrol()
+            defender.lose_groundcontrol() 
+            attacker.points+=1
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            defender.get_groundcontrol() 
+            attacker.points-=1
+            
+            
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
