@@ -134,12 +134,19 @@ class Match:
             self.check_if_match_ended_early()
             if self.fight_time < self.timer:
                 self.decision_victory()
-                self.fight_is_not_over=False     
-            self.end_round()
+                self.fight_is_not_over=False
+            self.end_round_remove_action()
+            self.end_round_change_players()
     
-    def end_round(self):
-        self.inactiveplayer.energy += 1
+    def end_round_change_players(self):
         self.activeplayer,self.inactiveplayer = self.inactiveplayer,self.activeplayer
+        self.inactiveplayer.energy += 1
+    
+    def end_round_remove_action(self):
+        #print(len(self.activeplayer.skilllist), len(self.inactiveplayer.skilllist))
+        self.activeplayer.skilllist = [x for x in self.activeplayer.skilllist if x.quantity>0]
+        self.inactiveplayer.skilllist = [x for x in self.inactiveplayer.skilllist if x.quantity>0]
+        #print(len(self.activeplayer.skilllist), len(self.inactiveplayer.skilllist))
 
     def check_if_match_ended_early(self):
         #here additional check for that DQ card  nooo :/
@@ -182,7 +189,7 @@ class Match:
     def start_round(self):
         self.moveTimer()
         self.check_if_standup_or_ground_changed()
-        # we need to implement ENERGY COST of attacs, fatique, add more RESTRICTIONS, hidden skill ; 
+        # we need to implement ENERGY COST of attacs, hidden skill ; 
         action = self.get_skill_to_use_in_attack()
         if action == None:
             self.prompt_fight_info(" is doing totally nothing", player=self.active_fullname())
@@ -190,10 +197,9 @@ class Match:
             self.prompt_fight_info(" is taking a big breath", player=self.active_fullname())
             self.activeplayer.energy += 2
         else:
-            self.use_skill(action)                                                                  
-            if action.quantity <2:
-                del action
-            else: action.quantity -= 1
+            self.use_skill(action)
+            self.activeplayer.energy-=action.cost
+            action.quantity -= 1
     
     #prompt will be passed to RenPy for render
     def prompt_fight_info(self, info, *args, **kwargs):
@@ -212,30 +218,11 @@ class Match:
             
     def get_skill_to_use_in_attack(self):
         legal_actions = self.get_pool_of_possible_attacks()
-        #energy_legal_actions = self.get_pool_of_energy_legal_attacks(legal_actions, energy_cap)
-        return(None if len(legal_actions)== 0 else choice(legal_actions))
+        #return(None if len(legal_actions)== 0 else choice(legal_actions))
+        energy_legal_actions = self.get_pool_of_energy_legal_attacks(legal_actions)
+        return(None if len(list(energy_legal_actions))== 0 else choice(list(energy_legal_actions)))
     
-    def get_pool_of_possible_attacks(self):                                    ###############  WE CAN UPGRADE THIS CODE
-        #not_restricted = []
-        #for skill in self.activeplayer.skilllist:
-            #if self.standup and "standup" in skill.restriction:
-                #not_restricted.append(skill)
-            #elif not self.standup and "ground" in skill.restriction:
-                #not_restricted.append(skill)
-        ##for skill in not_restricted:
-            ##if self.activeplayer.groundcontrol and "ONLYgroundcontrol" in skill.restriction:
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.activeplayer.groundcontrol and "groundcontrol" in skill.restriction]            ################# test it !
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.inactiveplayer.groundcontrol and "OP_groundcontrol" in skill.restriction]
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.inactiveplayer.groundcontrol==False and "OP_NO_groundcontrol" in skill.restriction]
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.activeplayer.groundcontrol==False and "NO_groundcontrol" in skill.restriction]
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.activeplayer.weak and "tired" in skill.restriction]
-        #not_restricted = [skill for skill in not_restricted 
-                          #if self.activeplayer.rocked and "rocked" in skill.restriction]
+    def get_pool_of_possible_attacks(self):                                    
         not_restricted = []
         for skill in self.activeplayer.skilllist:
             skill_allowed = True
@@ -252,10 +239,12 @@ class Match:
                 not_restricted.append(skill)
         return(not_restricted)   
     
-    #def get_pool_of_energy_legal_attacks(self, legal_actions, energy_cap):                             ############################continue here
-        #[action in legal_actions if action.energy < energy_cap]
-        #result = filter(lambda x: x % 2 != 0, legal_actions)
-        #preturn(None)
+    def get_pool_of_energy_legal_attacks(self, legal_actions):
+        print(self.activeplayer.fullname, self.activeplayer.energy)
+        result = list(filter(lambda x:x.cost<=self.activeplayer.energy, legal_actions))
+        print([(x.name, x.quantity) for x in result])
+        if len(legal_actions) != len(result): print("at least 1 skill too costy")
+        return(result)
       
     def use_skill(self, action, *args, **kwargs):
         action.use(attacker=self.activeplayer, defender=self.inactiveplayer)
@@ -288,6 +277,14 @@ The_Fight.start_fight()
 print("standup = ", The_Fight.standup)
 print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
 print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
+
+
+
+
+#needed secret moves (4ground and 4standup)
+#need energy cost to add
+
+
 
 ## TEST PURPOSES ONLY  (obsolete):   ##################################################################
 #AA = Fighter(*fighters_template.Saladin_Tuahihi)

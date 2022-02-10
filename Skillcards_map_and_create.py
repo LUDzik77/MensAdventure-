@@ -17,7 +17,6 @@ all_skills ={
     "Powerjab":Sk.Powerjab,
     "Lay and pray":Sk.Lay_And_Pray,
     "Brute force sweep":Sk.Brute_Force_Sweep,
-    "Illegal move trap":Sk.Illegal_Move_Trap,
     "Roar naked choke":Sk.Roar_Naked_Choke,
     "Lucky punch":Sk.Lucky_Punch,
     "Granite chin":Sk.Granite_Chin,
@@ -57,7 +56,7 @@ all_skills ={
     "Footwork":Sk.Footwork,  
     "Grappling tricks":Sk.Grappling_Tricks,
     "Kata guruma": Sk.Kata_Guruma,
-    "Lure_Brawler": Sk.Lure_Brawler
+    "Lure brawler": Sk.Lure_Brawler
 }
 
 

@@ -450,56 +450,6 @@ class Brute_Force_Sweep(Groundcards):
             pass
         elif maped_score == "lose":
             attacker.energy -= 1
-
-
-
-class Illegal_Move_Trap(Groundcards):           #####  add another check to use this skill after eot "lost" evaluation; test effect   
-    # we have to overcome DESCRIBTION ERROR(it overrides the fight result attribute - we need to activate it differently )
-    def __init__(self):
-        self.name = "Illegal move trap"
-        self.rarity = "rare"
-        self.quantity = 1
-        self.cost = 1
-        self.description = self.description()
-        self.results = self.all_results()
-        self.result_description = ""
-        
-    def description(self):
-        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
-        \nIf the fight should be lost before the decision:\
-        \n50% that fight is not lost. Instead continue the fight\
-        \n(GROUNDCONTROL, TIRED, ROCKED effects are still in place)"
-        return(result)
-    
-    def all_results(self):
-        results ={
-            "win"    : "It was an eye poke, wasn't it?",
-            "success": "",
-            "defeat" : "",
-            "lose"   : "the fight is over and he is still arguing with the refree!"}
-        return(results)    
-    
-    def roll_attack(self, attacker, defender):
-        result = False
-        for _ in range(1):
-            if choice(["illegal", "no"]) == "illegal":
-                return(1)          
-        return(0)
-    
-    def get_attack_result(self, score):
-        mapping = ("lose", "win")
-        return(mapping[score])
-        
-    def attack_effect(self, maped_score, attacker, defender):   #### test it; 
-        if maped_score == "win":
-            attacker.lost = False
-            attacker.currentfight.matchresult = ["victorytype", "victorymethod"]
-        elif maped_score == "success":
-            pass
-        elif maped_score == "defeat":
-            pass
-        elif maped_score == "lose":
-            pass
             
             
 
@@ -2848,14 +2798,11 @@ class Lure_Brawler(Groundcards):
     
 
 #some untired card /  universal TIRED
-#sth that lowers boxing and mt
-#sth that lowers bjj, wrestlin
 
 #killer kick
 #butthead
 #superman punch
 
-#Kata-guruma
 #Sweep_trip_throw
 #throw directly to the groundcontrol
 
