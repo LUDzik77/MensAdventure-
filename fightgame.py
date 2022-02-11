@@ -39,7 +39,7 @@ class Fighter:
             self.weak = True
             self.currentfight.prompt_fight_info(" is exhausted!", player=self.fullname)
         elif self.energy > 2:
-            self.energy = 0
+            self.energy = 1
         elif self.rocked == False:
             self.rocked = True      
         else:
@@ -72,7 +72,7 @@ class Fighter:
         op_stat = op_stat if op_stat>0 else 1
         roll_your = randint(0, own_stat)
         roll_op = randint(0, op_stat)
-        result = roll_your>roll_op
+        result = roll_your>=roll_op
         return(result)
         
     def roll_2_stat(self, own_stat1, own_stat2, op_stat1, op_stat2):
@@ -84,7 +84,7 @@ class Fighter:
         b=self.roll_1_stat(own_stat1, op_stat2)
         c=self.roll_1_stat(own_stat2, op_stat1)
         d=self.roll_1_stat(own_stat2, op_stat2)
-        if sum([a,b,c,d])>2:
+        if sum([a,b,c,d])>=2:
             result=True
         elif sum([a,b,c,d])<2:
             result=False
@@ -192,9 +192,9 @@ class Match:
         # we need to implement ENERGY COST of attacs, hidden skill ; 
         action = self.get_skill_to_use_in_attack()
         if action == None:
-            self.prompt_fight_info(" is doing totally nothing", player=self.active_fullname())
+            self.prompt_fight_info("is doing totally nothing", player=self.active_fullname())
         elif self.activeplayer.weak and randint(1,3)==3:
-            self.prompt_fight_info(" is taking a big breath", player=self.active_fullname())
+            self.prompt_fight_info("is taking a big breath", player=self.active_fullname())
             self.activeplayer.energy += 2
         else:
             self.use_skill(action)
@@ -235,6 +235,7 @@ class Match:
                 elif restriction == "OP_NO_groundcontrol" and self.inactiveplayer.groundcontrol: skill_allowed=False
                 elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
                 elif restriction == "tired" and self.activeplayer.weak==False: skill_allowed=False
+                elif restriction == "rocked" and self.activeplayer.rocked==False: skill_allowed=False
             if skill_allowed:
                 not_restricted.append(skill)
         return(not_restricted)   
@@ -273,6 +274,8 @@ fighter2 = Fighter(*fighters_template.Mr_test)
 The_Fight = Match(fighter1, fighter2, 12)
 fighter1.currentfight = The_Fight 
 fighter2.currentfight = The_Fight
+print(fighter1.firstname,[(x.name, x.quantity) for x in fighter1.skilllist])
+print(fighter2.firstname,[(x.name, x.quantity) for x in fighter2.skilllist])
 The_Fight.start_fight()
 print("standup = ", The_Fight.standup)
 print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
