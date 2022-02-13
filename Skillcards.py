@@ -1185,7 +1185,8 @@ class Dirty_Boxing(Standupcards):
                 attacker.got_hurt()       
 
 
-class Devastating_Overhand(Standupcards):                                                                              ################################ HERE CONTINUE
+
+class Devastating_Overhand(Standupcards):                                                                              
     def __init__(self):
         self.name = "Devastating overhand"
         self.rarity = "uncommon"
@@ -1464,6 +1465,7 @@ class Universal_Punch(Standupcards):               # we have to test restriction
             attacker.currentfight.setStandup(False)
             attacker.lose_groundcontrol() 
             attacker.points -= 1
+
 
 
 class Slam(Groundcards): 
@@ -1790,6 +1792,7 @@ class Triangle_Choke(Groundcards):
             if choice(["timelapse", "no"]) == "timelapse":             
                 attacker.currentfight.moveTimer() 
 
+
  
 class Leglock_Scramble(Groundcards):  
     def __init__(self):
@@ -1851,6 +1854,7 @@ class Leglock_Scramble(Groundcards):
             attacker.points -= 1
             if defender.groundcontrol: attacker.fightlost()
             else: defender.get_groundcontrol()            
+ 
  
  
 class Heel_Hook(Groundcards):  
@@ -2398,7 +2402,7 @@ class GnP_Elbows(Groundcards):
 class Uppercut(Standupcards):
     def __init__(self):
         self.name = "Uppercut"
-        self.rarity = "rare"
+        self.rarity = "uncommon"
         self.quantity = 1
         self.cost = 1
         self.description = self.description()
@@ -2789,6 +2793,8 @@ class Lure_Brawler(Groundcards):
             attacker.points-=1
             
 
+
+
 class Girly_Blows(Groundcards): 
     def __init__(self):
         self.name = "Girly blows"
@@ -2804,7 +2810,7 @@ class Girly_Blows(Groundcards):
         \ntests: your bjj(1),wrestling(1), opponent bjj(2), random roll(1)\neffects(3roll):\
         \n3 success: points\
         \n2 success: points if GROUNDCONTROL\
-        \n0 success: 5% chance to lose fight"
+        \n0 success: 5% chance to lose the fight"
         return(result)
     
     def all_results(self):
@@ -2816,7 +2822,6 @@ class Girly_Blows(Groundcards):
         return(results)
     
     def win_descriptions(self, maped_score):
-        submission = choice(["Triangle", "Arm triangle"])
         result = {"lose":["Disqualification", "Illegal move(scratching)"]}
         return(result.get(maped_score,["N/A", "N/A"]))  
     
@@ -2842,30 +2847,90 @@ class Girly_Blows(Groundcards):
             pass
         elif maped_score == "lose":
             if randint(1,20)== 1:
-                attacker.fightlost
+                attacker.fightlost()
 
 
+class Killer_Instinct(): 
+    def __init__(self):
+        self.name = "Killer instinct"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["OP_rocked"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your muaythai,wrestling, opponent wrestling\neffects(2roll):\
+        \n2 success: WIN the fight\
+        \n1 success: WIN if GROUNDCONTROL else apply DAMAGE,GROUNDCONTROL,points\
+        \n0 success: got TIRED\
+        STANDUP AND GROUNDCARD skillcard\
+        WORKS ONLY IF OPPONENT IS ROCKED"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He tortures the opponent until the judge have to step in! Ladies and gents it's over!",
+            "success": "He smells the opponent weakness and lunges to tear his head apart!",
+            "defeat" : "",
+            "lose"   : "The opponent performs a rock solid defense"}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        TKO = choice(["Triangle", "Arm triangle"])
+        result = {"lose":["Disqualification", "Illegal move(scratching)"]}
+        return(result.get(maped_score,["N/A", "N/A"]))  
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(dattacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.muay_thai, defender.wrestling))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "success", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            defender.fightlost()
+        elif maped_score == "success":
+            if attacker.groundcontrol: defender.fightlost()
+            else:
+                defender.got_hurt()
+                attacket.get_groundcontrol()
+                attacker.points+=1
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.got_tired()
          
 ############################################################### here I can get all the Skillcards name :)
-#import pyclbr
-#module_name = 'Skillcards'
-#module_info = pyclbr.readmodule(module_name)
-##print(module_info)
+import pyclbr
+module_name = 'Skillcards'
+module_info = pyclbr.readmodule(module_name)
+del module_info['Skillcards'], module_info['Standupcards'], module_info['Groundcards']
+print(module_info)
 
-#for item in module_info.values():
-    #print(item.name)
-    
 
-#some untired card /  universal TIRED
+for item in module_info.values():
+    print(item.name)
+
+
 
 #killer kick
 #butthead
-#superman punch
 # mix top and bottom -boxing
 #fake takedown punch
 
 #Sweep_trip_throw
 #throw directly to the groundcontrol
+
+#light contact if OP_NO_rocked
 
 #mount position --> groundcontrol/punch
 

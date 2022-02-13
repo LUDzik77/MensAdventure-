@@ -8,10 +8,9 @@ def get_fightSkills(skillset_to_pick_from):
     result =  list({i:string_list.count(i) for i in string_list}.items())
     return(result)
 
-
-
+#ABOUT THOSE LISTS:
 # list of skill with weights from which we random pick skillset (6) to fight
-# do we randomize boxing, bjj skills as well?
+# TODO: a lot of lists to organise prepare the skillcards for type of fighters: drunken, wrestler, un-orthodox, grappler etc
 All_skills_equal_weights = [
     ("Jab",1),
     ("Lowkick",1),

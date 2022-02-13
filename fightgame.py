@@ -236,6 +236,7 @@ class Match:
                 elif restriction == "NO_groundcontrol" and self.activeplayer.groundcontrol: skill_allowed=False
                 elif restriction == "tired" and self.activeplayer.weak==False: skill_allowed=False
                 elif restriction == "rocked" and self.activeplayer.rocked==False: skill_allowed=False
+                elif restriction == "OP_rocked" and self.inactiveplayer.rocked==False: skill_allowed=False
             if skill_allowed:
                 not_restricted.append(skill)
         return(not_restricted)   
@@ -267,56 +268,23 @@ class Match:
             
     def moveTimer(self):
         self.timer += 1
+
     
-
-fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)
-fighter2 = Fighter(*fighters_template.Mr_test)
-The_Fight = Match(fighter1, fighter2, 12)
-fighter1.currentfight = The_Fight 
-fighter2.currentfight = The_Fight
-print(fighter1.firstname,[(x.name, x.quantity) for x in fighter1.skilllist])
-print(fighter2.firstname,[(x.name, x.quantity) for x in fighter2.skilllist])
-The_Fight.start_fight()
-print("standup = ", The_Fight.standup)
-print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
-print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
-
+    
+if __name__ == "__main__":
+    fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)
+    fighter2 = Fighter(*fighters_template.Mr_test)
+    The_Fight = Match(fighter1, fighter2, 12)
+    fighter1.currentfight = The_Fight 
+    fighter2.currentfight = The_Fight
+    print(fighter1.firstname,[(x.name, x.quantity) for x in fighter1.skilllist])
+    print(fighter2.firstname,[(x.name, x.quantity) for x in fighter2.skilllist])
+    The_Fight.start_fight()
+    print("standup = ", The_Fight.standup)
+    print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
+    print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
 
 
 
 #needed secret moves (4ground and 4standup)
-#need energy cost to add
 
-
-
-## TEST PURPOSES ONLY  (obsolete):   ##################################################################
-#AA = Fighter(*fighters_template.Saladin_Tuahihi)
-#BB = Fighter(*fighters_template.Saladin_Tuahihi)
-#print(BB.skilllist)
-#print(AA.skilllist)
-#attack1 = Sk.Jab()
-#attack2 = Sk.Lowkick()
-#attack3 = Sk.One_Two_Kick_Combo()
-#attack4 = Sk.One_Two_Kick_Combo()
-#attack5 = Sk.One_Two_Kick_Combo()
-##attack3 = Sk.Pullguard()
-##attack4 = Sk.Bearhug_takedown()
-##attack5 = Sk.One_Two_Kick_Combo()
-#attack1.use(attacker=AA, defender=BB)
-#attack2.use(attacker=AA, defender=BB)
-#attack3.use(attacker=AA, defender=BB)
-#attack4.use(attacker=AA, defender=BB)
-#attack5.use(attacker=AA, defender=BB)
-
-#print("T:",BB.weak,  "R:", BB.rocked, "L:", BB.lost)
-#print(AA.points)
-#print("")
-#print("T:",AA.weak,  "R:", AA.rocked, "L:", AA.lost)
-#print(BB.points)
-#print("")
-#print(attack1.description)
-#print("")
-#print(attack3.description)
-
-
-#hidden skill --> to be implemented
