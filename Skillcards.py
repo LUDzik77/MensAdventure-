@@ -135,6 +135,7 @@ class Lowkick(Standupcards):
             attacker.points -= 1
             
 
+
 class Pullguard(Standupcards):
     def __init__(self):
         self.name = "Pull guard"
@@ -258,8 +259,8 @@ class One_Two_Kick_Combo(Standupcards):
         
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
-        \ntests: your box+mt, opponent box+mt, 2 rolls\neffects:\
-        \n2 success: apply ROCKED, points*2\
+        \ntests: your box+mt, opponent muaythai, 2 rolls\neffects:\
+        \n2 success: apply ROCKED, points*2, ~15% for TAKEDOWN\
         \n1 success: points\
         \n0 successes: no effect"
         return(result)
@@ -279,7 +280,7 @@ class One_Two_Kick_Combo(Standupcards):
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
-            result.append(attacker.roll_2_stat(attacker.boxing, attacker.muay_thai, defender.boxing, defender.muay_thai))
+            result.append(attacker.roll_2_stat(attacker.boxing, attacker.muay_thai, defender.muay_thai, defender.muay_thai))
         return(sum(result))
     
     def get_attack_result(self, score):
@@ -290,6 +291,8 @@ class One_Two_Kick_Combo(Standupcards):
         if maped_score == "win":
             attacker.points += 2
             defender.got_rocked()
+            if randint(1,8) == 8:
+                attacker.currentfight.setStandup(False)
         elif maped_score == "success":
             attacker.points += 1
         elif maped_score == "defeat":
@@ -2880,8 +2883,13 @@ class Killer_Instinct():
         return(results)
     
     def win_descriptions(self, maped_score):
-        TKO = choice(["Triangle", "Arm triangle"])
-        result = {"lose":["Disqualification", "Illegal move(scratching)"]}
+        finish_win = choice([["Submission","Punches"],["Submission", "Smother"], ["TKO","Punches"], ["KO","Punches"]])
+        finish_success = choice([["Submission","Choke"],["TKO","Punches"]])
+        result = {
+            "win": finish_win,
+            "success": finish_success,
+            "lose":["TKO", "Retirement"]
+        }
         return(result.get(maped_score,["N/A", "N/A"]))  
     
     def roll_attack(self, attacker, defender):
@@ -2909,16 +2917,70 @@ class Killer_Instinct():
         elif maped_score == "lose":
             attacker.got_tired()
          
+         
+         
+class Jab_Jab_Cross(Standupcards):
+    def __init__(self):
+        self.name = "Jab jab cross"
+        self.rarity = "common"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your box, opponent box, 2 rolls\neffects:\
+        \n2 success: apply DAMAGE, points\
+        \n1 success: points, \
+        \n0 successes: no effect"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Clean straight cross lands on the chin",
+            "success": "Jab on the target, miss and the last one partially pas the guard",
+            "defeat" : "",
+            "lose"   : "Shading boxing, sort of..."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["KO", "Punch"]}
+        return(result.get(maped_score,["N/A", "N/A"]))        
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(2):
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing)
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "success", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):
+        if maped_score == "win":
+            attacker.points += 1
+            defender.got_hurt()
+        elif maped_score == "success":
+            attacker.points += 1
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            pass
+        
+        
 ############################################################### here I can get all the Skillcards name :)
-import pyclbr
-module_name = 'Skillcards'
-module_info = pyclbr.readmodule(module_name)
-del module_info['Skillcards'], module_info['Standupcards'], module_info['Groundcards']
-print(module_info)
+#import pyclbr
+#module_name = 'Skillcards'
+#module_info = pyclbr.readmodule(module_name)
+#del module_info['Skillcards'], module_info['Standupcards'], module_info['Groundcards']
+#print(module_info)
 
 
-for item in module_info.values():
-    print(item.name)
+#for item in module_info.values():
+    #print(item.name)
 
 
 
@@ -2934,8 +2996,5 @@ for item in module_info.values():
 
 #mount position --> groundcontrol/punch
 
-#muaythai GNP
 #Escape!
-#vicous hammerfist
-#drunkenjitsu --> ground action better when tired
 #reverse?

@@ -58,7 +58,8 @@ all_skills ={
     "Kata guruma": Sk.Kata_Guruma,
     "Lure brawler": Sk.Lure_Brawler,
     "Girly blows": Sk.Girly_Blows,
-    "Killer instinct": Sk.Killer_Instinct
+    "Killer instinct": Sk.Killer_Instinct,
+    "Jab jab cross": Sk.Jab_Jab_Cross
 }
 
 
@@ -121,4 +122,5 @@ def get_1_Skillcard_object(to_map):
 ("Lure brawler",1),         RARE**
 ("Girly blows",1),
 ("Killer instinct",1)       UNC
+("Jab jab cross",1)
 '''
