@@ -72,55 +72,55 @@ def get_1_Skillcard_object(to_map):
 
 #list of skills for sampling + rarity:
 '''
-("Jab",1),
-("Lowkick",1),
-("Pull guard",1),           UNC
-("Bearhug takedown",1),
-("1-2-kick combo",1),
-("Powerjab",1),             UNC
-("Lay and pray",1),
-("Brute force sweep",1),
-("Lucky punch",1),          RARE**
-("Granite chin",1),         UNC
-("Cardio king",1),
-("Swing for the fences",1),
-("Windmill style",1),
-("Slap",1),
-("Highkick",1),             UNC
-("Flying knee"),            RARE**
-("Roar naked choke",1),
-("Armbar",1),
-("Ground and pound"),
-("Dirty boxing",1),         UNC
-("Devastating overhand",1), UNC
-("Elbows",1),               RARE**
-("Flying armbar",1),        RARE**
-("Double leg",1),
-("Universal punch",1),      RARE**
-("Slam",1),                 RARE**
-("Single leg",1),           UNC
-("Trip kick",1),            UNC
-("Technical stand up",1),
-("Front kick",1),           UNC
-("Triangle choke",1),       UNC
-("Leglock scramble",1),     UNC
-("Heel hook",1),            UNC
-("Suplex",1),               RARE**
-("Knees in clinch",1),
-("Sit out spin",1),         UNC
-("Guillotine",1),
-("Bjj shrimp",1),           UNC
-("Crucifix",1),             RARE**
-("Hammerfists",1),          RARE**
-("GnP elbows",1),           UNC
-("Uppercut",1),             UNC
-("Drunkenjitsu",1),         RARE**
-("Superman punch",1),       RARE**
-("Footwork",1),             UNC
-("Grappling tricks",1),     UNC
-("Kata guruma",1) ,         RARE**
-("Lure brawler",1),         RARE**
-("Girly blows",1),
-("Killer instinct",1)       UNC
-("Jab jab cross",1)
+("Jab",4),
+("Lowkick",4),
+("Pull guard",4),           UNC
+("Bearhug takedown",4),
+("1-2-kick combo",4),
+("Powerjab",4),             UNC
+("Lay and pray",4),
+("Brute force sweep",4),
+("Lucky punch",4),          RARE**
+("Granite chin",4),         UNC
+("Cardio king",4),
+("Swing for the fences",4),
+("Windmill style",4),
+("Slap",4),
+("Highkick",4),             UNC
+("Flying knee",4),            RARE**
+("Roar naked choke",4),
+("Armbar",4),
+("Ground and pound",4),
+("Dirty boxing",4),         UNC
+("Devastating overhand",4), UNC
+("Elbows",4),               RARE**
+("Flying armbar",4),        RARE**
+("Double leg",4),
+("Universal punch",4),      RARE**
+("Slam",4),                 RARE**
+("Single leg",4),           UNC
+("Trip kick",4),            UNC
+("Technical stand up",4),
+("Front kick",4),           UNC
+("Triangle choke",4),       UNC
+("Leglock scramble",4),     UNC
+("Heel hook",4),            UNC
+("Suplex",4),               RARE**
+("Knees in clinch",4),
+("Sit out spin",4),         UNC
+("Guillotine",4),
+("Bjj shrimp",4),           UNC
+("Crucifix",4),             RARE**
+("Hammerfists",4),          RARE**
+("GnP elbows",4),           UNC
+("Uppercut",4),             UNC
+("Drunkenjitsu",4),         RARE**
+("Superman punch",4),       RARE**
+("Footwork",4),             UNC
+("Grappling tricks",4),     UNC
+("Kata guruma",4) ,         RARE**
+("Lure brawler",4),         RARE**
+("Girly blows",4),
+("Killer instinct",4),       UNC
+("Jab jab cross",4)
 '''

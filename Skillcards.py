@@ -630,7 +630,7 @@ class Swing_For_The_Fences(Standupcards):
         
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
-        \ntests: your & op box, muaythai, wrestling \neffects(3 rolls):\
+        \ntests: box, muaythai, wrestling \neffects(3 rolls):\
         \n3 success: opponent ROCKED\
         \n2 success: opponent DAMAGED, 25% you DAMAGED\
         \n1 success: you DAMAGED, 25% op DAMAGED\
@@ -701,7 +701,7 @@ class Windmill_Style(Standupcards):
         \ntests: your muaythai, op boxing \n(2 rolls)effects:\
         \n2 success: apply DAMAGE, points\
         \n1 success: apply DAMAGE(33% chance)\
-        \n0 success: got TIRED, suffer DAMAGE"
+        \n0 success: got TIRED"
         return(result)
     
     def all_results(self):
@@ -739,7 +739,6 @@ class Windmill_Style(Standupcards):
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            attacker.got_hurt()
             attacker.got_tired()
             
 
@@ -2284,7 +2283,7 @@ class Hammerfists(Groundcards):
         
     def description(self):
         result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
-        \ntests: your boxing(2), wrestling(1), opponent bjj\neffects(2roll):\
+        \ntests: your boxing(1), wrestling(1), opponent bjj\neffects(2roll):\
         \n2 success: apply ROCKED if GROUNDCONTROL, otherwise DAMAGE, points*2\
         \n1 success: apply DAMAGE if GROUNDCONTROL, points\
         \n0 success: lose GROUNDCONTROL, opponent GROUNDCONTROL, reduce points"
@@ -2307,7 +2306,6 @@ class Hammerfists(Groundcards):
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
-            result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.boxing, defender.bjj))
             result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
         return(sum(result))
@@ -2697,7 +2695,7 @@ class Kata_Guruma(Standupcards):
         \ntests: your wrestling,bjj opponent wrestling, 2 rolls\neffects:\
         \n2 success: TAKEDOWN, points*2\
         \n1 success: TAKEDOWN\
-        \n0 success: get TIRED"
+        \n0 success: get TIRED(50% chance)"
         return(result)
     
     def all_results(self):
@@ -2732,7 +2730,8 @@ class Kata_Guruma(Standupcards):
         elif maped_score == "defeat":
             pass
         elif maped_score == "lose":
-            attacker.got_tired()
+            if choice(["no", "tired"])== "tired":
+                attacker.got_tired()
 
 
 
@@ -2853,7 +2852,7 @@ class Girly_Blows(Groundcards):
                 attacker.fightlost()
 
 
-class Killer_Instinct(): 
+class Killer_Instinct(Skillcards): 
     def __init__(self):
         self.name = "Killer instinct"
         self.rarity = "uncommon"
@@ -2952,7 +2951,7 @@ class Jab_Jab_Cross(Standupcards):
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(2):
-            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing)
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.boxing))
         return(sum(result))
     
     def get_attack_result(self, score):
@@ -2970,7 +2969,7 @@ class Jab_Jab_Cross(Standupcards):
         elif maped_score == "lose":
             pass
         
-        
+     
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'
@@ -2996,5 +2995,5 @@ class Jab_Jab_Cross(Standupcards):
 
 #mount position --> groundcontrol/punch
 
-#Escape!
+#Escape! -- > sprawl [no groundcontrol, opgroundcontrol]
 #reverse?
