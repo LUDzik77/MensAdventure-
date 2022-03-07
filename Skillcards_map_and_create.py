@@ -59,7 +59,8 @@ all_skills ={
     "Lure brawler": Sk.Lure_Brawler,
     "Girly blows": Sk.Girly_Blows,
     "Killer instinct": Sk.Killer_Instinct,
-    "Jab jab cross": Sk.Jab_Jab_Cross
+    "Jab jab cross": Sk.Jab_Jab_Cross,
+    "Mount position": Sk.Mount_Position
 }
 
 
@@ -123,4 +124,5 @@ def get_1_Skillcard_object(to_map):
 ("Girly blows",4),
 ("Killer instinct",4),       UNC
 ("Jab jab cross",4)
+("Mount_Position",4)
 '''

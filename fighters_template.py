@@ -14,13 +14,10 @@ Saladin_Tuahihi =[
 "Saladin", #firstname
 "Tuahihi", #lastname
 "The bun",#nickname
-5,#boxing
-5,#muay_thai
-5,#wrestling
-5,#bjj
-8, #energy
-Sk_create.map_to_objects(get_fightSkills(Sk_list.all_skills_equal_weights))
+*Sk_list.basic_bjj,
+Sk_create.map_to_objects(get_fightSkills(Sk_list.bjj_skills))
 ]
+
 
 # TEST SK CREATION
 #skill_obj_list = Sk_create.map_to_objects(Saladin_Tuahihi[8])
@@ -32,12 +29,8 @@ Mr_test =[
 "Mr Test", #firstname
 "Tester", #lastname
 "Test-o-steron",#nickname
-5,#boxing
-5,#muay_thai
-5,#wrestling
-5,#bjj
-8, #energy
-Sk_create.map_to_objects(get_fightSkills(Sk_list.wrestler_skills))
+*Sk_list.basic_wrestler,
+Sk_create.map_to_objects(get_fightSkills(Sk_list.wrestling_skills))
 ]
 
 #[print(x.name) for x in Mr_test[8]]

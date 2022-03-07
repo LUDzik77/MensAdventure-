@@ -426,7 +426,7 @@ class Brute_Force_Sweep(Groundcards):
             "win"    : "He sweeps opponent. No technique here, but it works!",
             "success": "",
             "defeat" : "",
-            "lose"   : "why bother with any technique if you have muscles? Dude, opponent is not a bag of potatoes"}
+            "lose"   : "Dude, the opponent is not a bag of potatoes"}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -954,7 +954,7 @@ class Roar_Naked_Choke(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "He's applying RNC... will it be over?",
+            "win"    : "He's applying a choke... will it be over?",
             "success": "",
             "defeat" : "",
             "lose"   : "Failed to control opponent."}
@@ -2473,7 +2473,7 @@ class Drunkenjitsu(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "That moves are out of the box, but... Bite him!",
+            "win"    : "These moves are out of the box, but... Bite him!",
             "success": "He is appling some kind of odd hold. Or maybe he wants to kiss the opponent...",
             "defeat" : "",
             "lose"   : "It does look to me like these fighters aren't exactly 100% sober. Or maybe I have to drink"}
@@ -2894,7 +2894,7 @@ class Killer_Instinct(Skillcards):
     def roll_attack(self, attacker, defender):
         result = []
         for _ in range(1):
-            result.append(attacker.roll_1_stat(dattacker.wrestling, defender.wrestling))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
             result.append(attacker.roll_1_stat(attacker.muay_thai, defender.wrestling))
         return(sum(result))
     
@@ -2941,7 +2941,7 @@ class Jab_Jab_Cross(Standupcards):
             "win"    : "Clean straight cross lands on the chin",
             "success": "Jab on the target, miss and the last one partially pas the guard",
             "defeat" : "",
-            "lose"   : "Shading boxing, sort of..."}
+            "lose"   : "Shadow boxing, sort of..."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -2968,7 +2968,71 @@ class Jab_Jab_Cross(Standupcards):
             pass
         elif maped_score == "lose":
             pass
+ 
         
+ 
+class Mount_Position(Groundcards): 
+    def __init__(self):
+        self.name = "Mount position"
+        self.rarity = "common"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your bjj(1), wrestling(2)  opponent bjj\neffects(3roll):\
+        \n3 success: points, apply ROCKED if GROUNDCONTROL, otherwise GROUNDCONTROL\
+        \n2 success: points, apply DAMAGE if GROUNDCONTROL, otherwise GROUNDCONTROL\
+        \n0 success: lose GROUNDCONTROL, opponent GROUNDCONTROL, reduce points\
+        \nONLY IF OPPONENT NO GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "He's raining punches from the top and looking for a finish!",
+            "success": "ribs, ribs and chin, he is pushing his advantage.",
+            "defeat" : "few insignificant punches, most of them blocked",
+            "lose"   : "It is why you do not play on the ground with bjj shark..."}
+        return(results)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["TKO", "punches(GnP)"],
+                  "success":["TKO", "punches(GnP)"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))  
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.bjj, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.bjj))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "defeat", "success", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            if attacker.groundcontrol:
+                defender.got_rocked()  
+            else: attacker.get_groundcontrol()
+            attacker.points += 1     
+        elif maped_score == "success":
+            if attacker.groundcontrol:
+                defender.got_hurt()
+            else: attacker.get_groundcontrol()
+            attacker.points += 1 
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.lose_groundcontrol() 
+            defender.get_groundcontrol() 
+            attacker.points -= 1 
      
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr

@@ -1,8 +1,9 @@
 #main fighting engine
 from random import randint, choice
-import Skillcards as Sk
+import logging
 import fighters_template
-
+import Skillcards_map_and_create as Sk_create
+from Skillist_with_weights import all_skills_equal_weights
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
@@ -24,6 +25,7 @@ class Fighter:
         # fighter with groundcontrol can KO/submit easier, this attribute have to be set >False after every standup
         self.groundcontrol = False  
         self.skilllist = skilllist # quantity for a skills is generated as an attribute "quantity"
+        self.secret_move = (choice(all_skills_equal_weights)[0],1)
         self.points = 0 #  to get the result at the end of the fight
         self.victoryinfo_if_win = ["victorytype", "victorymethod"] 
         
@@ -99,6 +101,7 @@ class Fighter:
         self.victoryinfo_if_win = [victorytype, victorymethod]
 
 
+
 class Match:
     def __init__(self, fighter1, fighter2, fight_time):
         self.fighter1 = fighter1
@@ -109,11 +112,17 @@ class Match:
         self.fight_is_not_over = True
         self.standup = True
         self.timer = 0
+        self.inactivity_level = 0 # we will use this flague to switch to standup/ground if no action
         self.matchresult= ["victorytype", "victorymethod"]
         self.winner = ""
-        # IDEA 1.we fill it when one fighter get  flag "lost" 
-        # then checks for DQ card etc
-        # then final result (or reset of selt.matchresult) 
+        #https://www.youtube.com/watch?v=g8nQ90Hk328
+        #self.fight_log_file_name = "".join(("fightgame_logs\single_fights", self.activeplayer.fullname, self.inactiveplayer.fullname))
+        #self.fight_log_file_name = 
+        logging.basicConfig(filename="fightgame_logs/fightgame.log", filemode="w", level=logging.INFO)
+        logging.info("xxxxxxxxfkjsnalkjsbgsf")
+        logging.info("zzzzzzzzzzzzzzzzzzxxxfkjsnalkjsbgsf")
+        #self.fight_log_file_name = "".join(("fightgame_logs\single_fights", self.activeplayer.fullname, self.inactiveplayer.fullname, randint(0,1000))
+        #print(self.fight_log_file_name)
         
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
@@ -149,7 +158,6 @@ class Match:
         #print(len(self.activeplayer.skilllist), len(self.inactiveplayer.skilllist))
 
     def check_if_match_ended_early(self):
-        #here additional check for that DQ card  nooo :/
         if sum([fighter1.lost,fighter2.lost]) == 1: 
             self.nondecision_victory()
     
@@ -189,18 +197,26 @@ class Match:
     def start_round(self):
         self.moveTimer()
         self.check_if_standup_or_ground_changed()
-        # we need to implement ENERGY COST of attacs, hidden skill ; 
+        self.check_secret_move_addition()
         action = self.get_skill_to_use_in_attack()
         if action == None:
+            self.inactivity_level+=1
             self.prompt_fight_info("is doing totally nothing", player=self.active_fullname())
         elif self.activeplayer.weak and randint(1,3)==3:
             self.prompt_fight_info("is taking a big breath", player=self.active_fullname())
+            self.inactivity_level+=1
             self.activeplayer.energy += 2
         else:
             self.use_skill(action)
             self.activeplayer.energy-=action.cost
             action.quantity -= 1
     
+    def check_secret_move_addition(self):
+        if len(self.activeplayer.skilllist)<3 and randint(1,3) == 1:
+            self.activeplayer.skilllist.append(Sk_create.get_1_Skillcard_object(self.activeplayer.secret_move))
+            self.prompt_fight_info("has a secret technique on his disposal...", player=self.activeplayer.lastname)
+            #print(f"<<<<<<<<<<<<<<<<<<SECRET MOVE ADDED>>>>>>>>>>>>>> {self.activeplayer.skilllist[-1].name}")
+        
     #prompt will be passed to RenPy for render
     def prompt_fight_info(self, info, *args, **kwargs):
         p1 = self.active_fullname()
@@ -212,8 +228,8 @@ class Match:
             print(f"{info}\n")
 
     def check_if_standup_or_ground_changed(self):
-        randomnr = randint(1, 9)
-        if randomnr == 9:
+        if self.inactivity_level > 8:self.inactivity_level=8 
+        if randint(1, 10-self.inactivity_level)== 1:
             self.changeStandup()
             
     def get_skill_to_use_in_attack(self):
@@ -255,6 +271,7 @@ class Match:
         if self.standup == True:
             self.setStandup(False)
         else: self.setStandup(True)
+        self.inactivity_level = 0
     
     def setStandup(self, value):
         if self.standup==value:
@@ -281,10 +298,12 @@ if __name__ == "__main__":
     print(fighter2.firstname,[(x.name, x.quantity) for x in fighter2.skilllist])
     The_Fight.start_fight()
     print("standup = ", The_Fight.standup)
-    print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
-    print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
+    #print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
+    #print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
 
 
 
-#needed secret moves (4ground and 4standup)
+#needed secret moves (4ground and 4standup) --> if energy ZERO it has  small change to add a skill to the pool
+#self.inactivity_level --> to move from ground/stanup if no action
 
+#maybe logs?
