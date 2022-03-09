@@ -1,9 +1,11 @@
-#main fighting engine
+#MAIN FIGHT ENGINE
 from random import randint, choice
-import logging
 import fighters_template
 import Skillcards_map_and_create as Sk_create
 from Skillist_with_weights import all_skills_equal_weights
+import uuid
+import logging
+formatter1 = logging.Formatter('%(message)s')
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
@@ -94,7 +96,7 @@ class Fighter:
             result = randint(0,9)>4
         return(result)
     
-    def fightlost(self):  #used mostly with submissions
+    def fightlost(self):  
         self.lost = True
         
     def update_possible_victory_details(self, victorytype, victorymethod):
@@ -104,6 +106,7 @@ class Fighter:
 
 class Match:
     def __init__(self, fighter1, fighter2, fight_time):
+        self.match_hex_id = uuid.uuid4().hex
         self.fighter1 = fighter1
         self.fighter2 = fighter2
         self.activeplayer = choice([self.fighter1, self.fighter2])
@@ -115,15 +118,19 @@ class Match:
         self.inactivity_level = 0 # we will use this flague to switch to standup/ground if no action
         self.matchresult= ["victorytype", "victorymethod"]
         self.winner = ""
-        #https://www.youtube.com/watch?v=g8nQ90Hk328
-        #self.fight_log_file_name = "".join(("fightgame_logs\single_fights", self.activeplayer.fullname, self.inactiveplayer.fullname))
-        #self.fight_log_file_name = 
-        logging.basicConfig(filename="fightgame_logs/fightgame.log", filemode="w", level=logging.INFO)
-        logging.info("xxxxxxxxfkjsnalkjsbgsf")
-        logging.info("zzzzzzzzzzzzzzzzzzxxxfkjsnalkjsbgsf")
-        #self.fight_log_file_name = "".join(("fightgame_logs\single_fights", self.activeplayer.fullname, self.inactiveplayer.fullname, randint(0,1000))
-        #print(self.fight_log_file_name)
+        single_fights_logger_filename =  "".join(("fightgame_logs/single_fights/",\
+                                                  self.fighter1.lastname, self.fighter2.lastname, self.match_hex_id, ".log"))
+        self.single_fight_logger = self.setup_logger('single_fights_logger', single_fights_logger_filename)
+        self.single_fight_logger.info(f"FIGHT = {self.match_hex_id}\n")
         
+    def setup_logger(self, name, log_file, level=logging.INFO):
+        handler = logging.FileHandler(log_file)        
+        handler.setFormatter(formatter1)
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        logger.addHandler(handler) 
+        return logger    
+    
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
     
@@ -222,10 +229,13 @@ class Match:
         p1 = self.active_fullname()
         if "action" in kwargs:
             print(f"{p1} <{kwargs['action']}>:\n{info}\n")
+            self.single_fight_logger.info(f"{p1} <{kwargs['action']}>:\n{info}\n")
         elif "player" in kwargs:
-            print(f"{kwargs['player']} {info}\n") 
+            print(f"{kwargs['player']} {info}\n")
+            self.single_fight_logger.info(f"{kwargs['player']} {info}\n")
         else:
             print(f"{info}\n")
+            self.single_fight_logger.info(f"{info}\n")
 
     def check_if_standup_or_ground_changed(self):
         if self.inactivity_level > 8:self.inactivity_level=8 
