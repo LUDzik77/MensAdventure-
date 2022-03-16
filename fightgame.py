@@ -6,6 +6,8 @@ from Skillist_with_weights import all_skills_equal_weights
 import uuid
 import logging
 formatter1 = logging.Formatter('%(message)s')
+formatter2 = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
 
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
@@ -118,14 +120,22 @@ class Match:
         self.inactivity_level = 0 # we will use this flague to switch to standup/ground if no action
         self.matchresult= ["victorytype", "victorymethod"]
         self.winner = ""
+
         single_fights_logger_filename =  "".join(("fightgame_logs/single_fights/",\
-                                                  self.fighter1.lastname, self.fighter2.lastname, self.match_hex_id, ".log"))
-        self.single_fight_logger = self.setup_logger('single_fights_logger', single_fights_logger_filename)
-        self.single_fight_logger.info(f"FIGHT = {self.match_hex_id}\n")
+                                                  self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log"))
+        self.single_fight_logger = self.setup_logger('single_fights_logger', formatter1, single_fights_logger_filename)
         
-    def setup_logger(self, name, log_file, level=logging.INFO):
+        
+        detailed_single_fight_logger_filename2 =  "".join(("fightgame_logs/detailed_single_fights/detailed_",\
+                                                  self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log")) 
+        print(detailed_single_fight_logger_filename2)
+        self.detailed_single_fight_logger = self.setup_logger('detailed_single_fight_logger', formatter2, detailed_single_fight_logger_filename2)
+        
+        self.detailed_single_fight_logger.info(f"MATCH_HEX_ID = {self.match_hex_id}\n")
+        
+    def setup_logger(self, name, formatter, log_file, level=logging.INFO):
         handler = logging.FileHandler(log_file)        
-        handler.setFormatter(formatter1)
+        handler.setFormatter(formatter)
         logger = logging.getLogger(name)
         logger.setLevel(level)
         logger.addHandler(handler) 
@@ -307,7 +317,7 @@ if __name__ == "__main__":
     print(fighter1.firstname,[(x.name, x.quantity) for x in fighter1.skilllist])
     print(fighter2.firstname,[(x.name, x.quantity) for x in fighter2.skilllist])
     The_Fight.start_fight()
-    print("standup = ", The_Fight.standup)
+    #print("standup = ", The_Fight.standup)
     #print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
     #print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
 

@@ -677,7 +677,7 @@ class Swing_For_The_Fences(Standupcards):
                 attacker.got_hurt()            
         elif maped_score == "defeat":
             attacker.got_hurt()
-            if choice("damage", "no") == "damage":
+            if choice(["damage", "no"]) == "damage":
                 defender.got_hurt()
         elif maped_score == "lose":
             attacker.got_rocked()    
