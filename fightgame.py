@@ -6,7 +6,7 @@ from Skillist_with_weights import all_skills_equal_weights
 import uuid
 import logging
 formatter1 = logging.Formatter('%(message)s')
-formatter2 = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+formatter2 = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
 
 
 class Fighter: 
@@ -105,7 +105,6 @@ class Fighter:
         self.victoryinfo_if_win = [victorytype, victorymethod]
 
 
-
 class Match:
     def __init__(self, fighter1, fighter2, fight_time):
         self.match_hex_id = uuid.uuid4().hex
@@ -120,27 +119,30 @@ class Match:
         self.inactivity_level = 0 # we will use this flague to switch to standup/ground if no action
         self.matchresult= ["victorytype", "victorymethod"]
         self.winner = ""
+        self.initialize_logs()
+        self.log_in_initialisation()
 
-        single_fights_logger_filename =  "".join(("fightgame_logs/single_fights/",\
-                                                  self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log"))
-        self.single_fight_logger = self.setup_logger('single_fights_logger', formatter1, single_fights_logger_filename)
-        
-        
-        detailed_single_fight_logger_filename2 =  "".join(("fightgame_logs/detailed_single_fights/detailed_",\
-                                                  self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log")) 
-        print(detailed_single_fight_logger_filename2)
-        self.detailed_single_fight_logger = self.setup_logger('detailed_single_fight_logger', formatter2, detailed_single_fight_logger_filename2)
-        
-        self.detailed_single_fight_logger.info(f"MATCH_HEX_ID = {self.match_hex_id}\n")
-        
     def setup_logger(self, name, formatter, log_file, level=logging.INFO):
         handler = logging.FileHandler(log_file)        
         handler.setFormatter(formatter)
         logger = logging.getLogger(name)
         logger.setLevel(level)
         logger.addHandler(handler) 
-        return logger    
+        return logger
     
+    def initialize_logs(self):
+        single_fights_logger_filename =  "".join((
+            "fightgame_logs/single_fights/", self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log"))
+        self.single_fight_logger = self.setup_logger(
+            'single_fights_logger', formatter1, single_fights_logger_filename)
+        self.fightgame_logger = self.setup_logger(
+            'fightgame_logger', formatter2, "fightgame_logs/fightgamelog.log")
+        
+    def log_in_initialisation(self):
+        self.fightgame_logger.info(f"MATCH_HEX_ID = {self.match_hex_id}\n")
+        self.fightgame_logger.info(f"{self.activeplayer}, {self.inactiveplayer}")
+
+
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
     
@@ -321,9 +323,3 @@ if __name__ == "__main__":
     #print(fighter1.firstname, "T:",fighter1.weak,  "R:", fighter1.rocked, "L:", fighter1.lost, "points:", fighter1.points)
     #print(fighter2.firstname, "T:",fighter2.weak,  "R:", fighter2.rocked, "L:", fighter2.lost, "points:", fighter2.points)
 
-
-
-#needed secret moves (4ground and 4standup) --> if energy ZERO it has  small change to add a skill to the pool
-#self.inactivity_level --> to move from ground/stanup if no action
-
-#maybe logs?

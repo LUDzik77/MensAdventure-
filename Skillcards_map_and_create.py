@@ -60,7 +60,8 @@ all_skills ={
     "Girly blows": Sk.Girly_Blows,
     "Killer instinct": Sk.Killer_Instinct,
     "Jab jab cross": Sk.Jab_Jab_Cross,
-    "Mount position": Sk.Mount_Position
+    "Mount position": Sk.Mount_Position,
+    "Sprawl": Sk.Sprawl
 }
 
 
@@ -88,7 +89,7 @@ def get_1_Skillcard_object(to_map):
 ("Windmill style",4),
 ("Slap",4),
 ("Highkick",4),             UNC
-("Flying knee",4),            RARE**
+("Flying knee",4),          RARE**
 ("Roar naked choke",4),
 ("Armbar",4),
 ("Ground and pound",4),
@@ -123,6 +124,7 @@ def get_1_Skillcard_object(to_map):
 ("Lure brawler",4),         RARE**
 ("Girly blows",4),
 ("Killer instinct",4),       UNC
-("Jab jab cross",4)
-("Mount_Position",4)
+("Jab jab cross",4),
+("Mount_Position",4),
+("Sprawl",4)
 '''

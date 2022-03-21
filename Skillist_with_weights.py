@@ -53,7 +53,8 @@ all_skills_equal_weights = [
     ("Girly blows",4),
     ("Killer instinct",4),       
     ("Jab jab cross",4),
-    ("Mount position", 4)
+    ("Mount position", 4),
+    ("Sprawl",4)
 ]
 
 
@@ -76,7 +77,8 @@ all_common_skills = [
     ("Knees in clinch",4),
     ("Guillotine",4),
     ("Girly blows",4),
-    ("Jab jab cross",4)    
+    ("Jab jab cross",4),
+    ("Sprawl",4)
 ]
 
 all_uncommon_skills = [
@@ -126,7 +128,7 @@ wrestling_skills = [
     ("Jab",2),      
     ("Bearhug takedown",6),
     ("1-2-kick combo",1),       
-    ("Lay and pray",2),
+    ("Lay and pray",3),
     ("Brute force sweep",3),  
     ("Granite chin",2),        
     ("Swing for the fences",2),
@@ -135,12 +137,12 @@ wrestling_skills = [
     ("Universal punch",2),   
     ("Ground and pound",5),
     ("Dirty boxing",10),        
-    ("Devastating overhand",1),                  
+    ("Devastating overhand",2),                  
     ("Double leg",4),
     ("Slam",3),                 
-    ("Single leg",6),                  
+    ("Single leg",7),                  
     ("Technical stand up",1),             
-    ("Suplex",2),               
+    ("Suplex",4),               
     ("Knees in clinch",1),
     ("Sit out spin",3),        
     ("Guillotine",4),                 
@@ -151,7 +153,8 @@ wrestling_skills = [
     ("Girly blows",1),
     ("Killer instinct",2),       
     ("Jab jab cross",2),
-    ("Mount position", 5)
+    ("Mount position", 6),
+    ("Sprawl",3)
 ]
 
 bjj_skills = [
@@ -207,7 +210,7 @@ basic_wrestler = [
 basic_bjj= [
 2,#boxing
 4,#muay_thai
-5,#wrestling
+4,#wrestling
 7,#bjj
 7, #energy
 ]

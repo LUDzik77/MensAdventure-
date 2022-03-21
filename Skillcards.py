@@ -1,15 +1,17 @@
 #Skillcards
 from random import choice, randint
+import logging
 
 
 class Skillcards:
     def get_description(self, key):
         return(self.results[key])
-    def use(self, attacker, defender):  
+    def use(self, attacker, defender):
         score = self.roll_attack(attacker, defender)
         maped_score = self.get_attack_result(score)
         attacker.update_possible_victory_details(*self.win_descriptions(maped_score)) 
         self.result_description = self.results[maped_score]
+        attacker.currentfight.fightgame_logger.info(f"using {self.name},{score},{maped_score}:")
         attacker.currentfight.prompt_fight_info(self.get_result_description(), action=self.name)
         self.attack_effect(maped_score, attacker, defender)
         #print(self.get_result_description())  #checking effects <--- for test purposes/ not  4 production
@@ -51,9 +53,9 @@ class Jab(Standupcards):
     def all_results(self):
         results ={
             "win"    : "What a jab!",
-            "success": "scored some points",
-            "defeat" : "jab, jab, miss, miss",
-            "lose"   : "can't even punch correctly..."}
+            "success": "He scored some points.",
+            "defeat" : "Jab, jab, miss, miss.",
+            "lose"   : "Can't even punch correctly..."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -104,8 +106,8 @@ class Lowkick(Standupcards):
     def all_results(self):
         results ={
             "win"    : "That lowkick could have broken a bone!",
-            "success": "On target",
-            "defeat" : "Nothing there",
+            "success": "On the target.",
+            "defeat" : "Nothing there.",
             "lose"   : "Pathetic kick..."}
         return(results)
     
@@ -156,10 +158,10 @@ class Pullguard(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "he's pullin the guard. What a move!",
-            "success": "he is pulling a guard... risky move!",
+            "win"    : "He's pullin the guard. What a move!",
+            "success": "He is pulling a guard... risky move!",
             "defeat" : "",
-            "lose"   : "he's trying to pull the guard... but opponent refuses to get involved!"}
+            "lose"   : "He's trying to pull the guard... but opponent refuses to get involved!"}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -212,7 +214,7 @@ class Bearhug_Takedown(Standupcards):
         results ={
             "win"    : "What a beautiful oldschool takedown!",
             "success": "",
-            "defeat" : "No luck with that risky move",
+            "defeat" : "No luck with that risky move.",
             "lose"   : "He's turning back from the oponent! He got countered!"}
         return(results)
     
@@ -268,9 +270,9 @@ class One_Two_Kick_Combo(Standupcards):
     def all_results(self):
         results ={
             "win"    : "Boom! And one more!",
-            "success": "Partially on target",
+            "success": "Partially on target.",
             "defeat" : "",
-            "lose"   : "Nothing landed"}
+            "lose"   : "Nothing landed."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -323,7 +325,7 @@ class Powerjab(Jab):
     def all_results(self):
         results ={
             "win"    : "What a jab! Opponent felt that one!",
-            "success": "opponent tagged",
+            "success": "Opponent tagged.",
             "defeat" : "",
             "lose"   : "This lefthand was visible from a kilometer..."}
         return(results)
@@ -377,10 +379,10 @@ class Lay_And_Pray(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "he is successfully blocking any opponent move",
+            "win"    : "He is successfully blocking any opponent move.",
             "success": "",
             "defeat" : "",
-            "lose"   : "Refree have to stop that sweat fest"}
+            "lose"   : "Refree have to stop that sweat fest."}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -423,10 +425,10 @@ class Brute_Force_Sweep(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "He sweeps opponent. No technique here, but it works!",
+            "win"    : "He sweeps the opponent. No technique here, but it works!",
             "success": "",
             "defeat" : "",
-            "lose"   : "Dude, the opponent is not a bag of potatoes"}
+            "lose"   : "Dude, the opponent is not a bag of potatoes."}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -475,10 +477,10 @@ class Lucky_Punch(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "That was clearly a lucky punch",
+            "win"    : "That was clearly a lucky punch.",
             "success": "",
             "defeat" : "",
-            "lose"   : "No luck you gambler"}
+            "lose"   : "No luck you gambler."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -540,7 +542,7 @@ class Granite_Chin(Standupcards):
     def all_results(self):
         results ={
             "win"    : "His chin is unbreakable! He recovered!",
-            "success": "The blows do not impress him at all",
+            "success": "These blows do not impress him at all.",
             "defeat" : "",
             "lose"   : ""}
         return(results)
@@ -709,7 +711,7 @@ class Windmill_Style(Standupcards):
             "win"    : "He is like a hurricane... he discovers technique on the fly and rains that wide punches. Storm of chaos incoming!",
             "success": "Pub brawl here!",
             "defeat" : "",
-            "lose"   : "Oh boy! Few swings and he totally gassed out"}
+            "lose"   : "Oh boy! Few swings and he totally gassed out."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -765,18 +767,18 @@ class Slap(Standupcards):
     def all_results(self):
         funny_win = choice(["Slap that bitch! Yeah! One more time, he's likin it!",
                             "Me gusta you bastrad!",
-                            "Boom and I see a tear! He was schooled and he'll cry us a river", 
-                            "That was thai-chi move. He zapped all willpower out him",
-                            "Nick Diaz classes wasn't wasted here. They were smoking some goood shit together",
+                            "Boom and I see a tear! He was schooled and he'll cry us a river.", 
+                            "That was thai-chi move. He zapped all willpower out him.",
+                            "Nick Diaz classes wasn't wasted here. They were smoking some goood shit together.",
                             "He showed the opponent who's the daddy here. Naughty-naught boy have to suffer!",
                             "Punch like Neo from Matrix... like Tyler from Fight Club... or just like a really fucked up grrrl!"
                             ])
         funny_lose = choice(["Are u kiddin me bro? What's next? You'll be rolling on the floor like one of that jiujitsu gays... i mean guys?",
                              "He is fighting invisible flies... What a predator!",
-                             "He was clearly learning boxing from books",
+                             "He was clearly learning boxing from books.",
                              "Ke? He was ordering a burrito with that karate-waving?",
                              "My granny can do it better. She can give him a lesson or two!",
-                             "Wide swings, wide wings. If he is sober i have to drink"
+                             "Wide swings, wide wings. If he is sober i have to drink."
                              ])
         results ={
             "win"    : funny_win,
@@ -833,8 +835,8 @@ class Highkick(Standupcards):
         results ={
             "win"    : "Foot landed directly on the chin! Is it over?",
             "success": "Kick and boom, partially landed!",
-            "defeat" : "opponent stepped back and dodged the leg.",
-            "lose"   : "Oponent laughs, refree as well"}
+            "defeat" : "The opponent stepped back and dodged the leg.",
+            "lose"   : "The opponent laughs, refree as well."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -894,7 +896,7 @@ class Flying_Knee(Standupcards):
     def all_results(self):
         results ={
             "win"    : "Opponent's head was low. That knee hit him like a truck.",
-            "success": "Knee to the midsection",
+            "success": "Knee to the midsection.",
             "defeat" : "",
             "lose"   : "Going for a kneee... but opponent is moving out of the way... He's going for a counter and he pins kangaroo down to the mat. "}
         return(results)
@@ -1088,8 +1090,8 @@ class Ground_and_Pound(Groundcards):
     def all_results(self):
         results ={
             "win"    : "He's raining punches from the top and looking for a finish!",
-            "success": "ribs, ribs and chin, he is pushing his advantage.",
-            "defeat" : "few insignificant punches, most of them blocked",
+            "success": "Ribs, ribs and chin, he is pushing his advantage.",
+            "defeat" : "Few insignificant punches, most of them blocked.",
             "lose"   : "It is why you do not play on the ground with bjj shark..."}
         return(results)
     
@@ -1151,9 +1153,9 @@ class Dirty_Boxing(Standupcards):
     def all_results(self):
         results ={
             "win"    : "He's controlling opponent against the cage and pointing with punches!",
-            "success": "Stalemate in the clinch... Oh in fact, he is scoring something here",
+            "success": "Stalemate in the clinch... Oh in fact, he is scoring something here.",
             "defeat" : "",
-            "lose"   : "he eats punches more then he throws"}
+            "lose"   : "He eats punches more then he throws."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1210,7 +1212,7 @@ class Devastating_Overhand(Standupcards):
             "win"    : "Nasty right hand over the top! That's a knockout, right?",
             "success": "That one was damn close. Few more centimeters and we would see a KO.",
             "defeat" : "",
-            "lose"   : "Haymaker got countered by the opponent"}
+            "lose"   : "Haymaker got countered by the opponent."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1265,8 +1267,8 @@ class Elbows(Standupcards):
         results ={
             "win"    : "He cuts opponent with an elbow!",
             "success": "",
-            "defeat" : "He is trying to close the distance, but can't",
-            "lose"   : "He won't achieve much with that questionable elbows"}
+            "defeat" : "He is trying to close the distance, but can't.",
+            "lose"   : "He won't achieve much with that questionable elbows."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1321,7 +1323,7 @@ class Flying_Armbar(Standupcards):
             "win"    : "Flying armbar? Are you kidding me? What a finish!",
             "success": "Flying armbar attempt? Crowd is loooving it!",
             "defeat" : "Kangaroo tried some fancy technique and finished pinned to the ground.",
-            "lose"   : "I don't know what he was trying to achieve, but I cannot stop laughing"}
+            "lose"   : "I don't know what he was trying to achieve, but I cannot stop laughing."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1376,7 +1378,7 @@ class Double_Leg(Standupcards):
         results ={
             "win"    : "He charged like a roller! What a beautiful takedown. Please give him round of applause.",
             "success": "He ducks under opponent... and he gets it!",
-            "defeat" : "He ducks under opponent... timed sprawl and he's pushed back",
+            "defeat" : "He ducks under opponent... timed sprawl and he's pushed back.",
             "lose"   : "He tried double leg and was countered!"}
         return(results)
     
@@ -1436,7 +1438,7 @@ class Universal_Punch(Standupcards):               # we have to test restriction
         results ={
             "win"    : "It connected! Opponent is in real trouble!",
             "success": "This man can strike from every angle and position... great... but does it really matter? These punches can't hurt a fly.",
-            "defeat" : "Miss and... miss one more time. Next time he should try some standard stuff",
+            "defeat" : "Miss and... miss one more time. Next time he should try some standard stuff.",
             "lose"   : "No, no and one more time no. Missed punched, missed opportunity, and now he is trouble."}
         return(results)
     
@@ -1595,7 +1597,7 @@ class Trip_Kick(Standupcards):
             "win"    : "Kick to the leg, opponents trips and fights goes to the ground",
             "success": "",
             "defeat" : "",
-            "lose"   : "Kick and miss"}
+            "lose"   : "Kick and miss."}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -1642,10 +1644,10 @@ class Technical_Stand_Up(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "Technical stand up like one from the bjj manual",
+            "win"    : "Technical stand up like one from the bjj manual.",
             "success": "He is lifting his hips, he'll get back on feet, won't he?",
             "defeat" : "",
-            "lose"   : "He tried to stand up but was countered"}
+            "lose"   : "He tried to stand up but was countered."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -1701,7 +1703,7 @@ class Front_Kick(Standupcards):
     def all_results(self):
         results ={
             "win"    : "The suprise kick causes some damage!",
-            "success": "The opponent is pushed back",
+            "success": "The opponent is pushed back.",
             "defeat" : "",
             "lose"   : "The foot swings in the air..."}
         return(results)
@@ -1879,7 +1881,7 @@ class Heel_Hook(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "And here is the tapout! He takes opponent leg home with him tonight! What a nasty heel hook",
+            "win"    : "And here is the tapout! He takes opponent leg home with him tonight! What a nasty heel hook.",
             "success": "He controls the opponent's knee, it looks like it's all over... No, the opponent has released his leg somehow.",
             "defeat" : "You can call that one a HELL hook as after the attempt he's in real trouble.",
             "lose"   : "The bravado didn't pay off. After a reverse the opponent is in the dominant position."}
@@ -1937,8 +1939,8 @@ class Suplex(Standupcards):
         results ={
             "win"    : "He lifts the opponent and slams him madly into the mat. His head connected first... Hopefully no injury here!",
             "success": "He tries a suplex and he gets it! What a throw. Unbeliviable!",
-            "defeat" : "The opponent is resisting the throws attempts",
-            "lose"   : "He tried a high throw but he was countered"}
+            "defeat" : "The opponent is resisting the throws attempts.",
+            "lose"   : "He tried a high throw but he was countered."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -2189,7 +2191,7 @@ class Bjj_Shrimp(Groundcards):
             "win"    : "What a great escape!",
             "success": "",
             "defeat" : "",
-            "lose"   : "He is shrimping but with no success"}
+            "lose"   : "He is shrimping but with no success."}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -2292,9 +2294,9 @@ class Hammerfists(Groundcards):
     def all_results(self):
         results ={
             "win"    : "He's hammering his opponent head... What a beating! Where is refree?",
-            "success": "These hammerfists can leave a bruise",
+            "success": "These hammerfists can leave a bruise.",
             "defeat" : "",
-            "lose"   : "He tried ground and pound and got swept"}
+            "lose"   : "He tried ground and pound and got swept."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -2476,7 +2478,7 @@ class Drunkenjitsu(Groundcards):
             "win"    : "These moves are out of the box, but... Bite him!",
             "success": "He is appling some kind of odd hold. Or maybe he wants to kiss the opponent...",
             "defeat" : "",
-            "lose"   : "It does look to me like these fighters aren't exactly 100% sober. Or maybe I have to drink"}
+            "lose"   : "It does look to me like these fighters aren't exactly 100% sober. Or maybe I have to drink."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -2654,7 +2656,7 @@ class Grappling_Tricks(Groundcards):
             "win"    : "He totally outgrappled his opponent! He can trick the opponent and go for a submission in any moment!",
             "success": "",
             "defeat" : "",
-            "lose"   : "The opponent shows decent defence on the ground. He refuses to get caught in that technical game"}
+            "lose"   : "The opponent shows decent defence on the ground. He refuses to get caught in that technical game."}
         return(results)
     
     def roll_attack(self, attacker, defender):
@@ -2852,6 +2854,7 @@ class Girly_Blows(Groundcards):
                 attacker.fightlost()
 
 
+
 class Killer_Instinct(Skillcards): 
     def __init__(self):
         self.name = "Killer instinct"
@@ -2878,7 +2881,7 @@ class Killer_Instinct(Skillcards):
             "win"    : "He tortures the opponent until the judge have to step in! Ladies and gents it's over!",
             "success": "He smells the opponent weakness and lunges to tear his head apart!",
             "defeat" : "",
-            "lose"   : "The opponent performs a rock solid defense"}
+            "lose"   : "The opponent performs a rock solid defense."}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -2938,8 +2941,8 @@ class Jab_Jab_Cross(Standupcards):
     
     def all_results(self):
         results ={
-            "win"    : "Clean straight cross lands on the chin",
-            "success": "Jab on the target, miss and the last one partially pas the guard",
+            "win"    : "Clean straight cross lands on the chin.",
+            "success": "Jab on the target, miss and the last one partially pas the guard.",
             "defeat" : "",
             "lose"   : "Shadow boxing, sort of..."}
         return(results)
@@ -2992,10 +2995,10 @@ class Mount_Position(Groundcards):
     
     def all_results(self):
         results ={
-            "win"    : "He's raining punches from the top and looking for a finish!",
-            "success": "ribs, ribs and chin, he is pushing his advantage.",
-            "defeat" : "few insignificant punches, most of them blocked",
-            "lose"   : "It is why you do not play on the ground with bjj shark..."}
+            "win"    : "Every second in the mount can hasten the inevitable!",
+            "success": "He has a control. He has fists as well.",
+            "defeat" : "He tried to advance to the mount. Not this time.",
+            "lose"   : "He tried to mount but he was swept!"}
         return(results)
     
     def win_descriptions(self, maped_score):
@@ -3033,7 +3036,58 @@ class Mount_Position(Groundcards):
             attacker.lose_groundcontrol() 
             defender.get_groundcontrol() 
             attacker.points -= 1 
-     
+ 
+ 
+ 
+
+class Sprawl(Groundcards):  #test
+    def __init__(self):
+        self.name = "Sprawl"
+        self.rarity = "common"
+        self.quantity = 1
+        self.cost = 3
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        self.restriction = ["ground", "NO_groundcontrol", "OP_NO_groundcontrol"]
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \ntests: your wrestling, opponent wrestling\neffects(1roll):\
+        \n1 success: STANDUP\
+        CAN BE TRIGGER ONLY IF YOU DON'T HAVE GROUNDCONTROL\
+        AND OPPONENT HAS NO GROUNDCONTROL"
+        return(result)
+    
+    def all_results(self):
+        results ={
+            "win"    : "Sprawl... and he is back for a brawl again!",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "Sprawl attempt failed."}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.wrestling, defender.wrestling))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.currentfight.setStandup(True)
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass 
+        elif maped_score == "lose":
+            pass
+            
+            
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr
 #module_name = 'Skillcards'

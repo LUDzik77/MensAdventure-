@@ -1,0 +1,111 @@
+2022-03-21 22:55:53,484 - INFO - MATCH_HEX_ID = adf39f3555dc4a4781a5d83ea72b74e2
+
+2022-03-21 22:55:56,143 - INFO - MATCH_HEX_ID = 07fbd1e4486b4b5ca878663b5aa190d4
+
+2022-03-21 22:58:35,572 - INFO - MATCH_HEX_ID = c221832d75ad497da42d22492ecba546
+
+2022-03-21 22:58:38,711 - INFO - MATCH_HEX_ID = 8fc0728fba2d4e258a1eb1f316040630
+
+2022-03-21 22:58:41,167 - INFO - MATCH_HEX_ID = fe7bd4b5261141fcbe9fff320feb0355
+
+2022-03-21 23:06:10,723 - INFO - MATCH_HEX_ID = 77b9f3310a7843558e14e35c41e73e69
+
+2022-03-21 23:08:10,789 - INFO - MATCH_HEX_ID = 3b9f064b2e53492ba74fba3c0c3fa7b2
+
+2022-03-21 23:08:10,789 - INFO - <__main__.Fighter object at 0x0114FBF8>, <__main__.Fighter object at 0x0114FC40>
+2022-03-21 23:13:52,809 - INFO - MATCH_HEX_ID = 8a69cc21165a402da319b0099aeac046
+
+2022-03-21 23:13:52,809 - INFO - <__main__.Fighter object at 0x0105AB80>, <__main__.Fighter object at 0x0105AB68>
+2022-03-21 23:13:52,809 - INFO - using Double leg
+2022-03-21 23:13:52,809 - INFO - using Heel hook
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - MATCH_HEX_ID = d426cf4da8e849d7b6ae9e618a649921
+
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - <__main__.Fighter object at 0x01153B50>, <__main__.Fighter object at 0x01153B68>
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - using Highkick
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - using Knees in clinch
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - using Flying armbar
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - using Ground and pound
+2022-03-21 23:16:51,129 - fightgame_logger - INFO - using Leglock scramble
+2022-03-21 23:16:51,144 - fightgame_logger - INFO - using 1-2-kick combo
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - MATCH_HEX_ID = a186cc5d70e84f9da992add1100feb03
+
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - <__main__.Fighter object at 0x021D3B68>, <__main__.Fighter object at 0x021D3B80>
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Roar naked choke
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Crucifix
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Mount position
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Grappling tricks
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Suplex
+2022-03-21 23:19:22,477 - fightgame_logger - INFO - using Knees in clinch
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - MATCH_HEX_ID = f339642d84694907964bfb54531521d6
+
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - <__main__.Fighter object at 0x00F54B68>, <__main__.Fighter object at 0x00F54B80>
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Double leg
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Devastating overhand
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Girly blows
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Ground and pound
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Grappling tricks
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Guillotine
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Guillotine
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Armbar
+2022-03-21 23:22:06,229 - fightgame_logger - INFO - using Pull guard
+2022-03-21 23:36:47,123 - fightgame_logger - INFO - MATCH_HEX_ID = c97730cefcce4285948363255a4d6e99
+
+2022-03-21 23:46:27,621 - fightgame - INFO - MATCH_HEX_ID = b0c3d53da1d6480598caba14799df6b2
+
+2022-03-21 23:46:27,622 - fightgame - INFO - <__main__.Fighter object at 0x00F53B38>, <__main__.Fighter object at 0x00F53B50>
+2022-03-21 23:46:27,623 - Skillcards - INFO - using Pull guard
+2022-03-21 23:46:27,624 - Skillcards - INFO - using Lay and pray
+2022-03-21 23:46:27,625 - Skillcards - INFO - using Heel hook
+2022-03-21 23:54:48,303 - fightgame - INFO - MATCH_HEX_ID = f9e5b6851b5b4511856593061c06b437
+
+2022-03-21 23:54:48,303 - fightgame - INFO - <__main__.Fighter object at 0x01056B80>, <__main__.Fighter object at 0x01056B68>
+2022-03-21 23:54:48,304 - Skillcards - INFO - using Swing for the fences:
+2022-03-21 23:54:48,305 - Skillcards - INFO -                2, success
+2022-03-21 23:54:48,306 - Skillcards - INFO - using Knees in clinch:
+2022-03-21 23:54:48,306 - Skillcards - INFO -                2, defeat
+2022-03-21 23:54:48,307 - Skillcards - INFO - using Suplex:
+2022-03-21 23:54:48,307 - Skillcards - INFO -                1, defeat
+2022-03-21 23:54:48,308 - Skillcards - INFO - using Front kick:
+2022-03-21 23:54:48,308 - Skillcards - INFO -                2, win
+2022-03-21 23:54:48,309 - Skillcards - INFO - using Trip kick:
+2022-03-21 23:54:48,309 - Skillcards - INFO -                1, win
+2022-03-21 23:54:48,310 - Skillcards - INFO - using Lay and pray:
+2022-03-21 23:54:48,311 - Skillcards - INFO -                0, lose
+2022-03-21 23:54:48,311 - Skillcards - INFO - using Single leg:
+2022-03-21 23:54:48,312 - Skillcards - INFO -                2, success
+2022-03-21 23:54:48,315 - Skillcards - INFO - using Dirty boxing:
+2022-03-21 23:54:48,315 - Skillcards - INFO -                2, win
+2022-03-21 23:54:52,913 - fightgame - INFO - MATCH_HEX_ID = 2f3b552268a64eaea9cb63bb732c39e7
+
+2022-03-21 23:54:52,913 - fightgame - INFO - <__main__.Fighter object at 0x021D6B68>, <__main__.Fighter object at 0x021D6B80>
+2022-03-21 23:54:52,914 - Skillcards - INFO - using Jab jab cross:
+2022-03-21 23:54:52,915 - Skillcards - INFO -                1, success
+2022-03-21 23:54:52,915 - Skillcards - INFO - using Double leg:
+2022-03-21 23:54:52,916 - Skillcards - INFO -                2, success
+2022-03-21 23:54:52,917 - Skillcards - INFO - using Leglock scramble:
+2022-03-21 23:54:52,917 - Skillcards - INFO -                2, success
+2022-03-21 23:54:52,918 - Skillcards - INFO - using Slam:
+2022-03-21 23:54:52,918 - Skillcards - INFO -                2, win
+2022-03-21 23:54:52,919 - Skillcards - INFO - using Universal punch:
+2022-03-21 23:54:52,920 - Skillcards - INFO -                4, win
+2022-03-21 23:54:52,921 - Skillcards - INFO - using Brute force sweep:
+2022-03-21 23:54:52,921 - Skillcards - INFO -                0, lose
+2022-03-21 23:54:52,922 - Skillcards - INFO - using Heel hook:
+2022-03-21 23:54:52,922 - Skillcards - INFO -                2, success
+2022-03-22 00:00:22,110 - fightgame - INFO - MATCH_HEX_ID = ad7a5aab732e4cff8b47b6d3ee11b702
+
+2022-03-22 00:00:22,110 - fightgame - INFO - <__main__.Fighter object at 0x01055BE0>, <__main__.Fighter object at 0x01055BC8>
+2022-03-22 00:00:22,111 - Skillcards - INFO - using Double leg,3,win:
+2022-03-22 00:00:22,112 - Skillcards - INFO - using Ground and pound,2,success:
+2022-03-22 00:00:22,113 - Skillcards - INFO - using Lay and pray,0,lose:
+2022-03-22 00:00:22,114 - Skillcards - INFO - using Heel hook,3,win:
+2022-03-22 00:00:25,681 - fightgame - INFO - MATCH_HEX_ID = aaa8f709c4a94613ae85ef07f2377ef4
+
+2022-03-22 00:00:25,681 - fightgame - INFO - <__main__.Fighter object at 0x01153B50>, <__main__.Fighter object at 0x01153B68>
+2022-03-22 00:00:25,683 - Skillcards - INFO - using Ground and pound,2,success:
+2022-03-22 00:00:25,683 - Skillcards - INFO - using Girly blows,1,defeat:
+2022-03-22 00:00:25,685 - Skillcards - INFO - using 1-2-kick combo,2,win:
+2022-03-22 00:00:25,685 - Skillcards - INFO - using Suplex,2,defeat:
+2022-03-22 00:00:25,686 - Skillcards - INFO - using Lowkick,3,win:
+2022-03-22 00:00:25,688 - Skillcards - INFO - using Girly blows,1,defeat:
+2022-03-22 00:00:25,689 - Skillcards - INFO - using Lay and pray,1,win:
