@@ -54,7 +54,8 @@ all_skills_equal_weights = [
     ("Killer instinct",4),       
     ("Jab jab cross",4),
     ("Mount position", 4),
-    ("Sprawl",4)
+    ("Sprawl",4),
+    ("Losing Move",4)  
 ]
 
 
@@ -198,6 +199,16 @@ bjj_skills = [
         ("Mount position", 1)
     ]
 
+boxing_skills = [
+    ("Jab jab cross",4),
+    ("Dirty boxing",2), 
+    ("Powerjab",2), 
+    ("Jab",6), 
+    ("Devastating overhand",1), 
+    ("Uppercut",2),             
+    ("Footwork",2),
+    ("Technical stand up",3),
+    ]
 
 basic_wrestler = [
 4,#boxing
@@ -216,7 +227,7 @@ basic_bjj= [
 ]
 
 basic_boxer = [
-7,#boxing
+8,#boxing
 3,#muay_thai
 4,#wrestling
 3,#bjj
@@ -229,4 +240,39 @@ basic_muay_thai = [
 3,#wrestling
 4,#bjj
 6, #energy
+]
+
+
+#MACIN NAJMAN
+basic_Najman = [
+2, #boxing
+2, #muay_thai
+10, #wrestling
+2, #bjj
+5, #energy
+]
+
+
+Najman_skills = [
+    ("Jab", 8),
+    ("Lowkick",5),
+    ("Bearhug takedown",2),
+    ("1-2-kick combo",1),
+    ("Lay and pray", 7),
+    ("Brute force sweep",4),
+    ("Swing for the fences",4),
+    ("Windmill style",4),
+    ("Slap",4),
+    ("Roar naked choke",2),
+    ("Ground and pound",3),
+    ("Double leg",2),
+    ("Knees in clinch",2),
+    ("Guillotine",2),
+    ("Girly blows",6),
+    ("Jab jab cross",4),
+    ("Uppercut",1),
+    ("Devastating overhand",1),
+    ("Universal punch",1),
+    ("Mount position", 1),
+    ("Losing Move", 10)    
 ]

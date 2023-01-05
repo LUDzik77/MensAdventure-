@@ -1,6 +1,6 @@
 #here we map skills from strings to objects
-
 import Skillcards as Sk
+#from fightgame import fightgame_logger
 
 def map_to_objects(list_of_objects_to_map):
     fighter_skillcards = []
@@ -61,7 +61,8 @@ all_skills ={
     "Killer instinct": Sk.Killer_Instinct,
     "Jab jab cross": Sk.Jab_Jab_Cross,
     "Mount position": Sk.Mount_Position,
-    "Sprawl": Sk.Sprawl
+    "Sprawl": Sk.Sprawl,
+    "Losing Move": Sk.Losing_Move
 }
 
 
@@ -126,5 +127,6 @@ def get_1_Skillcard_object(to_map):
 ("Killer instinct",4),       UNC
 ("Jab jab cross",4),
 ("Mount_Position",4),
-("Sprawl",4)
+("Sprawl",4),
+("Losing Move",4)           NAJMAN-RARE
 '''

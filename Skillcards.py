@@ -1,6 +1,8 @@
 #Skillcards
-from random import choice, randint
+from random import randint, choice
+choice, randint
 import logging
+from fightgame import fightgame_logger
 
 
 class Skillcards:
@@ -11,9 +13,12 @@ class Skillcards:
         maped_score = self.get_attack_result(score)
         attacker.update_possible_victory_details(*self.win_descriptions(maped_score)) 
         self.result_description = self.results[maped_score]
-        attacker.currentfight.fightgame_logger.info(f"using {self.name},{score},{maped_score}:")
+        fightgame_logger.info(f"using {self.name},successes={score},mapped={maped_score}")
         attacker.currentfight.prompt_fight_info(self.get_result_description(), action=self.name)
         self.attack_effect(maped_score, attacker, defender)
+        desc_for_debug = self.get_result_description()
+        #print(desc_for_debug.upper())
+        fightgame_logger.info(f"description--> {self.result_description}")  ###################################### IT DOUBLES <to do patch>
         #print(self.get_result_description())  #checking effects <--- for test purposes/ not  4 production
         
     def get_result_description(self):
@@ -22,6 +27,7 @@ class Skillcards:
         return(str(f"{name.upper()}\nx{quantity} collected ({rarity})\nenergy cost: {cost}"))
     def win_descriptions(self, maped_score):
         result = {}
+        
         return(result.get(maped_score,["N/A", "N/A"]))    
     
 class Standupcards(Skillcards):
@@ -1814,7 +1820,7 @@ class Leglock_Scramble(Groundcards):
         \n4,3 success: points, WIN if GROUNDCONTROl else GROUNDCONTROL\
         \n2 success: apply GROUNDCONTROL\
         \n1 success: reduce points\
-        \n0 success: reduce points LOSE if op GROUNDCONTROL else op GROUNDCONTROL"
+        \n0 success: reduce points, LOSE if op GROUNDCONTROL else op GROUNDCONTROL"
         return(result)
     
     def all_results(self):
@@ -3087,6 +3093,58 @@ class Sprawl(Groundcards):  #test
         elif maped_score == "lose":
             pass
             
+  
+
+class Losing_Move(Standupcards):
+    def __init__(self):
+        self.name = "Losing Move"
+        self.rarity = "uncommon"
+        self.quantity = 1
+        self.cost = 2
+        self.description = self.description()
+        self.results = self.all_results()
+        self.result_description = ""
+        
+    def description(self):
+        result = Skillcards.get_basedescription(self.name, self.rarity, self.quantity, self.cost) +"\
+        \nYOU LOSE A FIGHT!"
+        return(result)
+    
+    def win_descriptions(self, maped_score):
+        result = {"win":["Submission", "injury"],
+                  "lose":["Submission", "eating"]
+                  }
+        return(result.get(maped_score,["N/A", "N/A"]))      
+    
+    def all_results(self):
+        results ={
+            "win"    : "He trips up and breaks a finger! That's over!",
+            "success": "",
+            "defeat" : "",
+            "lose"   : "He start to mandarines in the cage and refuses to fight!"}
+        return(results)
+    
+    def roll_attack(self, attacker, defender):
+        result = []
+        for _ in range(1):
+            result.append(attacker.roll_1_stat(attacker.boxing, defender.muay_thai))
+        return(sum(result))
+    
+    def get_attack_result(self, score):
+        mapping = ("lose", "win")
+        return(mapping[score])
+        
+    def attack_effect(self, maped_score, attacker, defender):  
+        if maped_score == "win":
+            attacker.fightlost()            
+        elif maped_score == "success":
+            pass
+        elif maped_score == "defeat":
+            pass
+        elif maped_score == "lose":
+            attacker.fightlost() 
+
+  
             
 ############################################################### here I can get all the Skillcards name :)
 #import pyclbr

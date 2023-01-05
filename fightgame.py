@@ -8,7 +8,6 @@ import logging
 formatter1 = logging.Formatter('%(message)s')
 formatter2 = logging.Formatter('%(asctime)s - %(module)s - %(levelname)s - %(message)s')
 
-
 class Fighter: 
     def __init__(self, firstname, lastname, nickname, boxing, muay_thai, wrestling, bjj, energy, skilllist):
         # self.currentfight changed on runtime; 
@@ -105,6 +104,8 @@ class Fighter:
         self.victoryinfo_if_win = [victorytype, victorymethod]
 
 
+
+
 class Match:
     def __init__(self, fighter1, fighter2, fight_time):
         self.match_hex_id = uuid.uuid4().hex
@@ -122,26 +123,14 @@ class Match:
         self.initialize_logs()
         self.log_in_initialisation()
 
-    def setup_logger(self, name, formatter, log_file, level=logging.INFO):
-        handler = logging.FileHandler(log_file)        
-        handler.setFormatter(formatter)
-        logger = logging.getLogger(name)
-        logger.setLevel(level)
-        logger.addHandler(handler) 
-        return logger
-    
     def initialize_logs(self):
         single_fights_logger_filename =  "".join((
             "fightgame_logs/single_fights/", self.fighter1.lastname, self.fighter2.lastname, "_ID_=", self.match_hex_id, ".log"))
-        self.single_fight_logger = self.setup_logger(
-            'single_fights_logger', formatter1, single_fights_logger_filename)
-        self.fightgame_logger = self.setup_logger(
-            'fightgame_logger', formatter2, "fightgame_logs/fightgamelog.log")
+        self.single_fight_logger = setup_logger('single_fights_logger', formatter1, single_fights_logger_filename)
         
     def log_in_initialisation(self):
-        self.fightgame_logger.info(f"MATCH_HEX_ID = {self.match_hex_id}\n")
-        self.fightgame_logger.info(f"{self.activeplayer}, {self.inactiveplayer}")
-
+        fightgame_logger.info(f"MATCH_HEX_ID = {self.match_hex_id}\n")
+        fightgame_logger.info(f"{self.activeplayer}, {self.inactiveplayer}")
 
     def active_fullname(self):
         return(self.activeplayer.firstname + " " +self.activeplayer.lastname)
@@ -282,7 +271,7 @@ class Match:
     def get_pool_of_energy_legal_attacks(self, legal_actions):
         print(self.activeplayer.fullname, self.activeplayer.energy)
         result = list(filter(lambda x:x.cost<=self.activeplayer.energy, legal_actions))
-        print([(x.name, x.quantity) for x in result])
+        #print([(x.name, x.quantity) for x in result])   ### for print pool  of possible actions
         if len(legal_actions) != len(result): print("at least 1 skill too costy")
         return(result)
       
@@ -308,11 +297,22 @@ class Match:
     def moveTimer(self):
         self.timer += 1
 
+#I prefer to have it outside the Match object; easier to import
+def setup_logger(name, formatter, log_file, level=logging.INFO):
+    handler = logging.FileHandler(log_file)        
+    handler.setFormatter(formatter)
+    logger = logging.getLogger(name)
+    logger.setLevel(level)
+    logger.addHandler(handler) 
+    return logger
+
+fightgame_logger = setup_logger('fightgame_logger', formatter2, "fightgame_logs/fightgamelog.log")    
     
-    
-if __name__ == "__main__":
-    fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)
-    fighter2 = Fighter(*fighters_template.Mr_test)
+if __name__ == "__main__":  
+    #fighter1 = Fighter(*fighters_template.Saladin_Tuahihi)
+    fighter1 = Fighter(*fighters_template.Mr_test)
+    fighter2 = Fighter(*fighters_template.Mr_boxer)
+    #fighter2 = Fighter(*fighters_template.Marcin_Najman)
     The_Fight = Match(fighter1, fighter2, 12)
     fighter1.currentfight = The_Fight 
     fighter2.currentfight = The_Fight
