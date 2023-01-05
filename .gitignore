@@ -1,0 +1,15 @@
+#GIT IGNORE LIST:
+
+/*.log
+/*.ods
+temp/
+/fightgame_logs
+fightgame_logs/
+/screenshots
+screenshots/
+__pychache__/
+/__pychache__
+__pychache__
+/test*.*
+*/*.pyc
+*/*.pyo
